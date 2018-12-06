@@ -6,29 +6,29 @@
 #    By: afonck <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/07 18:55:30 by afonck            #+#    #+#              #
-#    Updated: 2018/11/08 15:43:53 by afonck           ###   ########.fr        #
+#    Updated: 2018/11/21 14:41:46 by afonck           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC    =    gcc
-CFLAGS    =    -Wall -Wextra -Werror -I ./libft.h
+NAME		= libft.a
+CFLAGS	= -Wall -Werror -Wextra -Iincludes -c
+FILES		= $(shell ls | grep -E "ft_.+\.c")
+OBJ			= $(FILES:%.c=%.o)
 
-NAME    =    libft.a
-SRC        =    *.c
+all: $(NAME)
 
-OBJ        =    *.o
+$(NAME): $(OBJ)
+	@ar rcs $(NAME) $(OBJ)
 
-all:    $(NAME)
-
-$(NAME):
-	$(CC) -c $(CFLAGS) $(SRC)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+$(OBJ): $(FILES)
+	@gcc $(CFLAGS) $(FILES)
 
 clean:
-	/bin/rm -f $(OBJ)
+	@rm -f $(OBJ)
 
-fclean:    clean
-	/bin/rm -f $(NAME)
+fclean: clean
+	@rm -f $(NAME)
 
-re:    fclean all
+re: fclean all
+
+.PHONY: clean fclean all re
