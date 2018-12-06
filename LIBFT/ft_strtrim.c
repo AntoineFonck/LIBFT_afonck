@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 15:40:11 by afonck            #+#    #+#             */
-/*   Updated: 2018/12/06 17:40:22 by afonck           ###   ########.fr       */
+/*   Updated: 2018/11/14 16:58:51 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char		*sdup(const char *s1)
 	i = 0;
 	if ((s2 = (char *)malloc(sizeof(char) * s1len(s1) + 1)) == NULL)
 		return (NULL);
-	while (s1[i] != '\0')
+	while (i <= s1len(s1))
 	{
 		s2[i] = s1[i];
 		i++;

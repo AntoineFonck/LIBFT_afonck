@@ -6,14 +6,14 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 15:27:56 by afonck            #+#    #+#             */
-/*   Updated: 2018/12/06 17:39:24 by afonck           ###   ########.fr       */
+/*   Updated: 2018/11/14 17:06:33 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <string.h>
 
-static void	putchar(char c)
+static void	putchr(char c)
 {
 	write(1, &c, 1);
 }
@@ -27,7 +27,7 @@ static void	putstr(char const *s)
 	{
 		while (s[i] != '\0')
 		{
-			putchar(s[i]);
+			putchr(s[i]);
 			i++;
 		}
 	}
@@ -38,6 +38,6 @@ void		ft_putendl(char const *s)
 	if (s != NULL)
 	{
 		putstr(s);
-		putchar('\n');
+		putchr('\n');
 	}
 }

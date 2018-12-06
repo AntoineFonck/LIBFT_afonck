@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 09:28:28 by afonck            #+#    #+#             */
-/*   Updated: 2018/12/06 17:38:45 by afonck           ###   ########.fr       */
+/*   Updated: 2018/11/15 13:32:25 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 
 static void				*cpymem(void *dst, const void *src, size_t n)
 {
-	char	*dst1;
-	char	*src1;
-	size_t	i;
+	char		*dst1;
+	const char	*src1;
+	size_t		i;
 
 	i = 0;
 	dst1 = (char *)dst;
-	src1 = (char *)src;
+	src1 = (const char *)src;
 	while (i < n)
 	{
 		dst1[i] = src1[i];
 		i++;
 	}
-	return ((void *)dst1);
+	return (dst);
 }
 
 static t_list			*newlst(void const *content, size_t content_size)
@@ -72,9 +72,12 @@ t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 	{
 		temp = (*f)(lst);
 		if ((newelem->next = newlst(temp->content, temp->content_size)) == NULL)
+		{
+			free(begin);
 			return (NULL);
-		newelem = newelem->next;
+		}
 		lst = lst->next;
+		newelem = newelem->next;
 	}
 	return (begin);
 }

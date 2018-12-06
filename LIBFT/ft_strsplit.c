@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 08:54:56 by afonck            #+#    #+#             */
-/*   Updated: 2018/12/06 17:40:17 by afonck           ###   ########.fr       */
+/*   Updated: 2018/11/13 13:46:31 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ static size_t	countletters(char const *s, char c)
 	return (wordlen);
 }
 
+static char		**ft_tabdel(char **tab, int len)
+{
+	int i;
+
+	i = 0;
+	while (i < len)
+		free(tab[i]);
+	free(tab);
+	return (NULL);
+}
+
 char			**ft_strsplit(char const *s, char c)
 {
 	size_t	i;
@@ -67,7 +78,7 @@ char			**ft_strsplit(char const *s, char c)
 	while (i < countwords(s, c))
 	{
 		if (!(tab[i] = (char*)malloc(countletters(&s[k], c) + 1)))
-			return (NULL);
+			return (ft_tabdel(tab, countwords(s, c)));
 		j = 0;
 		while (s[k] == c)
 			k++;
