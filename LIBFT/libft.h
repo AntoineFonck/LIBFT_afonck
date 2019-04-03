@@ -6,13 +6,28 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2018/12/06 14:09:35 by afonck           ###   ########.fr       */
+/*   Updated: 2019/03/18 16:38:20 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <string.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# define BUFF_SIZE 8
+
+int					get_next_line(const int fd, char **line);
+
+/*
+**	EXTRAS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+*/
+
+int					ft_absolute(int i);
+/*
+** converts a negative int into a positive int
+*/
 
 /*
 ** LIST FUNCTIONS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
