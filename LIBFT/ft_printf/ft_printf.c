@@ -1,29 +1,59 @@
 #include "../libft.h"
 #include <stdarg.h>
+#include <stdio.h>
+#include "ft_printf.h"
 
-int do_function(int fd, char c, va_list args)
+int	convert_percent(va_list args, int *fd)
 {
-	if (c == '%')
-	{
-		ft_putchar_fd('%', fd);
-		return (1);
-	}
-	if (c == 'c')
-	{
-		ft_putchar_fd(va_arg(args, int), fd);
-		return (1);
-	}
-	if (c == 's')
-	{
-		ft_putstr_fd(va_arg(args, char *), fd);
-		//return (ft_strlen(tmp_str));
-		return (1);
-	}
-	if (c == 'd')
-	{
-		ft_putnbr_fd(va_arg(args, int), fd);
-		return (1);
-	}
+	ft_putchar_fd('%', *fd);
+	return (1);
+}
+
+int	convert_char(va_list args, int *fd)
+{
+	ft_putchar_fd(va_arg(args, int), *fd);
+	return (1);
+}
+
+int	convert_string(va_list args, int *fd)
+{
+	char *s;
+	int len;
+
+	s = va_arg(args, char *);
+	len = ft_strlen(s);
+	write(*fd, s, len);
+	return (len);
+}
+
+int	convert_int(va_list args, int *fd)
+{
+	int number;
+	int numlen;
+
+	number = va_arg(args, int);
+	numlen = ft_nbrlen(number);
+	ft_putnbr_fd(number, *fd);
+	return (numlen);
+}
+
+static const t_converter	g_converters[] =
+{
+	{'%', FALSE, convert_percent},
+	{'c', TRUE, convert_char},
+	{'s', TRUE, convert_string},
+	{'d', TRUE, convert_int}
+};
+
+int	do_function(char c, int *fd, va_list args)
+{
+	int i;
+
+	i = 0;
+	while (g_converters[i].format && g_converters[i].format != c)
+		i++;
+	if (g_converters[i].format == c)
+		return(g_converters[i].fun_ptr(args, fd));
 	return (0);
 }
 
@@ -40,7 +70,7 @@ int ft_vprintf(int fd, const char *fmt, va_list args)
 		if (*fmt == '%')
 		{
 			fmt++;
-			total_len += do_function(fd, *fmt, args);
+			total_len += do_function(*fmt, &fd, args);
 			fmt++;
 		}
 		else
@@ -73,7 +103,8 @@ int main(int argc, char *argv[])
 
 		i = 15643;
 		test = 'O';
-		ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\n", i, argv[1], test);
+		ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n", i, argv[1], test, (unsigned int)&i);
+		printf("real printf = %d\n", (unsigned int)&i);
 	}
 	return (0);
 }

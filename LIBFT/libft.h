@@ -29,6 +29,11 @@ int					ft_absolute(int i);
 ** converts a negative int into a positive int
 */
 
+int					ft_nbrlen(int n);
+/*
+** returns the length of the int n
+*/
+
 /*
 ** LIST FUNCTIONS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 */
