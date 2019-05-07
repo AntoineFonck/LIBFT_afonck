@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
+/*   Updated: 2019/05/07 18:52:08 by afonck           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -37,12 +49,23 @@ int	convert_int(va_list args, int *fd)
 	return (numlen);
 }
 
+int	convert_hex(va_list args, int *fd)
+{
+	unsigned int hex;
+	int len;
+
+	hex = va_arg(args, unsigned int);
+	ft_uitoaprint_base(hex, 16, *fd);
+	return (ft_nbrlen(hex));
+}
+
 static const t_converter	g_converters[] =
 {
 	{'%', FALSE, convert_percent},
 	{'c', TRUE, convert_char},
 	{'s', TRUE, convert_string},
-	{'d', TRUE, convert_int}
+	{'d', TRUE, convert_int},
+	{'x', TRUE, convert_hex}
 };
 
 int	do_function(char c, int *fd, va_list args)
@@ -100,11 +123,14 @@ int main(int argc, char *argv[])
 	{
 		int i;
 		char test;
+		int len1;
+		int len2;
 
 		i = 15643;
 		test = 'O';
-		ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n", i, argv[1], test, (unsigned int)&i);
-		printf("real printf = %d\n", (unsigned int)&i);
+		len1 = ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
+		len2 = printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
+		printf("ft_printf len == %d and printf len == %d", len1, len2);
 	}
 	return (0);
 }
