@@ -152,12 +152,13 @@ void check_field_width(const char **fmt, t_flags *flags)
 	int i;
 
 	i = 0;
+	printf("[DEBUG] i is at %p and field_width is at %p\n", &i, &field_width);
 	if (!ft_isdigit(**fmt))
 		return ;
 	while (ft_isdigit(**fmt))
 	{
 		field_width[i] = **fmt;
-		printf("[DEBUG] current field_width[i] == %c at %p for **fmt == %c\n", field_width[i], &field_width, **fmt);
+		printf("[DEBUG] current field_width[%d] == %c at %p for **fmt == %c\n", i, field_width[i], &field_width[i], **fmt);
 		i++;
 		(*fmt)++;
 	}
@@ -172,6 +173,7 @@ void check_precision(const char **fmt, t_flags *flags)
 	int i;
 
 	i = 0;
+	printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
 	if (**fmt == '.')
 	{
 		(*fmt)++;
@@ -180,7 +182,7 @@ void check_precision(const char **fmt, t_flags *flags)
 		while (ft_isdigit(**fmt))
 		{
 			precision[i] = **fmt;
-			printf("[DEBUG] current precision[i] == %c at %p for **fmt == %c\n", precision[i], &precision, **fmt);
+			printf("[DEBUG] current precision[%d] == %c at %p for **fmt == %c\n", i, precision[i], &precision[i], **fmt);
 			i++;
 			(*fmt)++;
 		}
@@ -235,9 +237,9 @@ int ft_printf(const char *fmt, ...)
 
 int main(int argc, char *argv[])
 {
-	if (argc == 2)
+	if (argc == 3)
 	{
-		ft_printf(argv[1]);
+		ft_printf(argv[1], argv[2]);
 	}
 	return (0);
 }
