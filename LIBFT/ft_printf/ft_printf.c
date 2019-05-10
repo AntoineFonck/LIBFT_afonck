@@ -131,23 +131,31 @@ void check_flags(const char **fmt, t_flags *flags)
 	printf("[DEBUG] flag loop activated, flag working? hash= %d\n, minus= %d, plus= %d, space= %d, zero= %d\n\n", flags->hashtag, flags->minus, flags->plus, flags->space, flags->zero);
 }
 
-void check_field_width(const char **fmt, t_flags *flags)
+void store_field_width(const char **fmt, t_flags *flags)
 {
-	/*
-	int multiplicator;
+	char field_width[10];
+	int i;
 
-	multiplicator = 1;
+	i = 0;
+	printf("[DEBUG] i is at %p and field_width is at %p\n", &i, &field_width);
 	while (ft_isdigit(**fmt))
 	{
-		flags->field_width += (**fmt - '0') * multiplicator;
-		if ((**fmt - '0') == 0)
-			flags->field_width *= multiplicator;
-		printf("[DEBUG] field width is equal to %d when multiplicator = %d\n", flags->field_width, multiplicator);
-		multiplicator *= 10;
+		field_width[i] = **fmt;
+		printf("[DEBUG] current field_width[%d] == %c at %p for **fmt == %c\n", i, field_width[i], &field_width[i], **fmt);
+		i++;
 		(*fmt)++;
 	}
-	printf("[DEBUG] total field width == %d\n", flags->field_width);
-	*/
+	flags->field_width = ft_atoi(field_width);
+	ft_bzero((void *)field_width, 10);
+	printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
+}
+
+void check_field_width(const char **fmt, t_flags *flags)
+{
+	if (!ft_isdigit(**fmt))
+		return ;
+	store_field_width(fmt, flags);
+	/*
 	char field_width[10];
 	int i;
 
@@ -165,10 +173,37 @@ void check_field_width(const char **fmt, t_flags *flags)
 	flags->field_width = ft_atoi(field_width);
 	ft_bzero((void *)field_width, 10);
 	printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
+	*/
+}
+
+void store_precision(const char **fmt, t_flags *flags)
+{
+	char precision[10];
+	int i;
+
+	i = 0;
+	printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
+	while (ft_isdigit(**fmt))
+	{
+		precision[i] = **fmt;
+		printf("[DEBUG] current precision[%d] == %c at %p for **fmt == %c\n", i, precision[i], &precision[i], **fmt);
+		i++;
+		(*fmt)++;
+	}
+	flags->precision = ft_atoi(precision);
+	printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
 }
 
 void check_precision(const char **fmt, t_flags *flags)
 {
+	if (**fmt == '.')
+	{
+		(*fmt)++;
+		if (!ft_isdigit(**fmt))
+			return ;
+		store_precision(fmt, flags);
+	}
+	/*
 	char precision[10];
 	int i;
 
@@ -189,6 +224,7 @@ void check_precision(const char **fmt, t_flags *flags)
 		flags->precision = ft_atoi(precision);
 		printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
 	}
+	*/
 }
 
 int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
