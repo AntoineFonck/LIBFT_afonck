@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/05/13 16:02:01 by afonck           ###   ########.fr       */
+/*   Updated: 2019/05/13 16:54:07 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@ void pad_this(int number, t_flags *flags, int *fd)
 	int nbpad;
 
 	nbpad = flags->field_width - ft_nbrlen(number);
-	if (flags->zero)
+	if (flags->plus || flags->space)
+		nbpad--;
+	if (flags->zero && (flags->minus == 0))
 	{
+		if (flags->plus)
+			ft_putchar('+');
+		if (flags->space && (flags->plus == 0))
+			ft_putchar(' ');
 		while (nbpad > 0)
 		{
 			ft_putchar('0');
@@ -57,18 +63,20 @@ void pad_this(int number, t_flags *flags, int *fd)
 		ft_putchar(' ');
 		nbpad--;
 	}
+	if (flags->plus)
+		ft_putchar('+');
+	if (flags->space && (flags->plus == 0))
+		ft_putchar(' ');
 	return ;
 }
 
 int	convert_int(va_list args, int *fd, t_flags *flags)
 {
 	int number;
-	//int numlen;
 
 	number = va_arg(args, int);
 	if (flags->minus)
 	{
-	//numlen = ft_nbrlen(number);
 		ft_putnbr_fd(number, *fd);
 		pad_this(number, flags, fd);
 	}
