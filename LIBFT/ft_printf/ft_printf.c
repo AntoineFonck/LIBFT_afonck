@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/05/08 17:31:43 by afonck           ###   ########.fr       */
+/*   Updated: 2019/05/13 16:02:01 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,46 @@ int	convert_string(va_list args, int *fd)
 	return (len);
 }
 
-int	convert_int(va_list args, int *fd)
+void pad_this(int number, t_flags *flags, int *fd)
+{
+	int nbpad;
+
+	nbpad = flags->field_width - ft_nbrlen(number);
+	if (flags->zero)
+	{
+		while (nbpad > 0)
+		{
+			ft_putchar('0');
+			nbpad--;
+		}
+		return ;
+	}
+	while (nbpad > 0)
+	{
+		ft_putchar(' ');
+		nbpad--;
+	}
+	return ;
+}
+
+int	convert_int(va_list args, int *fd, t_flags *flags)
 {
 	int number;
-	int numlen;
+	//int numlen;
 
 	number = va_arg(args, int);
-	numlen = ft_nbrlen(number);
-	ft_putnbr_fd(number, *fd);
-	return (numlen);
+	if (flags->minus)
+	{
+	//numlen = ft_nbrlen(number);
+		ft_putnbr_fd(number, *fd);
+		pad_this(number, flags, fd);
+	}
+	else
+	{
+		pad_this(number, flags, fd);
+		ft_putnbr_fd(number, *fd);
+	}
+	return (ft_nbrlen(number));
 }
 
 int	convert_hex(va_list args, int *fd)
@@ -68,7 +99,7 @@ static const t_converter	g_converters[] =
 	{'x', TRUE, convert_hex}
 };
 
-int	do_function(char c, int *fd, va_list args)
+int	do_function(char c, int *fd, va_list args, t_flags *flags)
 {
 	int i;
 
@@ -76,7 +107,7 @@ int	do_function(char c, int *fd, va_list args)
 	while (g_converters[i].format && g_converters[i].format != c)
 		i++;
 	if (g_converters[i].format == c)
-		return(g_converters[i].fun_ptr(args, fd));
+		return(g_converters[i].fun_ptr(args, fd, flags));
 	return (0);
 }
 
@@ -227,6 +258,17 @@ void check_precision(const char **fmt, t_flags *flags)
 	*/
 }
 
+void flush_flags(t_flags *flags)
+{
+	flags->hashtag = 0;
+	flags->minus = 0;
+	flags->plus = 0;
+	flags->space = 0;
+	flags->zero = 0;
+	flags->field_width = 0;
+	flags->precision = 0;
+}
+
 int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 {
 	int tmp_int;
@@ -243,7 +285,8 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 			check_flags(&fmt, flags);
 			check_field_width(&fmt, flags);
 			check_precision(&fmt, flags);
-			total_len += do_function(*fmt, &fd, args);
+			total_len += do_function(*fmt, &fd, args, flags);
+			flush_flags(flags);
 			fmt++;
 		}
 		else
@@ -273,9 +316,11 @@ int ft_printf(const char *fmt, ...)
 
 int main(int argc, char *argv[])
 {
-	if (argc == 3)
+	if (argc == 4)
 	{
-		ft_printf(argv[1], argv[2]);
+		ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		ft_putchar('\n');
+		printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 	}
 	return (0);
 }

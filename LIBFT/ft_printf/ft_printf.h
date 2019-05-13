@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/05/08 13:44:18 by afonck           ###   ########.fr       */
+/*   Updated: 2019/05/13 15:25:36 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_converter
 {
 	char format;
 	int boolean;
-	int (*fun_ptr)(va_list, int*);
+	int (*fun_ptr)(va_list, int*, t_list*);
 }	t_converter;
 
 #endif
