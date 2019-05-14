@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/05/13 16:54:07 by afonck           ###   ########.fr       */
+/*   Updated: 2019/05/14 12:01:54 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "ft_printf.h"
+
+int is_activated(t_flags *flags)
+{
+	if (flags->hashtag || flags->minus || flags->plus || flags->space ||
+			flags->zero || flags->field_width || flags->precision)
+		return (1);
+	return (0);
+}
 
 int	convert_percent(va_list args, int *fd)
 {
@@ -38,36 +46,61 @@ int	convert_string(va_list args, int *fd)
 	return (len);
 }
 
-void pad_this(int number, t_flags *flags, int *fd)
+int pad_this(int number, t_flags *flags, int *fd)
 {
 	int nbpad;
+	int padlen;
 
 	nbpad = flags->field_width - ft_nbrlen(number);
 	if (flags->plus || flags->space)
 		nbpad--;
-	if (flags->zero && (flags->minus == 0))
+	if (nbpad < 0)
+		nbpad = 0;
+	padlen = nbpad + (flags->plus);
+	if (flags->zero && !flags->minus)
 	{
-		if (flags->plus)
-			ft_putchar('+');
-		if (flags->space && (flags->plus == 0))
-			ft_putchar(' ');
 		while (nbpad > 0)
 		{
-			ft_putchar('0');
+			ft_putchar_fd('0', *fd);
 			nbpad--;
 		}
-		return ;
+		return (padlen);
 	}
 	while (nbpad > 0)
 	{
-		ft_putchar(' ');
+		ft_putchar_fd(' ', *fd);
 		nbpad--;
 	}
+	printf("PADLEN = %d\n", padlen);
+	return (padlen);
+}
+
+int special_convert_int(int number, int *fd, t_flags *flags)
+{
+	int full_len;
+
+	full_len = 0;
+	if (flags->minus)
+	{
+		if (flags->plus)
+			ft_putchar_fd('+', *fd);
+		ft_putnbr_fd(number, *fd);
+		full_len += pad_this(number, flags, fd);
+		return (full_len + ft_nbrlen(number));
+	}
 	if (flags->plus)
-		ft_putchar('+');
-	if (flags->space && (flags->plus == 0))
-		ft_putchar(' ');
-	return ;
+	{
+		if (flags->zero)
+			ft_putchar_fd('+', *fd);
+		full_len += pad_this(number, flags, fd);
+		if (!flags->zero)
+			ft_putchar_fd('+', *fd);
+		ft_putnbr_fd(number, *fd);
+		return (full_len + ft_nbrlen(number));
+	}
+	full_len += pad_this(number, flags, fd);
+	ft_putnbr_fd(number, *fd);
+	return (full_len + ft_nbrlen(number));
 }
 
 int	convert_int(va_list args, int *fd, t_flags *flags)
@@ -75,6 +108,11 @@ int	convert_int(va_list args, int *fd, t_flags *flags)
 	int number;
 
 	number = va_arg(args, int);
+	if (is_activated(flags))
+		return(special_convert_int(number, fd, flags));
+	ft_putnbr_fd(number, *fd);
+	return (ft_nbrlen(number));
+	/*
 	if (flags->minus)
 	{
 		ft_putnbr_fd(number, *fd);
@@ -86,6 +124,7 @@ int	convert_int(va_list args, int *fd, t_flags *flags)
 		ft_putnbr_fd(number, *fd);
 	}
 	return (ft_nbrlen(number));
+	*/
 }
 
 int	convert_hex(va_list args, int *fd)
@@ -176,6 +215,7 @@ void store_field_width(const char **fmt, t_flags *flags)
 	int i;
 
 	i = 0;
+	ft_bzero((void *)field_width, 10);
 	printf("[DEBUG] i is at %p and field_width is at %p\n", &i, &field_width);
 	while (ft_isdigit(**fmt))
 	{
@@ -184,6 +224,7 @@ void store_field_width(const char **fmt, t_flags *flags)
 		i++;
 		(*fmt)++;
 	}
+	printf("[HEEEEERE] %d\n", ft_atoi(field_width));
 	flags->field_width = ft_atoi(field_width);
 	ft_bzero((void *)field_width, 10);
 	printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
@@ -221,6 +262,7 @@ void store_precision(const char **fmt, t_flags *flags)
 	int i;
 
 	i = 0;
+	ft_bzero((void *)precision, 10);
 	printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
 	while (ft_isdigit(**fmt))
 	{
@@ -230,6 +272,7 @@ void store_precision(const char **fmt, t_flags *flags)
 		(*fmt)++;
 	}
 	flags->precision = ft_atoi(precision);
+	ft_bzero((void *)precision, 10);
 	printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
 }
 
@@ -326,9 +369,12 @@ int main(int argc, char *argv[])
 {
 	if (argc == 4)
 	{
-		ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		int myone;
+		int realone;
+		myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		ft_putchar('\n');
-		printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);
 }
