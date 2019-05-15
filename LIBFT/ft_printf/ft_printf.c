@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/05/14 12:01:54 by afonck           ###   ########.fr       */
+/*   Updated: 2019/05/15 11:20:50 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,30 @@ int is_activated(t_flags *flags)
 	return (0);
 }
 
-int	convert_percent(va_list args, int *fd)
+int	convert_percent(va_list args, int fd, t_flags *flags)
 {
-	ft_putchar_fd('%', *fd);
+	ft_putchar_fd('%', fd);
 	return (1);
 }
 
-int	convert_char(va_list args, int *fd)
+int	convert_char(va_list args, int fd, t_flags *flags)
 {
-	ft_putchar_fd(va_arg(args, int), *fd);
+	ft_putchar_fd(va_arg(args, int), fd);
 	return (1);
 }
 
-int	convert_string(va_list args, int *fd)
+int	convert_string(va_list args, int fd, t_flags *flags)
 {
 	char *s;
 	int len;
 
 	s = va_arg(args, char *);
 	len = ft_strlen(s);
-	write(*fd, s, len);
+	write(fd, s, len);
 	return (len);
 }
 
-int pad_this(int number, t_flags *flags, int *fd)
+int pad_this(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -61,21 +61,21 @@ int pad_this(int number, t_flags *flags, int *fd)
 	{
 		while (nbpad > 0)
 		{
-			ft_putchar_fd('0', *fd);
+			ft_putchar_fd('0', fd);
 			nbpad--;
 		}
 		return (padlen);
 	}
 	while (nbpad > 0)
 	{
-		ft_putchar_fd(' ', *fd);
+		ft_putchar_fd(' ', fd);
 		nbpad--;
 	}
 	printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 
-int special_convert_int(int number, int *fd, t_flags *flags)
+int special_convert_int(int number, int fd, t_flags *flags)
 {
 	int full_len;
 
@@ -83,57 +83,57 @@ int special_convert_int(int number, int *fd, t_flags *flags)
 	if (flags->minus)
 	{
 		if (flags->plus)
-			ft_putchar_fd('+', *fd);
-		ft_putnbr_fd(number, *fd);
+			ft_putchar_fd('+', fd);
+		ft_putnbr_fd(number, fd);
 		full_len += pad_this(number, flags, fd);
 		return (full_len + ft_nbrlen(number));
 	}
 	if (flags->plus)
 	{
 		if (flags->zero)
-			ft_putchar_fd('+', *fd);
+			ft_putchar_fd('+', fd);
 		full_len += pad_this(number, flags, fd);
 		if (!flags->zero)
-			ft_putchar_fd('+', *fd);
-		ft_putnbr_fd(number, *fd);
+			ft_putchar_fd('+', fd);
+		ft_putnbr_fd(number, fd);
 		return (full_len + ft_nbrlen(number));
 	}
 	full_len += pad_this(number, flags, fd);
-	ft_putnbr_fd(number, *fd);
+	ft_putnbr_fd(number, fd);
 	return (full_len + ft_nbrlen(number));
 }
 
-int	convert_int(va_list args, int *fd, t_flags *flags)
+int	convert_int(va_list args, int fd, t_flags *flags)
 {
 	int number;
 
 	number = va_arg(args, int);
 	if (is_activated(flags))
 		return(special_convert_int(number, fd, flags));
-	ft_putnbr_fd(number, *fd);
+	ft_putnbr_fd(number, fd);
 	return (ft_nbrlen(number));
 	/*
 	if (flags->minus)
 	{
-		ft_putnbr_fd(number, *fd);
+		ft_putnbr_fd(number, fd);
 		pad_this(number, flags, fd);
 	}
 	else
 	{
 		pad_this(number, flags, fd);
-		ft_putnbr_fd(number, *fd);
+		ft_putnbr_fd(number, fd);
 	}
 	return (ft_nbrlen(number));
 	*/
 }
 
-int	convert_hex(va_list args, int *fd)
+int	convert_hex(va_list args, int fd, t_flags *flags)
 {
 	unsigned int hex;
 	int len;
 
 	hex = va_arg(args, unsigned int);
-	ft_uitoaprint_base(hex, 16, *fd);
+	ft_uitoaprint_base(hex, 16, fd);
 	return (ft_nbrlen(hex));
 }
 
@@ -146,7 +146,7 @@ static const t_converter	g_converters[] =
 	{'x', TRUE, convert_hex}
 };
 
-int	do_function(char c, int *fd, va_list args, t_flags *flags)
+int	do_function(char c, int fd, va_list args, t_flags *flags)
 {
 	int i;
 
@@ -336,7 +336,7 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 			check_flags(&fmt, flags);
 			check_field_width(&fmt, flags);
 			check_precision(&fmt, flags);
-			total_len += do_function(*fmt, &fd, args, flags);
+			total_len += do_function(*fmt, fd, args, flags);
 			flush_flags(flags);
 			fmt++;
 		}
