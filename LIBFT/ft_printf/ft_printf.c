@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/05/15 11:20:50 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/04 15:20:42 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,99 @@ int is_activated(t_flags *flags)
 	return (0);
 }
 
+int special_convert_percent(int fd, t_flags *flags)
+{
+	int full_len;
+
+	full_len = 0;
+	if (flags->minus)
+	{
+		if (flags->plus)
+			ft_putchar_fd('+', fd);
+		ft_putchar_fd('%', fd);
+		full_len += pad_this(1, flags, fd);
+		return (full_len + 1);
+	}
+	if (flags->plus)
+	{
+		if (flags->zero)
+			ft_putchar_fd('+', fd);
+		full_len += pad_this(1, flags, fd);
+		if (!flags->zero)
+			ft_putchar_fd('+', fd);
+		ft_putchar_fd('%', fd);
+		return (full_len + 1);
+	}
+	full_len += pad_this(1, flags, fd);
+	ft_putchar_fd('%', fd);
+	return (full_len + 1);
+}
+
 int	convert_percent(va_list args, int fd, t_flags *flags)
 {
+	if (is_activated(flags))
+		return(special_convert_percent(fd, flags));
 	ft_putchar_fd('%', fd);
 	return (1);
 }
 
+int special_convert_char(char c, int fd, t_flags *flags)
+{
+	int full_len;
+
+	full_len = 0;
+	if (flags->minus)
+	{
+		ft_putchar_fd(c, fd);
+		full_len += pad_this_str(1, flags, fd);
+		return (full_len + 1);
+	}
+	if (flags->plus)
+	{
+		full_len += pad_this_str(1, flags, fd);
+		ft_putchar_fd(c, fd);
+		return (full_len + 1);
+	}
+	full_len += pad_this_str(1, flags, fd);
+	ft_putchar_fd(c, fd);
+	return (full_len + 1);
+}
+
 int	convert_char(va_list args, int fd, t_flags *flags)
 {
-	ft_putchar_fd(va_arg(args, int), fd);
+	char c;
+
+	c = va_arg(args, int);
+	if (is_activated(flags))
+		return(special_convert_char(c, fd, flags));
+	ft_putchar_fd(c, fd);
 	return (1);
+}
+
+int special_convert_string(char *s, int len, int fd, t_flags *flags)
+{
+	int full_len;
+
+	full_len = 0;
+	if (flags->precision < len && flags->precision)
+		len = flags->precision;
+	if (flags->precision < 0)
+		len = ft_absolute(flags->precision);
+	if (flags->minus)
+	{
+		write(fd, s, len);
+		full_len += pad_this_str(len, flags, fd);
+		return (full_len + len);
+	}
+	if (flags->plus)
+	{
+		full_len += pad_this_str(len, flags, fd);
+		write(fd, s, len);
+		return (full_len + len);
+	}
+	full_len += pad_this_str(len, flags, fd);
+	write(fd, s, len);
+	return (full_len + len);
 }
 
 int	convert_string(va_list args, int fd, t_flags *flags)
@@ -42,8 +125,37 @@ int	convert_string(va_list args, int fd, t_flags *flags)
 
 	s = va_arg(args, char *);
 	len = ft_strlen(s);
+	if (is_activated(flags))
+		return(special_convert_string(s, len, fd, flags));
 	write(fd, s, len);
 	return (len);
+}
+
+int pad_this_str(int number, t_flags *flags, int fd)
+{
+	int nbpad;
+	int padlen;
+
+	nbpad = flags->field_width - number;
+	if (nbpad < 0)
+		nbpad = 0;
+	padlen = nbpad;
+	if (flags->zero && !flags->minus)
+	{
+		while (nbpad > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbpad--;
+		}
+		return (padlen);
+	}
+	while (nbpad > 0)
+	{
+		ft_putchar_fd(' ', fd);
+		nbpad--;
+	}
+	printf("PADLEN = %d\n", padlen);
+	return (padlen);
 }
 
 int pad_this(int number, t_flags *flags, int fd)
@@ -139,11 +251,11 @@ int	convert_hex(va_list args, int fd, t_flags *flags)
 
 static const t_converter	g_converters[] =
 {
-	{'%', FALSE, convert_percent},
-	{'c', TRUE, convert_char},
-	{'s', TRUE, convert_string},
-	{'d', TRUE, convert_int},
-	{'x', TRUE, convert_hex}
+	{'%', convert_percent},
+	{'c', convert_char},
+	{'s', convert_string},
+	{'d', convert_int},
+	{'x', convert_hex}
 };
 
 int	do_function(char c, int fd, va_list args, t_flags *flags)
@@ -264,11 +376,16 @@ void store_precision(const char **fmt, t_flags *flags)
 	i = 0;
 	ft_bzero((void *)precision, 10);
 	printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
-	while (ft_isdigit(**fmt))
+	while (ft_isdigit(**fmt) || is_flag(**fmt))
 	{
-		precision[i] = **fmt;
-		printf("[DEBUG] current precision[%d] == %c at %p for **fmt == %c\n", i, precision[i], &precision[i], **fmt);
-		i++;
+		if (is_flag(**fmt))
+			activate_flags(flags, **fmt);
+		else
+		{
+			precision[i] = **fmt;
+			printf("[DEBUG] current precision[%d] == %c at %p for **fmt == %c\n", i, precision[i], &precision[i], **fmt);
+			i++;
+		}
 		(*fmt)++;
 	}
 	flags->precision = ft_atoi(precision);
@@ -281,8 +398,8 @@ void check_precision(const char **fmt, t_flags *flags)
 	if (**fmt == '.')
 	{
 		(*fmt)++;
-		if (!ft_isdigit(**fmt))
-			return ;
+		//if (!ft_isdigit(**fmt))
+		//	return ;
 		store_precision(fmt, flags);
 	}
 	/*
@@ -371,9 +488,11 @@ int main(int argc, char *argv[])
 	{
 		int myone;
 		int realone;
-		myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		myone = ft_printf(argv[1], ft_atoi(argv[2]), argv[3]);
 		ft_putchar('\n');
-		realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		realone = printf(argv[1], ft_atoi(argv[2]), argv[3]);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);
