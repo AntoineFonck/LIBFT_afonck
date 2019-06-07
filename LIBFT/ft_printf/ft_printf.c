@@ -198,7 +198,7 @@ int pad_this_int_prec(int number, t_flags *flags, int fd)
 		nbpad = 0;
 	nbzero = flags->precision - ft_nbrlen(number);
 	padlen = nbpad + nbzero + (flags->plus);
-	if (flags->precision < flags->field_width)
+	if (flags->precision < flags->field_width)// && !flags->minus)
 	{
 		while (nbpad)
 		{
@@ -210,13 +210,21 @@ int pad_this_int_prec(int number, t_flags *flags, int fd)
 			ft_putchar_fd('0', fd);
 			nbzero--;
 		}
+		//ft_putnbr_fd(number, fd);
 	}
-	else
+	else if (flags->precision >= flags->field_width)
 	{
 		while (nbzero)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
+		}
+		if (flags->minus)
+			ft_putnbr_fd(number, fd);
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
 		}
 	}
 	return (padlen);
@@ -276,8 +284,21 @@ int special_convert_int(int number, int fd, t_flags *flags)
 		ft_putnbr_fd(number, fd);
 		return (full_len + ft_nbrlen(number));
 	}
-	full_len += pad_this_int(number, flags, fd);
-	ft_putnbr_fd(number, fd);
+	//full_len += pad_this_int(number, flags, fd);
+	//if (!flags->minus && flags->field_width >= flags->precision)
+	if (flags->minus && flags->field_width >= flags->precision)
+	{
+		printf("************************************HERE? NOT GOOD");
+		if (!flags->minus)
+			ft_putnbr_fd(number, fd);
+		full_len += pad_this_int(number, flags, fd);
+	}
+	else
+	{
+		printf("************************************HERE?");
+		full_len += pad_this_int(number, flags, fd);
+		ft_putnbr_fd(number, fd);
+	}
 	return (full_len + ft_nbrlen(number));
 }
 
@@ -539,7 +560,7 @@ void store_precision(const char **fmt, t_flags *flags)
 	printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
 	while (ft_isdigit(**fmt) || is_flag(**fmt))
 	{
-		if (is_flag(**fmt))
+		if (is_flag(**fmt) && **fmt != '0')
 			activate_flags(flags, **fmt);
 		else
 		{
