@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/07 12:00:39 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/07 16:25:51 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int pad_this(int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int pad_this_prec(int number, t_flags *flags, int fd)
+int pad_this_int_prec(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int nbzero;
@@ -228,7 +228,7 @@ int pad_this_int(int number, t_flags *flags, int fd)
 	int padlen;
 
 	if (flags->precision && flags->precision > ft_nbrlen(number))
-		return (pad_this_prec(number, flags, fd));
+		return (pad_this_int_prec(number, flags, fd));
 	nbpad = flags->field_width - ft_nbrlen(number);
 	if (flags->plus)
 		nbpad--;
@@ -305,14 +305,109 @@ int	convert_int(va_list args, int fd, t_flags *flags)
 	   */
 }
 
+int pad_this_hex_prec(int hexlen, t_flags *flags, int fd)
+{
+	int nbpad;
+	int nbzero;
+	int padlen;
+
+	nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
+	if (nbpad < 0)
+		nbpad = 0;
+	nbzero = flags->precision - hexlen;
+	padlen = nbpad + nbzero + (flags->plus) + (flags->hashtag ? 2 : 0);
+	if (flags->precision < flags->field_width)
+	{
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+		write(fd, "0x", 2);
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	else
+	{
+		write(fd, "0x", 2);
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	return (padlen);
+}
+
+int pad_this_hex(int hexlen, t_flags *flags, int fd)
+{
+	int nbpad;
+	int padlen;
+
+	if (flags->precision && flags->precision > hexlen)
+		return (pad_this_hex_prec(hexlen, flags, fd));
+	nbpad = flags->field_width - hexlen;
+	if (nbpad < 0)
+		nbpad = 0;
+	if (flags->hashtag)
+	{
+		if (flags->zero)
+			write(fd, "0x", 2);
+		//nbpad -= 2;
+	}
+	//padlen = nbpad + 2;
+	if (flags->zero && !flags->minus)
+	{
+		while (nbpad > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbpad--;
+		}
+		return (padlen);
+	}
+	while (nbpad > 0)
+	{
+		ft_putchar_fd(' ', fd);
+		nbpad--;
+	}
+	if (flags->hashtag && !flags->zero)
+		write(fd, "0x", 2);
+	printf("PADLEN = %d and HEXLEN = %d\n", padlen, hexlen);
+	return (padlen);
+}
+
+int	special_convert_hex(unsigned int hex, int fd, t_flags *flags)
+{
+	int full_len;
+	int hexlen;
+
+	full_len = 0;
+	hexlen = ft_uitoalen_base(hex, 16, fd);
+	if (flags->minus && !flags->precision)
+	{
+		ft_uitoaprint_base(hex, 16, fd);
+		full_len += pad_this_hex(hexlen, flags, fd);
+		return (full_len + hexlen);
+	}
+	full_len += pad_this_hex(hexlen, flags, fd);
+	ft_uitoaprint_base(hex, 16, fd);
+	return (full_len + hexlen);
+}
+
 int	convert_hex(va_list args, int fd, t_flags *flags)
 {
 	unsigned int hex;
 	int len;
+	int hexlen;
 
 	hex = va_arg(args, unsigned int);
-	ft_uitoaprint_base(hex, 16, fd);
-	return (ft_nbrlen(hex));
+	if (is_activated(flags))
+		return(special_convert_hex(hex, fd, flags));
+	hexlen = ft_uitoaprint_base(hex, 16, fd);
+	return (hexlen);
 }
 
 static const t_converter	g_converters[] =

@@ -6,14 +6,16 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/04 11:48:18 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/07 16:01:13 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF
 # define FT_PRINTF
 
-void	ft_uitoaprint_base(unsigned int value, int base, int fd);
+int	ft_uitoaprint_base(unsigned int value, int base, int fd);
+
+int	ft_uitoalen_base(unsigned int value, int base, int fd);
 
 typedef	struct s_flags
 {
