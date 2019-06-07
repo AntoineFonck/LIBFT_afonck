@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/04 15:20:42 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/07 12:00:39 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,30 +187,96 @@ int pad_this(int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
+int pad_this_prec(int number, t_flags *flags, int fd)
+{
+	int nbpad;
+	int nbzero;
+	int padlen;
+
+	nbpad = flags->field_width - flags->precision;
+	if (nbpad < 0)
+		nbpad = 0;
+	nbzero = flags->precision - ft_nbrlen(number);
+	padlen = nbpad + nbzero + (flags->plus);
+	if (flags->precision < flags->field_width)
+	{
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	else
+	{
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	return (padlen);
+}
+
+int pad_this_int(int number, t_flags *flags, int fd)
+{
+	int nbpad;
+	int padlen;
+
+	if (flags->precision && flags->precision > ft_nbrlen(number))
+		return (pad_this_prec(number, flags, fd));
+	nbpad = flags->field_width - ft_nbrlen(number);
+	if (flags->plus)
+		nbpad--;
+	if (nbpad < 0)
+		nbpad = 0;
+	padlen = nbpad + (flags->plus);
+	if (flags->zero && !flags->minus)
+	{
+		while (nbpad > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbpad--;
+		}
+		return (padlen);
+	}
+	while (nbpad > 0)
+	{
+		ft_putchar_fd(' ', fd);
+		nbpad--;
+	}
+	printf("PADLEN = %d\n", padlen);
+	return (padlen);
+}
+
 int special_convert_int(int number, int fd, t_flags *flags)
 {
 	int full_len;
 
 	full_len = 0;
-	if (flags->minus)
+	if (flags->minus && !flags->precision)
 	{
 		if (flags->plus)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(number, fd);
-		full_len += pad_this(number, flags, fd);
+		full_len += pad_this_int(number, flags, fd);
 		return (full_len + ft_nbrlen(number));
 	}
 	if (flags->plus)
 	{
-		if (flags->zero)
+		if (flags->zero || flags->precision)
 			ft_putchar_fd('+', fd);
-		full_len += pad_this(number, flags, fd);
-		if (!flags->zero)
+		full_len += pad_this_int(number, flags, fd);
+		if (!flags->zero && !flags->precision)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(number, fd);
 		return (full_len + ft_nbrlen(number));
 	}
-	full_len += pad_this(number, flags, fd);
+	full_len += pad_this_int(number, flags, fd);
 	ft_putnbr_fd(number, fd);
 	return (full_len + ft_nbrlen(number));
 }
@@ -225,18 +291,18 @@ int	convert_int(va_list args, int fd, t_flags *flags)
 	ft_putnbr_fd(number, fd);
 	return (ft_nbrlen(number));
 	/*
-	if (flags->minus)
-	{
-		ft_putnbr_fd(number, fd);
-		pad_this(number, flags, fd);
-	}
-	else
-	{
-		pad_this(number, flags, fd);
-		ft_putnbr_fd(number, fd);
-	}
-	return (ft_nbrlen(number));
-	*/
+	   if (flags->minus)
+	   {
+	   ft_putnbr_fd(number, fd);
+	   pad_this(number, flags, fd);
+	   }
+	   else
+	   {
+	   pad_this(number, flags, fd);
+	   ft_putnbr_fd(number, fd);
+	   }
+	   return (ft_nbrlen(number));
+	   */
 }
 
 int	convert_hex(va_list args, int fd, t_flags *flags)
@@ -348,24 +414,24 @@ void check_field_width(const char **fmt, t_flags *flags)
 		return ;
 	store_field_width(fmt, flags);
 	/*
-	char field_width[10];
-	int i;
+	   char field_width[10];
+	   int i;
 
-	i = 0;
-	printf("[DEBUG] i is at %p and field_width is at %p\n", &i, &field_width);
-	if (!ft_isdigit(**fmt))
-		return ;
-	while (ft_isdigit(**fmt))
-	{
-		field_width[i] = **fmt;
-		printf("[DEBUG] current field_width[%d] == %c at %p for **fmt == %c\n", i, field_width[i], &field_width[i], **fmt);
-		i++;
-		(*fmt)++;
-	}
-	flags->field_width = ft_atoi(field_width);
-	ft_bzero((void *)field_width, 10);
-	printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
-	*/
+	   i = 0;
+	   printf("[DEBUG] i is at %p and field_width is at %p\n", &i, &field_width);
+	   if (!ft_isdigit(**fmt))
+	   return ;
+	   while (ft_isdigit(**fmt))
+	   {
+	   field_width[i] = **fmt;
+	   printf("[DEBUG] current field_width[%d] == %c at %p for **fmt == %c\n", i, field_width[i], &field_width[i], **fmt);
+	   i++;
+	   (*fmt)++;
+	   }
+	   flags->field_width = ft_atoi(field_width);
+	   ft_bzero((void *)field_width, 10);
+	   printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
+	   */
 }
 
 void store_precision(const char **fmt, t_flags *flags)
@@ -403,27 +469,27 @@ void check_precision(const char **fmt, t_flags *flags)
 		store_precision(fmt, flags);
 	}
 	/*
-	char precision[10];
-	int i;
+	   char precision[10];
+	   int i;
 
-	i = 0;
-	printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
-	if (**fmt == '.')
-	{
-		(*fmt)++;
-		if (!ft_isdigit(**fmt))
-			return ;
-		while (ft_isdigit(**fmt))
-		{
-			precision[i] = **fmt;
-			printf("[DEBUG] current precision[%d] == %c at %p for **fmt == %c\n", i, precision[i], &precision[i], **fmt);
-			i++;
-			(*fmt)++;
-		}
-		flags->precision = ft_atoi(precision);
-		printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
-	}
-	*/
+	   i = 0;
+	   printf("[DEBUG] i is at %p and tab precision is at %p\n", &i, &precision);
+	   if (**fmt == '.')
+	   {
+	   (*fmt)++;
+	   if (!ft_isdigit(**fmt))
+	   return ;
+	   while (ft_isdigit(**fmt))
+	   {
+	   precision[i] = **fmt;
+	   printf("[DEBUG] current precision[%d] == %c at %p for **fmt == %c\n", i, precision[i], &precision[i], **fmt);
+	   i++;
+	   (*fmt)++;
+	   }
+	   flags->precision = ft_atoi(precision);
+	   printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
+	   }
+	   */
 }
 
 void flush_flags(t_flags *flags)
@@ -499,21 +565,21 @@ int main(int argc, char *argv[])
 }
 
 /*
-int main(int argc, char *argv[])
-{
-	if (argc == 2)
-	{
-		int i;
-		char test;
-		int len1;
-		int len2;
+   int main(int argc, char *argv[])
+   {
+   if (argc == 2)
+   {
+   int i;
+   char test;
+   int len1;
+   int len2;
 
-		i = 15643;
-		test = 'O';
-		len1 = ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
-		len2 = printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
-		printf("ft_printf len == %d and printf len == %d", len1, len2);
-	}
-	return (0);
-}
-*/
+   i = 15643;
+   test = 'O';
+   len1 = ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
+   len2 = printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
+   printf("ft_printf len == %d and printf len == %d", len1, len2);
+   }
+   return (0);
+   }
+   */
