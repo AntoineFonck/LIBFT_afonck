@@ -36,6 +36,8 @@ typedef struct s_converter
 
 int		pad_this(int number, t_flags *flags, int fd);
 
+int		pad_this_int(int number, t_flags *flags, int fd);
+
 int		pad_this_str(int number, t_flags *flags, int fd);
 
 #endif

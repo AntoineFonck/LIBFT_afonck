@@ -230,13 +230,40 @@ int pad_this_int_prec(int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
+int int_precision(int number, int fd, t_flags *flags)
+{
+	return (0);
+}
+
+int int_no_precision(int number, int fd, t_flags *flags)
+{
+	int len;
+
+	len = 0;
+	if (!flags->minus)
+	{
+		if (flags->plus && flags->zero)
+			ft_putchar_fd('+', fd);
+		len += pad_this_int(number, flags, fd);
+		if (flags->plus && !flags->zero)
+			ft_putchar_fd('+', fd);
+		ft_putnbr_fd(number, fd);
+	}
+	else
+	{
+		if (flags->plus)
+			ft_putchar_fd('+', fd);
+		ft_putnbr_fd(number, fd);
+		len += pad_this_int(number, flags, fd);
+	}
+	return (len);
+}
+
 int pad_this_int(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
 
-	if (flags->precision && flags->precision > ft_nbrlen(number))
-		return (pad_this_int_prec(number, flags, fd));
 	nbpad = flags->field_width - ft_nbrlen(number);
 	if (flags->plus)
 		nbpad--;
@@ -266,38 +293,21 @@ int special_convert_int(int number, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->minus && !flags->precision)
+	if (flags->field_width)
 	{
-		if (flags->plus)
-			ft_putchar_fd('+', fd);
-		ft_putnbr_fd(number, fd);
-		full_len += pad_this_int(number, flags, fd);
-		return (full_len + ft_nbrlen(number));
-	}
-	if (flags->plus)
-	{
-		if (flags->zero || flags->precision)
-			ft_putchar_fd('+', fd);
-		full_len += pad_this_int(number, flags, fd);
-		if (!flags->zero && !flags->precision)
-			ft_putchar_fd('+', fd);
-		ft_putnbr_fd(number, fd);
-		return (full_len + ft_nbrlen(number));
-	}
-	//full_len += pad_this_int(number, flags, fd);
-	//if (!flags->minus && flags->field_width >= flags->precision)
-	if (flags->minus && flags->field_width >= flags->precision)
-	{
-		printf("************************************HERE? NOT GOOD");
-		if (!flags->minus)
-			ft_putnbr_fd(number, fd);
-		full_len += pad_this_int(number, flags, fd);
+		if (flags->precision)
+			full_len += int_precision(number, fd, flags);
+		else
+			full_len += int_no_precision(number, fd, flags);
 	}
 	else
 	{
-		printf("************************************HERE?");
-		full_len += pad_this_int(number, flags, fd);
-		ft_putnbr_fd(number, fd);
+		if (flags->precision)
+		{
+			full_len += int_precision(number, fd, flags);
+		}
+		else
+			full_len += int_no_precision(number, fd, flags);
 	}
 	return (full_len + ft_nbrlen(number));
 }
