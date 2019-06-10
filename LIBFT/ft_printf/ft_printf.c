@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 10:40:03 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 11:03:27 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,11 +283,11 @@ int pad_this_int(int number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_nbrlen(number);
-	if (flags->plus && number > 0)
+	if (flags->plus && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	padlen = nbpad + (flags->plus);
+	padlen = nbpad + (number >= 0 ? flags->plus : 0);
 	if (flags->zero && !flags->minus)
 	{
 		while (nbpad > 0)
