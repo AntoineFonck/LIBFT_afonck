@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 13:38:33 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 15:32:19 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,7 +416,12 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
 	{
 		if (flags->zero)
 			write(fd, "0x", 2);
-		//nbpad -= 2;
+		nbpad -= 2;
+		if (hexlen >= flags->field_width)
+			padlen += 2;
+			// DOESNT WORK WITH %#4x 452
+		/*if (hexlen++ == flags->field_width)
+			padlen++;*/
 	}
 	//padlen = nbpad + 2;
 	if (flags->zero && !flags->minus)
@@ -470,13 +475,128 @@ int	convert_hex(va_list args, int fd, t_flags *flags)
 	return (hexlen);
 }
 
+int pad_cap_hex_prec(int hexlen, t_flags *flags, int fd)
+{
+	int nbpad;
+	int nbzero;
+	int padlen;
+
+	nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
+	if (nbpad < 0)
+		nbpad = 0;
+	nbzero = flags->precision - hexlen;
+	padlen = nbpad + nbzero/* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+	if (flags->precision < flags->field_width)
+	{
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+		if (flags->hashtag)
+			write(fd, "0X", 2);
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	else
+	{
+		if (flags->hashtag)
+			write(fd, "0X", 2);
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	return (padlen);
+}
+
+int pad_cap_hex(int hexlen, t_flags *flags, int fd)
+{
+	int nbpad;
+	int padlen;
+
+	if (flags->precision && flags->precision > hexlen)
+		return (pad_cap_hex_prec(hexlen, flags, fd));
+	nbpad = flags->field_width - hexlen;
+	padlen = 0;
+	padlen += nbpad > 0 ? nbpad : 0;
+	if (nbpad < 0)
+		nbpad = 0;
+	if (flags->hashtag)
+	{
+		if (flags->zero)
+			write(fd, "0X", 2);
+		nbpad -= 2;
+		if (hexlen >= flags->field_width)
+			padlen += 2;
+			// DOESNT WORK WITH %#4x 452
+		/*if (hexlen++ == flags->field_width)
+			padlen++;*/
+	}
+	//padlen = nbpad + 2;
+	if (flags->zero && !flags->minus)
+	{
+		while (nbpad > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbpad--;
+		}
+		return (padlen);
+	}
+	while (nbpad > 0)
+	{
+		ft_putchar_fd(' ', fd);
+		nbpad--;
+	}
+	if (flags->hashtag && !flags->zero)
+		write(fd, "0X", 2);
+	//printf("PADLEN = %d and HEXLEN = %d\n", padlen, hexlen);
+	return (padlen);
+}
+
+int	special_convert_cap_hex(unsigned int hex, int fd, t_flags *flags)
+{
+	int full_len;
+	int hexlen;
+
+	full_len = 0;
+	hexlen = ft_uitoalen_base(hex, 16, fd);
+	if (flags->minus && !flags->precision)
+	{
+		ft_uitoaprint_base_cap(hex, 16, fd);
+		full_len += pad_cap_hex(hexlen, flags, fd);
+		return (full_len + hexlen);
+	}
+	full_len += pad_cap_hex(hexlen, flags, fd);
+	ft_uitoaprint_base_cap(hex, 16, fd);
+	return (full_len + hexlen);
+}
+
+int	convert_cap_hex(va_list args, int fd, t_flags *flags)
+{
+	unsigned int hex;
+	int len;
+	int hexlen;
+
+	hex = va_arg(args, unsigned int);
+	if (is_activated(flags))
+		return(special_convert_cap_hex(hex, fd, flags));
+	hexlen = ft_uitoaprint_base(hex, 16, fd);
+	return (hexlen);
+}
+
 static const t_converter	g_converters[] =
 {
 	{'%', convert_percent},
 	{'c', convert_char},
 	{'s', convert_string},
 	{'d', convert_int},
-	{'x', convert_hex}
+	{'x', convert_hex},
+	{'X', convert_cap_hex}
 };
 
 int	do_function(char c, int fd, va_list args, t_flags *flags)

@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 12:58:46 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 15:31:25 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_PRINTF
 
 int	ft_uitoaprint_base(unsigned int value, int base, int fd);
+int	ft_uitoaprint_base_cap(unsigned int value, int base, int fd);
 
 int	ft_uitoalen_base(unsigned int value, int base, int fd);
 
