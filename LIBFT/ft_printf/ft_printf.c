@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/07 16:25:51 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/10 10:40:03 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,16 +260,16 @@ int int_no_precision(int number, int fd, t_flags *flags)
 	len = 0;
 	if (!flags->minus)
 	{
-		if (flags->plus && flags->zero)
+		if (flags->plus && flags->zero && number >= 0)
 			ft_putchar_fd('+', fd);
 		len += pad_this_int(number, flags, fd);
-		if (flags->plus && !flags->zero)
+		if (flags->plus && !flags->zero && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(number, fd);
 	}
 	else
 	{
-		if (flags->plus)
+		if (flags->plus && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(number, fd);
 		len += pad_this_int(number, flags, fd);
@@ -283,7 +283,7 @@ int pad_this_int(int number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_nbrlen(number);
-	if (flags->plus)
+	if (flags->plus && number > 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
@@ -311,22 +311,22 @@ int special_convert_int(int number, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->field_width)
-	{
+//	if (flags->field_width)
+//	{
 		if (flags->precision)
 			full_len += int_precision(number, fd, flags);
 		else
 			full_len += int_no_precision(number, fd, flags);
-	}
-	else
-	{
-		if (flags->precision)
-		{
-			full_len += int_precision(number, fd, flags);
-		}
-		else
-			full_len += int_no_precision(number, fd, flags);
-	}
+//	}
+//	else
+//	{
+	//	if (flags->precision)
+	//	{
+	//		full_len += int_precision(number, fd, flags);
+	//	}
+	//	else
+	//		full_len += int_no_precision(number, fd, flags);
+//	}
 	return (full_len + ft_nbrlen(number));
 }
 
