@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 15:32:19 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 16:48:45 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int is_activated(t_flags *flags)
 {
 	if (flags->hashtag || flags->minus || flags->plus || flags->space ||
-			flags->zero || flags->field_width || flags->precision)
+		flags->zero || flags->field_width || flags->precision)
 		return (1);
 	return (0);
 }
@@ -51,10 +51,10 @@ int special_convert_percent(int fd, t_flags *flags)
 	return (full_len + 1);
 }
 
-int	convert_percent(va_list args, int fd, t_flags *flags)
+int convert_percent(va_list args, int fd, t_flags *flags)
 {
 	if (is_activated(flags))
-		return(special_convert_percent(fd, flags));
+		return (special_convert_percent(fd, flags));
 	ft_putchar_fd('%', fd);
 	return (1);
 }
@@ -81,13 +81,13 @@ int special_convert_char(char c, int fd, t_flags *flags)
 	return (full_len + 1);
 }
 
-int	convert_char(va_list args, int fd, t_flags *flags)
+int convert_char(va_list args, int fd, t_flags *flags)
 {
 	char c;
 
 	c = va_arg(args, int);
 	if (is_activated(flags))
-		return(special_convert_char(c, fd, flags));
+		return (special_convert_char(c, fd, flags));
 	ft_putchar_fd(c, fd);
 	return (1);
 }
@@ -118,7 +118,7 @@ int special_convert_string(char *s, int len, int fd, t_flags *flags)
 	return (full_len + len);
 }
 
-int	convert_string(va_list args, int fd, t_flags *flags)
+int convert_string(va_list args, int fd, t_flags *flags)
 {
 	char *s;
 	int len;
@@ -126,7 +126,7 @@ int	convert_string(va_list args, int fd, t_flags *flags)
 	s = va_arg(args, char *);
 	len = ft_strlen(s);
 	if (is_activated(flags))
-		return(special_convert_string(s, len, fd, flags));
+		return (special_convert_string(s, len, fd, flags));
 	write(fd, s, len);
 	return (len);
 }
@@ -337,13 +337,13 @@ int special_convert_int(int number, int fd, t_flags *flags)
 	return (full_len + ft_nbrlen(number));
 }
 
-int	convert_int(va_list args, int fd, t_flags *flags)
+int convert_int(va_list args, int fd, t_flags *flags)
 {
 	int number;
 
 	number = va_arg(args, int);
 	if (is_activated(flags))
-		return(special_convert_int(number, fd, flags));
+		return (special_convert_int(number, fd, flags));
 	ft_putnbr_fd(number, fd);
 	return (ft_nbrlen(number));
 	/*
@@ -371,7 +371,7 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = flags->precision - hexlen;
-	padlen = nbpad + nbzero/* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
 	if (flags->precision < flags->field_width)
 	{
 		while (nbpad)
@@ -412,6 +412,16 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
 	padlen += nbpad > 0 ? nbpad : 0;
 	if (nbpad < 0)
 		nbpad = 0;
+	if (flags->hashtag || flags->zero)
+	{
+		if (flags->hashtag)
+			nbpad -= 2;
+		while (nbpad > 0)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+	}
 	if (flags->hashtag)
 	{
 		if (flags->zero)
@@ -419,17 +429,20 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
 		nbpad -= 2;
 		if (hexlen >= flags->field_width)
 			padlen += 2;
-			// DOESNT WORK WITH %#4x 452
+		// DOESNT WORK WITH %#4x 452
 		/*if (hexlen++ == flags->field_width)
 			padlen++;*/
 	}
 	//padlen = nbpad + 2;
 	if (flags->zero && !flags->minus)
 	{
-		while (nbpad > 0)
+		if (!flags->hashtag && !flags->zero)
 		{
-			ft_putchar_fd('0', fd);
-			nbpad--;
+			while (nbpad > 0)
+			{
+				ft_putchar_fd('0', fd);
+				nbpad--;
+			}
 		}
 		return (padlen);
 	}
@@ -444,7 +457,7 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int	special_convert_hex(unsigned int hex, int fd, t_flags *flags)
+int special_convert_hex(unsigned int hex, int fd, t_flags *flags)
 {
 	int full_len;
 	int hexlen;
@@ -462,15 +475,14 @@ int	special_convert_hex(unsigned int hex, int fd, t_flags *flags)
 	return (full_len + hexlen);
 }
 
-int	convert_hex(va_list args, int fd, t_flags *flags)
+int convert_hex(va_list args, int fd, t_flags *flags)
 {
 	unsigned int hex;
 	int len;
 	int hexlen;
-
 	hex = va_arg(args, unsigned int);
 	if (is_activated(flags))
-		return(special_convert_hex(hex, fd, flags));
+		return (special_convert_hex(hex, fd, flags));
 	hexlen = ft_uitoaprint_base(hex, 16, fd);
 	return (hexlen);
 }
@@ -485,7 +497,7 @@ int pad_cap_hex_prec(int hexlen, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = flags->precision - hexlen;
-	padlen = nbpad + nbzero/* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
 	if (flags->precision < flags->field_width)
 	{
 		while (nbpad)
@@ -533,7 +545,7 @@ int pad_cap_hex(int hexlen, t_flags *flags, int fd)
 		nbpad -= 2;
 		if (hexlen >= flags->field_width)
 			padlen += 2;
-			// DOESNT WORK WITH %#4x 452
+		// DOESNT WORK WITH %#4x 452
 		/*if (hexlen++ == flags->field_width)
 			padlen++;*/
 	}
@@ -558,7 +570,7 @@ int pad_cap_hex(int hexlen, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int	special_convert_cap_hex(unsigned int hex, int fd, t_flags *flags)
+int special_convert_cap_hex(unsigned int hex, int fd, t_flags *flags)
 {
 	int full_len;
 	int hexlen;
@@ -576,7 +588,7 @@ int	special_convert_cap_hex(unsigned int hex, int fd, t_flags *flags)
 	return (full_len + hexlen);
 }
 
-int	convert_cap_hex(va_list args, int fd, t_flags *flags)
+int convert_cap_hex(va_list args, int fd, t_flags *flags)
 {
 	unsigned int hex;
 	int len;
@@ -584,22 +596,21 @@ int	convert_cap_hex(va_list args, int fd, t_flags *flags)
 
 	hex = va_arg(args, unsigned int);
 	if (is_activated(flags))
-		return(special_convert_cap_hex(hex, fd, flags));
+		return (special_convert_cap_hex(hex, fd, flags));
 	hexlen = ft_uitoaprint_base(hex, 16, fd);
 	return (hexlen);
 }
 
-static const t_converter	g_converters[] =
-{
-	{'%', convert_percent},
-	{'c', convert_char},
-	{'s', convert_string},
-	{'d', convert_int},
-	{'x', convert_hex},
-	{'X', convert_cap_hex}
-};
+static const t_converter g_converters[] =
+	{
+		{'%', convert_percent},
+		{'c', convert_char},
+		{'s', convert_string},
+		{'d', convert_int},
+		{'x', convert_hex},
+		{'X', convert_cap_hex}};
 
-int	do_function(char c, int fd, va_list args, t_flags *flags)
+int do_function(char c, int fd, va_list args, t_flags *flags)
 {
 	int i;
 
@@ -607,7 +618,7 @@ int	do_function(char c, int fd, va_list args, t_flags *flags)
 	while (g_converters[i].format && g_converters[i].format != c)
 		i++;
 	if (g_converters[i].format == c)
-		return(g_converters[i].fun_ptr(args, fd, flags));
+		return (g_converters[i].fun_ptr(args, fd, flags));
 	return (0);
 }
 
@@ -627,7 +638,7 @@ t_flags *init_flags()
 	return (flags);
 }
 
-int  is_flag(char c)
+int is_flag(char c)
 {
 	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
 		return (1);
@@ -648,7 +659,7 @@ void activate_flags(t_flags *flags, char c)
 	else if (c == '0')
 		flags->zero = 1;
 	else
-		return ;
+		return;
 }
 
 void check_flags(const char **fmt, t_flags *flags)
@@ -686,7 +697,7 @@ void store_field_width(const char **fmt, t_flags *flags)
 void check_field_width(const char **fmt, t_flags *flags)
 {
 	if (!ft_isdigit(**fmt))
-		return ;
+		return;
 	store_field_width(fmt, flags);
 	/*
 	   char field_width[10];
