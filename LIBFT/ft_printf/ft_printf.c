@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 17:02:59 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 17:38:56 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,14 +199,15 @@ int pad_int_prec(int number, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = flags->precision - ft_nbrlen(number) + (number < 0 ? 1 : 0);
-	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);
+	printf ("%d", nbzero);
+	padlen = nbpad + (nbzero > 0 ? nbzero : 0) + (number >= 0 ? flags->plus || flags->space : 0);
 	if (flags->minus)
 	{
 		if (flags->plus && number >= 0)
 			ft_putchar_fd('+', fd);
 		if (flags->space && number >= 0 && !flags->plus)
 			ft_putchar_fd(' ', fd);
-		while (nbzero)
+		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
@@ -231,7 +232,7 @@ int pad_int_prec(int number, t_flags *flags, int fd)
 			ft_putchar_fd(' ', fd);
 		if (number < 0)
 			ft_putchar_fd('-', fd);
-		while (nbzero)
+		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
@@ -381,7 +382,7 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 		}
 		if (flags->hashtag)
 			write(fd, "0x", 2);
-		while (nbzero)
+		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
@@ -391,7 +392,7 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 	{
 		if (flags->hashtag)
 			write(fd, "0x", 2);
-		while (nbzero)
+		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
@@ -509,7 +510,7 @@ int pad_cap_hex_prec(int hexlen, t_flags *flags, int fd)
 		}
 		if (flags->hashtag)
 			write(fd, "0X", 2);
-		while (nbzero)
+		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
@@ -519,7 +520,7 @@ int pad_cap_hex_prec(int hexlen, t_flags *flags, int fd)
 	{
 		if (flags->hashtag)
 			write(fd, "0X", 2);
-		while (nbzero)
+		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
