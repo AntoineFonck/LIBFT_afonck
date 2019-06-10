@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 16:48:45 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 17:02:59 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -404,11 +404,13 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
+	int test;
 
 	if (flags->precision && flags->precision > hexlen)
 		return (pad_hex_prec(hexlen, flags, fd));
 	nbpad = flags->field_width - hexlen;
 	padlen = 0;
+	test = hexlen + 1;
 	padlen += nbpad > 0 ? nbpad : 0;
 	if (nbpad < 0)
 		nbpad = 0;
@@ -429,9 +431,9 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
 		nbpad -= 2;
 		if (hexlen >= flags->field_width)
 			padlen += 2;
-		// DOESNT WORK WITH %#4x 452
-		/*if (hexlen++ == flags->field_width)
-			padlen++;*/
+		// WORKS NOW BUT EW :D better solution? (problem: if hexlen + 1 is equal to field_width, length is being counted wrong)
+		if (test == flags->field_width)
+			padlen++;
 	}
 	//padlen = nbpad + 2;
 	if (flags->zero && !flags->minus)
