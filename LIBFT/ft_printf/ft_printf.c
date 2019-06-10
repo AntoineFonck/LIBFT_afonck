@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 17:38:56 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/10 18:07:40 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,14 +193,14 @@ int pad_int_prec(int number, t_flags *flags, int fd)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - flags->precision - (number < 0 ? 1 : 0);
+	nbpad = flags->field_width - (flags->precision >= ft_nbrlen(number) ? flags->precision : ft_nbrlen(number)) - (number < 0 ? 1 : 0);
 	if ((flags->plus || flags->space) && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = flags->precision - ft_nbrlen(number) + (number < 0 ? 1 : 0);
-	printf ("%d", nbzero);
-	padlen = nbpad + (nbzero > 0 ? nbzero : 0) + (number >= 0 ? flags->plus || flags->space : 0);
+	nbzero = (flags->precision >= ft_nbrlen(number) ? flags->precision : ft_nbrlen(number)) - ft_nbrlen(number) + (number < 0 ? 1 : 0);
+	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);
+	printf("nbpad=%d, nbzero=%d, padlen=%d\n", nbpad, nbzero, padlen);
 	if (flags->minus)
 	{
 		if (flags->plus && number >= 0)
