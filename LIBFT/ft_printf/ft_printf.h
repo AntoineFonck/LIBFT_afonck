@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/07 16:01:13 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/10 12:58:46 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef struct s_converter
 	int (*fun_ptr)(va_list, int, t_flags*);
 }	t_converter;
 
-int		pad_this(int number, t_flags *flags, int fd);
+int		pad(int number, t_flags *flags, int fd);
 
-int		pad_this_int(int number, t_flags *flags, int fd);
+int		pad_int(int number, t_flags *flags, int fd);
 
-int		pad_this_str(int number, t_flags *flags, int fd);
+int		pad_str(int number, t_flags *flags, int fd);
 
 #endif

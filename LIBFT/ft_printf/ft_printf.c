@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 12:47:29 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/10 13:38:33 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,20 @@ int special_convert_percent(int fd, t_flags *flags)
 		if (flags->plus)
 			ft_putchar_fd('+', fd);
 		ft_putchar_fd('%', fd);
-		full_len += pad_this(1, flags, fd);
+		full_len += pad(1, flags, fd);
 		return (full_len + 1);
 	}
 	if (flags->plus)
 	{
 		if (flags->zero)
 			ft_putchar_fd('+', fd);
-		full_len += pad_this(1, flags, fd);
+		full_len += pad(1, flags, fd);
 		if (!flags->zero)
 			ft_putchar_fd('+', fd);
 		ft_putchar_fd('%', fd);
 		return (full_len + 1);
 	}
-	full_len += pad_this(1, flags, fd);
+	full_len += pad(1, flags, fd);
 	ft_putchar_fd('%', fd);
 	return (full_len + 1);
 }
@@ -67,16 +67,16 @@ int special_convert_char(char c, int fd, t_flags *flags)
 	if (flags->minus)
 	{
 		ft_putchar_fd(c, fd);
-		full_len += pad_this_str(1, flags, fd);
+		full_len += pad_str(1, flags, fd);
 		return (full_len + 1);
 	}
 	if (flags->plus)
 	{
-		full_len += pad_this_str(1, flags, fd);
+		full_len += pad_str(1, flags, fd);
 		ft_putchar_fd(c, fd);
 		return (full_len + 1);
 	}
-	full_len += pad_this_str(1, flags, fd);
+	full_len += pad_str(1, flags, fd);
 	ft_putchar_fd(c, fd);
 	return (full_len + 1);
 }
@@ -104,16 +104,16 @@ int special_convert_string(char *s, int len, int fd, t_flags *flags)
 	if (flags->minus)
 	{
 		write(fd, s, len);
-		full_len += pad_this_str(len, flags, fd);
+		full_len += pad_str(len, flags, fd);
 		return (full_len + len);
 	}
 	if (flags->plus)
 	{
-		full_len += pad_this_str(len, flags, fd);
+		full_len += pad_str(len, flags, fd);
 		write(fd, s, len);
 		return (full_len + len);
 	}
-	full_len += pad_this_str(len, flags, fd);
+	full_len += pad_str(len, flags, fd);
 	write(fd, s, len);
 	return (full_len + len);
 }
@@ -131,7 +131,7 @@ int	convert_string(va_list args, int fd, t_flags *flags)
 	return (len);
 }
 
-int pad_this_str(int number, t_flags *flags, int fd)
+int pad_str(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -158,7 +158,7 @@ int pad_this_str(int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int pad_this(int number, t_flags *flags, int fd)
+int pad(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -187,7 +187,7 @@ int pad_this(int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int pad_this_int_prec(int number, t_flags *flags, int fd)
+int pad_int_prec(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int nbzero;
@@ -248,7 +248,7 @@ int int_precision(int number, int fd, t_flags *flags)
 	len = 0;
 	if (!flags->minus)
 	{
-		len += pad_this_int_prec(number, flags, fd);
+		len += pad_int_prec(number, flags, fd);
 		//if (flags->plus && flags->field_width > flags->precision && number >= 0)
 		//	ft_putchar_fd('+', fd);
 	}
@@ -258,7 +258,7 @@ int int_precision(int number, int fd, t_flags *flags)
 		//	ft_putchar_fd('+', fd);
 		if (number < 0)
 			ft_putchar_fd('-', fd);
-		len += pad_this_int_prec(number, flags, fd);
+		len += pad_int_prec(number, flags, fd);
 	}
 	return (len);
 }
@@ -274,7 +274,7 @@ int int_no_precision(int number, int fd, t_flags *flags)
 			ft_putchar_fd('+', fd);
 		if (number < 0)
 			ft_putchar_fd('-', fd);
-		len += pad_this_int(number, flags, fd);
+		len += pad_int(number, flags, fd);
 		if (flags->plus && !flags->zero && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(ft_absolute(number), fd);
@@ -286,12 +286,12 @@ int int_no_precision(int number, int fd, t_flags *flags)
 		else if (flags->space && number >= 0)
 			ft_putchar_fd(' ', fd);
 		ft_putnbr_fd(number, fd);
-		len += pad_this_int(number, flags, fd);
+		len += pad_int(number, flags, fd);
 	}
 	return (len);
 }
 
-int pad_this_int(int number, t_flags *flags, int fd)
+int pad_int(int number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -350,18 +350,18 @@ int	convert_int(va_list args, int fd, t_flags *flags)
 	   if (flags->minus)
 	   {
 	   ft_putnbr_fd(number, fd);
-	   pad_this(number, flags, fd);
+	   pad(number, flags, fd);
 	   }
 	   else
 	   {
-	   pad_this(number, flags, fd);
+	   pad(number, flags, fd);
 	   ft_putnbr_fd(number, fd);
 	   }
 	   return (ft_nbrlen(number));
 	   */
 }
 
-int pad_this_hex_prec(int hexlen, t_flags *flags, int fd)
+int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 {
 	int nbpad;
 	int nbzero;
@@ -371,7 +371,7 @@ int pad_this_hex_prec(int hexlen, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = flags->precision - hexlen;
-	padlen = nbpad + nbzero + (flags->plus) + (flags->hashtag ? 2 : 0);
+	padlen = nbpad + nbzero/* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
 	if (flags->precision < flags->field_width)
 	{
 		while (nbpad)
@@ -379,7 +379,8 @@ int pad_this_hex_prec(int hexlen, t_flags *flags, int fd)
 			ft_putchar_fd(' ', fd);
 			nbpad--;
 		}
-		write(fd, "0x", 2);
+		if (flags->hashtag)
+			write(fd, "0x", 2);
 		while (nbzero)
 		{
 			ft_putchar_fd('0', fd);
@@ -388,7 +389,8 @@ int pad_this_hex_prec(int hexlen, t_flags *flags, int fd)
 	}
 	else
 	{
-		write(fd, "0x", 2);
+		if (flags->hashtag)
+			write(fd, "0x", 2);
 		while (nbzero)
 		{
 			ft_putchar_fd('0', fd);
@@ -398,14 +400,16 @@ int pad_this_hex_prec(int hexlen, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int pad_this_hex(int hexlen, t_flags *flags, int fd)
+int pad_hex(int hexlen, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
 
 	if (flags->precision && flags->precision > hexlen)
-		return (pad_this_hex_prec(hexlen, flags, fd));
+		return (pad_hex_prec(hexlen, flags, fd));
 	nbpad = flags->field_width - hexlen;
+	padlen = 0;
+	padlen += nbpad > 0 ? nbpad : 0;
 	if (nbpad < 0)
 		nbpad = 0;
 	if (flags->hashtag)
@@ -445,10 +449,10 @@ int	special_convert_hex(unsigned int hex, int fd, t_flags *flags)
 	if (flags->minus && !flags->precision)
 	{
 		ft_uitoaprint_base(hex, 16, fd);
-		full_len += pad_this_hex(hexlen, flags, fd);
+		full_len += pad_hex(hexlen, flags, fd);
 		return (full_len + hexlen);
 	}
-	full_len += pad_this_hex(hexlen, flags, fd);
+	full_len += pad_hex(hexlen, flags, fd);
 	ft_uitoaprint_base(hex, 16, fd);
 	return (full_len + hexlen);
 }
