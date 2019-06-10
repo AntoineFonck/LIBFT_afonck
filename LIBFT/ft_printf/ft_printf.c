@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 11:48:10 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/10 12:47:29 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,38 +193,50 @@ int pad_this_int_prec(int number, t_flags *flags, int fd)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - flags->precision;
+	nbpad = flags->field_width - flags->precision - (number < 0 ? 1 : 0);
+	if ((flags->plus || flags->space) && number >= 0)
+		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = flags->precision - ft_nbrlen(number);
-	padlen = nbpad + nbzero + (flags->plus);
-	if (flags->precision < flags->field_width) 
+	nbzero = flags->precision - ft_nbrlen(number) + (number < 0 ? 1 : 0);
+	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);
+	if (flags->minus)
 	{
-		while (nbpad)
-		{
+		if (flags->plus && number >= 0)
+			ft_putchar_fd('+', fd);
+		if (flags->space && number >= 0 && !flags->plus)
 			ft_putchar_fd(' ', fd);
-			nbpad--;
-		}
 		while (nbzero)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
+		}
+		ft_putnbr_fd(ft_absolute(number), fd);
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
 		}
 	}
-	else if (flags->precision >= flags->field_width)
+	else if (!flags->minus)
 	{
-		while (nbzero)
-		{
-			ft_putchar_fd('0', fd);
-			nbzero--;
-		}
-		if (flags->minus)
-			ft_putnbr_fd(number, fd);
 		while (nbpad)
 		{
 			ft_putchar_fd(' ', fd);
 			nbpad--;
 		}
+		if (flags->plus && number >= 0)
+			ft_putchar_fd('+', fd);
+		if (flags->space && number >= 0 && !flags->plus)
+			ft_putchar_fd(' ', fd);
+		if (number < 0)
+			ft_putchar_fd('-', fd);
+		while (nbzero)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+		ft_putnbr_fd(ft_absolute(number), fd);
 	}
 	return (padlen);
 }
@@ -236,18 +248,16 @@ int int_precision(int number, int fd, t_flags *flags)
 	len = 0;
 	if (!flags->minus)
 	{
-		if (flags->plus && number >= 0)
-			ft_putchar_fd('+', fd);
 		len += pad_this_int_prec(number, flags, fd);
 		//if (flags->plus && flags->field_width > flags->precision && number >= 0)
 		//	ft_putchar_fd('+', fd);
-		ft_putnbr_fd(number, fd);
 	}
 	else
 	{
-		if (flags->plus && number > 0)
-			ft_putchar_fd('+', fd);
-		ft_putnbr_fd(number, fd);
+		//if (flags->plus && number > 0)
+		//	ft_putchar_fd('+', fd);
+		if (number < 0)
+			ft_putchar_fd('-', fd);
 		len += pad_this_int_prec(number, flags, fd);
 	}
 	return (len);
