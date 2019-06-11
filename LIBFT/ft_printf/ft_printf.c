@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 13:39:02 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/11 14:35:50 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -507,6 +507,13 @@ void flush_flags(t_flags *flags)
 	flags->precision = 0;
 }
 
+void check_all(const char **fmt, t_flags *flags)
+{
+	check_flags(fmt, flags);
+	check_field_width(fmt, flags);
+	check_precision(fmt, flags);
+}
+
 int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 {
 	int tmp_int;
@@ -520,9 +527,10 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 		if (*fmt == '%')
 		{
 			fmt++;
-			check_flags(&fmt, flags);
-			check_field_width(&fmt, flags);
-			check_precision(&fmt, flags);
+			//check_flags(&fmt, flags);
+			//check_field_width(&fmt, flags);
+			//check_precision(&fmt, flags);
+			check_all(&fmt, flags);
 			total_len += do_function(*fmt, fd, args, flags);
 			flush_flags(flags);
 			fmt++;
