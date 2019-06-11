@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 14:35:50 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/11 16:07:00 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -442,17 +442,17 @@ void store_field_width(const char **fmt, t_flags *flags)
 	while (ft_isdigit(**fmt) && i < 10)
 	{
 		field_width[i] = **fmt;
-		printf("[DEBUG] current field_width[%d] == %c at %p for **fmt == %c\n", i, field_width[i], &field_width[i], **fmt);
+		//printf("[DEBUG] current field_width[%d] == %c at %p for **fmt == %c\n", i, field_width[i], &field_width[i], **fmt);
 		i++;
 		(*fmt)++;
 	}
 	while (ft_isdigit(**fmt))
 		(*fmt)++;
-	printf("[HEEEEERE] %d\n", ft_atoi(field_width));
+	//printf("[HEEEEERE] %d\n", ft_atoi(field_width));
 	//flags->field_width = ft_atoi(field_width);
 	flags->field_width = (ft_atoi(field_width) > 0 ? ft_atoi(field_width) : 0);
 	ft_bzero((void *)field_width, 10);
-	printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
+	//printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
 }
 
 void check_field_width(const char **fmt, t_flags *flags)
@@ -482,7 +482,7 @@ void store_precision(const char **fmt, t_flags *flags)
 	//flags->precision = ft_atoi(precision);
 	flags->precision = (ft_atoi(precision) > 0 ? ft_atoi(precision) : 0);
 	ft_bzero((void *)precision, 10);
-	printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
+	//printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
 }
 
 void check_precision(const char **fmt, t_flags *flags)
