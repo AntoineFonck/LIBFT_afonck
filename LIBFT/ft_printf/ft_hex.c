@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/11 11:26:48 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/11 11:41:20 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
 	if (flags->precision < flags->field_width)
 	{
-		while (nbpad)
-		{
-			ft_putchar_fd(' ', fd);
-			nbpad--;
-		}
 		if (flags->hashtag)
 			write(fd, "0x", 2);
 		while (nbzero > 0)
@@ -42,6 +37,11 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 			nbzero--;
 		}
 		ft_uitoaprint_base(hex, 16, fd, 'x');
+        while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
 	}
 	else
 	{
@@ -53,47 +53,6 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 			nbzero--;
 		}
 		ft_uitoaprint_base(hex, 16, fd, 'x');
-	}
-	return (padlen);
-}
-
-int pad_hex_prec(int hexlen, t_flags *flags, int fd)
-{
-	int nbpad;
-	int nbzero;
-	int padlen;
-
-	nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
-	//printf("nbpad negative? %d", nbpad);
-	if (nbpad < 0)
-		nbpad = 0;
-	nbzero = flags->precision - hexlen;
-	//printf("nbzero negative? %d", nbzero);
-	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
-	if (flags->precision < flags->field_width)
-	{
-		while (nbpad)
-		{
-			ft_putchar_fd(' ', fd);
-			nbpad--;
-		}
-		if (flags->hashtag)
-			write(fd, "0x", 2);
-		while (nbzero > 0)
-		{
-			ft_putchar_fd('0', fd);
-			nbzero--;
-		}
-	}
-	else
-	{
-		if (flags->hashtag)
-			write(fd, "0x", 2);
-		while (nbzero > 0)
-		{
-			ft_putchar_fd('0', fd);
-			nbzero--;
-		}
 	}
 	return (padlen);
 }
@@ -145,6 +104,47 @@ int pad_hex_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 		nbpad--;
 	}
 	//printf("PADLEN = %d and HEXLEN = %d\n", padlen, hexlen);
+	return (padlen);
+}
+
+int pad_hex_prec(int hexlen, t_flags *flags, int fd)
+{
+	int nbpad;
+	int nbzero;
+	int padlen;
+
+	nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
+	//printf("nbpad negative? %d", nbpad);
+	if (nbpad < 0)
+		nbpad = 0;
+	nbzero = flags->precision - hexlen;
+	//printf("nbzero negative? %d", nbzero);
+	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+	if (flags->precision < flags->field_width)
+	{
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+		if (flags->hashtag)
+			write(fd, "0x", 2);
+		while (nbzero > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
+	else
+	{
+		if (flags->hashtag)
+			write(fd, "0x", 2);
+		while (nbzero > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+	}
 	return (padlen);
 }
 
