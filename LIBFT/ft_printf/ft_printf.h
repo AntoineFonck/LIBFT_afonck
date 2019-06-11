@@ -6,12 +6,15 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 11:32:35 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/11 11:37:40 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF
 # define FT_PRINTF
+
+#include <stdarg.h>
+#include <stdio.h>
 
 int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter);
 
@@ -43,5 +46,11 @@ int		pad(int number, t_flags *flags, int fd);
 int		pad_int(int number, t_flags *flags, int fd);
 
 int		pad_str(int number, t_flags *flags, int fd);
+
+int is_activated(t_flags *flags);
+
+int convert_cap_hex(va_list args, int fd, t_flags *flags);
+
+int convert_hex(va_list args, int fd, t_flags *flags);
 
 #endif
