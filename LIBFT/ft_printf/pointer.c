@@ -8,12 +8,10 @@ int pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
     int padlen;
 
     nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
-    //printf("nbpad negative? %d", nbpad);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
     padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
-    //printf("nbpad=%d\n", nbpad);
     write(fd, "0x", 2);
     while (nbzero > 0)
     {
@@ -41,9 +39,7 @@ int pad_pointer_prec(int hexlen, t_flags *flags, int fd)
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-    // DOESN'T WORK YET FOR %#-09.02x 432333
-    //printf("nbzero negative? %d\n", nbzero); // COUNTING WRONG WHEN "hi %-6.1x %c hi" "1333335" "l" | cat -e
-    padlen = nbpad + nbzero + /*(flags->field_width < flags->precision ? 2 : 0)*//* + (flags->plus)*/ + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
     if (flags->precision < flags->field_width)
     {
         while (nbpad)
@@ -51,8 +47,7 @@ int pad_pointer_prec(int hexlen, t_flags *flags, int fd)
             ft_putchar_fd(' ', fd);
             nbpad--;
         }
-        if (flags->hashtag)
-            write(fd, "0x", 2);
+        write(fd, "0x", 2);
         while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
@@ -102,7 +97,6 @@ int pad_pointer(int hexlen, t_flags *flags, int fd)
         nbpad -= 2;
         if (hexlen >= flags->field_width)
             padlen += 2;
-        // WORKS NOW BUT EW :D better solution? (problem: if hexlen + 1 is equal to field_width, length is being counted wrong)
         if (test == flags->field_width)
             padlen++;
     }
@@ -110,7 +104,6 @@ int pad_pointer(int hexlen, t_flags *flags, int fd)
     
     if (flags->zero)
     {
-        //printf("are we here %d", nbpad);
         if (flags->hashtag)
         {
             while (nbpad > 0)
@@ -128,7 +121,6 @@ int pad_pointer(int hexlen, t_flags *flags, int fd)
     }
     if (flags->hashtag && !flags->zero)
         write(fd, "0x", 2);
-    //printf("PADLEN = %d and HEXLEN = %d\n", padlen, hexlen);
     return (padlen);
 }
 
@@ -157,11 +149,9 @@ int convert_pointer(va_list args, int fd, t_flags *flags)
     int len;
     int hexlen;
 
-    //flags->hashtag = 1;
     hex = va_arg(args, uintptr_t);
     if (is_activated(flags))
         return (special_convert_pointer(hex, fd, flags));
-    printf("uintptr_t = %lu\n", sizeof(uintptr_t));
     write(fd, "0x", 2);
     hexlen = ft_uintptrtoaprint_base(hex, 16, fd);
     return (hexlen + 2);
