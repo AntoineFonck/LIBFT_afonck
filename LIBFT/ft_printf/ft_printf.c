@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 10:54:53 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/11 11:34:19 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,36 +207,48 @@ int pad_int_prec(int number, t_flags *flags, int fd)
 			ft_putchar_fd('+', fd);
 		if (flags->space && number >= 0 && !flags->plus)
 			ft_putchar_fd(' ', fd);
+		pad_zero(nbzero, fd);
+		/*
 		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
 		}
+		*/
 		ft_putnbr_fd(ft_absolute(number), fd);
+		pad_space(nbpad, fd);
+		/*
 		while (nbpad)
 		{
 			ft_putchar_fd(' ', fd);
 			nbpad--;
 		}
+		*/
 	}
 	else if (!flags->minus)
 	{
+		/*
 		while (nbpad)
 		{
 			ft_putchar_fd(' ', fd);
 			nbpad--;
 		}
+		*/
+		pad_space(nbpad, fd);
 		if (flags->plus && number >= 0)
 			ft_putchar_fd('+', fd);
 		if (flags->space && number >= 0 && !flags->plus)
 			ft_putchar_fd(' ', fd);
 		if (number < 0)
 			ft_putchar_fd('-', fd);
+		pad_zero(nbzero, fd);
+		/*
 		while (nbzero > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbzero--;
 		}
+		*/
 		ft_putnbr_fd(ft_absolute(number), fd);
 	}
 	return (padlen);
@@ -390,7 +402,7 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 			ft_putchar_fd('0', fd);
 			nbzero--;
 		}
-		ft_uitoaprint_base(hex, 16, fd);
+		ft_uitoaprint_base(hex, 16, fd, 'x');
 	}
 	else
 	{
@@ -401,7 +413,7 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 			ft_putchar_fd('0', fd);
 			nbzero--;
 		}
-		ft_uitoaprint_base(hex, 16, fd);
+		ft_uitoaprint_base(hex, 16, fd, 'x');
 	}
 	return (padlen);
 }
@@ -486,7 +498,7 @@ int pad_hex_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
 	if (flags->hashtag && !flags->zero)
 	{
 		write(fd, "0x", 2);
-		ft_uitoaprint_base(hex, 16, fd);
+		ft_uitoaprint_base(hex, 16, fd, 'x');
 	}
 	while (nbpad > 0)
 	{

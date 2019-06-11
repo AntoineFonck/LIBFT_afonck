@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 10:45:50 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/11 11:32:35 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter);
 
 int	ft_uitoalen_base(unsigned int value, int base, int fd);
+
+void pad_zero(int nbzero, int fd);
+
+void pad_space(int nbpad, int fd);
 
 typedef	struct s_flags
 {
