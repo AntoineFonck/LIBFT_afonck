@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/11 12:47:06 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/11 15:13:02 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,15 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
     int nbzero;
     int padlen;
 
-    //nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
-    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen)/*- (flags->field_width > flags->precision ? 2 : 0)*/;
-    //printf("nbpad negative? %d", nbpad);
+    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
+    printf("nbpad negative? %d", nbpad);
     if (nbpad < 0)
         nbpad = 0;
-    nbzero = flags->precision - hexlen;
+    nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
     // DOESN'T WORK YET FOR %#-09.02x 432333
-    //printf("nbzero negative? %d", nbzero); // COUNTING WRONG WHEN "hi %-6.1x %c hi" "1333335" "l" | cat -e
-    padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 2 : 0);
-
+    printf("nbzero negative? %d\n", nbzero); // COUNTING WRONG WHEN "hi %-6.1x %c hi" "1333335" "l" | cat -e
+    padlen = nbpad + nbzero + /*(flags->field_width < flags->precision ? 2 : 0)*//* + (flags->plus)*/ + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    printf("nbpad=%d\n", nbpad);
     if (flags->hashtag)
         write(fd, "0x", 2);
     while (nbzero > 0)
@@ -62,20 +61,12 @@ int pad_hex_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
     padlen += nbpad > 0 ? nbpad : 0;
     if (nbpad < 0)
         nbpad = 0;
-    /*if (flags->hashtag || flags->zero)
-	{
-		if (flags->hashtag)
-			nbpad -= 2;
-		while (nbpad > 0)
-		{
-			ft_putchar_fd(' ', fd);
-			nbpad--;
-		}
-	}*/
     if (flags->hashtag)
     {
         if (flags->zero)
+        {
             write(fd, "0x", 2);
+        }
         nbpad -= 2;
         if (hexlen >= flags->field_width)
             padlen += 2;
@@ -104,13 +95,22 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd)
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
+    //nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
     //printf("nbpad negative? %d", nbpad);
+   // if (nbpad < 0)
+    //    nbpad = 0;
+   // nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
+    //printf("nbzero negative? %d", nbzero);
+   // padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
+    printf("nbpad negative? **************%d", nbpad);
     if (nbpad < 0)
         nbpad = 0;
-    nbzero = flags->precision - hexlen;
-    //printf("nbzero negative? %d", nbzero);
-    padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+    nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
+    // DOESN'T WORK YET FOR %#-09.02x 432333
+    printf("nbzero negative? %d\n", nbzero); // COUNTING WRONG WHEN "hi %-6.1x %c hi" "1333335" "l" | cat -e
+    padlen = nbpad + nbzero + /*(flags->field_width < flags->precision ? 2 : 0)*//* + (flags->plus)*/ + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    printf("nbpad=%d\n", nbpad);
     if (flags->precision < flags->field_width)
     {
         while (nbpad)
@@ -145,7 +145,7 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
     int padlen;
     int test;
 
-    if (flags->precision && flags->precision > hexlen)
+    if (flags->precision)
         return (pad_hex_prec(hexlen, flags, fd));
     nbpad = flags->field_width - hexlen;
     padlen = 0;
@@ -153,7 +153,7 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
     padlen += nbpad > 0 ? nbpad : 0;
     if (nbpad < 0)
         nbpad = 0;
-    if (flags->hashtag || flags->zero)
+    if (flags->hashtag && !flags->zero)
     {
         if (flags->hashtag)
             nbpad -= 2;
@@ -175,9 +175,11 @@ int pad_hex(int hexlen, t_flags *flags, int fd)
             padlen++;
     }
     //padlen = nbpad + 2;
-    if (flags->zero && !flags->minus)
+    
+    if (flags->zero)
     {
-        if (!flags->hashtag && !flags->zero)
+        //printf("are we here %d", nbpad);
+        if (flags->hashtag)
         {
             while (nbpad > 0)
             {
@@ -332,9 +334,9 @@ int special_convert_cap_hex(unsigned int hex, int fd, t_flags *flags)
 
 int convert_cap_hex(va_list args, int fd, t_flags *flags)
 {
-    unsigned int hex;
-    int len;
-    int hexlen;
+    unsigned int    hex;
+    int             len;
+    int             hexlen;
 
     hex = va_arg(args, unsigned int);
     if (is_activated(flags))
