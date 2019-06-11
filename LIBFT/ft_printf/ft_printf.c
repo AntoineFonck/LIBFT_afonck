@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 10:53:05 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/11 10:54:53 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -566,12 +566,12 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags)
 	if (flags->minus /*&& !flags->precision*/)
 	{
 		if (!flags->precision && !flags->hashtag)
-			ft_uitoaprint_base(hex, 16, fd);
+			ft_uitoaprint_base(hex, 16, fd, 'x');
 		full_len += pad_hex_min(hexlen, flags, fd, hex);
 		return (full_len + hexlen);
 	}
 	full_len += pad_hex(hexlen, flags, fd);
-	ft_uitoaprint_base(hex, 16, fd);
+	ft_uitoaprint_base(hex, 16, fd, 'x');
 	return (full_len + hexlen);
 }
 
@@ -583,7 +583,7 @@ int convert_hex(va_list args, int fd, t_flags *flags)
 	hex = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_hex(hex, fd, flags));
-	hexlen = ft_uitoaprint_base(hex, 16, fd);
+	hexlen = ft_uitoaprint_base(hex, 16, fd, 'x');
 	return (hexlen);
 }
 
@@ -679,12 +679,12 @@ int special_convert_cap_hex(unsigned int hex, int fd, t_flags *flags)
 	hexlen = ft_uitoalen_base(hex, 16, fd);
 	if (flags->minus && !flags->precision)
 	{
-		ft_uitoaprint_base_cap(hex, 16, fd);
+		ft_uitoaprint_base(hex, 16, fd, 'X');
 		full_len += pad_cap_hex(hexlen, flags, fd);
 		return (full_len + hexlen);
 	}
 	full_len += pad_cap_hex(hexlen, flags, fd);
-	ft_uitoaprint_base_cap(hex, 16, fd);
+	ft_uitoaprint_base(hex, 16, fd, 'X');
 	return (full_len + hexlen);
 }
 
@@ -697,7 +697,7 @@ int convert_cap_hex(va_list args, int fd, t_flags *flags)
 	hex = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_cap_hex(hex, fd, flags));
-	hexlen = ft_uitoaprint_base(hex, 16, fd);
+	hexlen = ft_uitoaprint_base(hex, 16, fd, 'X');
 	return (hexlen);
 }
 
@@ -941,10 +941,10 @@ int main(int argc, char *argv[])
 		int myone;
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		myone = ft_printf(argv[1], ft_atoi(argv[2]), argv[3]);
+		myone = ft_printf(argv[1], ft_atoi(argv[2]), argv[3][0]);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		realone = printf(argv[1], ft_atoi(argv[2]), argv[3]);
+		realone = printf(argv[1], ft_atoi(argv[2]), argv[3][0]);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);

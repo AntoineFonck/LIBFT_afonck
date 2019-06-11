@@ -6,15 +6,14 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 15:31:25 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/11 10:45:50 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF
 # define FT_PRINTF
 
-int	ft_uitoaprint_base(unsigned int value, int base, int fd);
-int	ft_uitoaprint_base_cap(unsigned int value, int base, int fd);
+int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter);
 
 int	ft_uitoalen_base(unsigned int value, int base, int fd);
 
