@@ -366,7 +366,9 @@ static const t_converter g_converters[] =
 		{'d', convert_int},
 		{'i', convert_int},
 		{'x', convert_hex},
-		{'X', convert_cap_hex}};
+		{'X', convert_cap_hex},
+		{'p', convert_pointer}
+	};
 
 int do_function(char c, int fd, va_list args, t_flags *flags)
 {
@@ -564,13 +566,16 @@ int main(int argc, char *argv[])
 {
 	if (argc == 4)
 	{
+		char *test;
 		int myone;
+		char hi = 'h';
+		test = &hi;
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		myone = ft_printf(argv[1], ft_atoi(argv[2]), argv[3][0]);
+		myone = ft_printf(argv[1], ft_atoi(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		realone = printf(argv[1], ft_atoi(argv[2]), argv[3][0]);
+		realone = printf(argv[1], ft_atoi(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);

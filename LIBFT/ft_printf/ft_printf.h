@@ -20,6 +20,10 @@ int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter);
 
 int	ft_uitoalen_base(unsigned int value, int base, int fd);
 
+int     ft_uintptrtoaprint_base(uintptr_t value, int base, int fd);
+
+int     ft_uintptrtoalen_base(uintptr_t value, int base, int fd);
+
 void pad_zero(int nbzero, int fd);
 
 void pad_space(int nbpad, int fd);
@@ -52,5 +56,7 @@ int is_activated(t_flags *flags);
 int convert_cap_hex(va_list args, int fd, t_flags *flags);
 
 int convert_hex(va_list args, int fd, t_flags *flags);
+
+int convert_pointer(va_list args, int fd, t_flags *flags);
 
 #endif
