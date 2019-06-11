@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/10 18:07:40 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/11 10:43:23 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,6 +362,49 @@ int convert_int(va_list args, int fd, t_flags *flags)
 	   */
 }
 
+int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
+{
+	int nbpad;
+	int nbzero;
+	int padlen;
+
+	nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
+	printf("nbpad negative? %d", nbpad);
+	if (nbpad < 0)
+		nbpad = 0;
+	nbzero = flags->precision - hexlen;
+	printf("nbzero negative? %d", nbzero); // COUNTING WRONG WHEN %-01.1x and "432333"
+	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
+	if (flags->precision < flags->field_width)
+	{
+		while (nbpad)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+		if (flags->hashtag)
+			write(fd, "0x", 2);
+		while (nbzero > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+		ft_uitoaprint_base(hex, 16, fd);
+	}
+	else
+	{
+		if (flags->hashtag)
+			write(fd, "0x", 2);
+		while (nbzero > 0)
+		{
+			ft_putchar_fd('0', fd);
+			nbzero--;
+		}
+		ft_uitoaprint_base(hex, 16, fd);
+	}
+	return (padlen);
+}
+
 int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -369,9 +412,11 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - flags->precision - (flags->hashtag ? 2 : 0);
+	printf("nbpad negative? %d", nbpad);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = flags->precision - hexlen;
+	printf("nbzero negative? %d", nbzero);
 	padlen = nbpad + nbzero /* + (flags->plus)*/ + (flags->hashtag ? 2 : 0);
 	if (flags->precision < flags->field_width)
 	{
@@ -398,6 +443,56 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd)
 			nbzero--;
 		}
 	}
+	return (padlen);
+}
+
+int pad_hex_min(int hexlen, t_flags *flags, int fd, unsigned int hex)
+{
+	int nbpad;
+	int padlen;
+	int test;
+
+	if (flags->precision)
+		return (pad_hex_prec_min(hexlen, flags, fd, hex));
+	nbpad = flags->field_width - hexlen;
+	padlen = 0;
+	test = hexlen + 1;
+	padlen += nbpad > 0 ? nbpad : 0;
+	if (nbpad < 0)
+		nbpad = 0;
+	/*if (flags->hashtag || flags->zero)
+	{
+		if (flags->hashtag)
+			nbpad -= 2;
+		while (nbpad > 0)
+		{
+			ft_putchar_fd(' ', fd);
+			nbpad--;
+		}
+	}*/
+	if (flags->hashtag)
+	{
+		if (flags->zero)
+			write(fd, "0x", 2);
+		nbpad -= 2;
+		if (hexlen >= flags->field_width)
+			padlen += 2;
+		// WORKS NOW BUT EW :D better solution? (problem: if hexlen + 1 is equal to field_width, length is being counted wrong)
+		if (test == flags->field_width)
+			padlen++;
+	}
+	//padlen = nbpad + 2;
+	if (flags->hashtag && !flags->zero)
+	{
+		write(fd, "0x", 2);
+		ft_uitoaprint_base(hex, 16, fd);
+	}
+	while (nbpad > 0)
+	{
+		ft_putchar_fd(' ', fd);
+		nbpad--;
+	}
+	//printf("PADLEN = %d and HEXLEN = %d\n", padlen, hexlen);
 	return (padlen);
 }
 
@@ -467,10 +562,11 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags)
 
 	full_len = 0;
 	hexlen = ft_uitoalen_base(hex, 16, fd);
-	if (flags->minus && !flags->precision)
+	if (flags->minus /*&& !flags->precision*/)
 	{
-		ft_uitoaprint_base(hex, 16, fd);
-		full_len += pad_hex(hexlen, flags, fd);
+		if (!flags->precision && !flags->hashtag)
+			ft_uitoaprint_base(hex, 16, fd);
+		full_len += pad_hex_min(hexlen, flags, fd, hex);
 		return (full_len + hexlen);
 	}
 	full_len += pad_hex(hexlen, flags, fd);
