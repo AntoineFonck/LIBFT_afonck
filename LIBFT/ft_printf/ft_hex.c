@@ -6,7 +6,7 @@
 /*   By: Stina <Stina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/12 14:06:57 by Stina            ###   ########.fr       */
+/*   Updated: 2019/06/12 14:17:04 by Stina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ int pad_hex(int hexlen, t_flags *flags, int fd, char letter)
              letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
     while (nbpad > 0)
     {
-        ft_putchar_fd(' ', fd);
+        if (flags->zero)
+            ft_putchar_fd('0', fd);
+        else
+            ft_putchar_fd(' ', fd);
         nbpad--;
     }
     if (flags->hashtag && !flags->zero)
