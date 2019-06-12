@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_hex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Stina <Stina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/12 14:17:04 by Stina            ###   ########.fr       */
+/*   Updated: 2019/06/12 18:19:20 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,6 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags, char letter)
     hexlen = ft_uitoalen_base(hex, 16, fd);
     if (flags->minus)
     {
-        //if (!flags->precision /*  && !flags->hashtag*/)
-          //  ft_uitoaprint_base(hex, 16, fd, letter);
         full_len += pad_hex_prec_min(hexlen, flags, fd, hex, letter);
         return (full_len + hexlen);
     }
