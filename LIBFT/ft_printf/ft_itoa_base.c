@@ -20,7 +20,7 @@ int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter)
 	int     num;
 	int	    ascii_offset;
 
-	ptr = &buf[50];
+	ptr = &buf[49];
 	*ptr = '\0';
 	num = value;
 	//if (value < 0 && base == 10)
@@ -49,7 +49,7 @@ int	ft_uitoalen_base(unsigned int value, int base, int fd)
 	int     num;
 	int	    ascii_offset;
 
-	ptr = &buf[50];
+	ptr = &buf[49];
 	*ptr = '\0';
 	num = value;
 	//if (value < 0 && base == 10)

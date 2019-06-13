@@ -3,16 +3,14 @@
 
 int	ft_uintptrtoaprint_base(uintptr_t value, int base, int fd)
 {
-	char	buf[50];
+	char	buf[(sizeof(uintptr_t) * 2) + 1];
 	char    *ptr;
 	int     num;
 	int	    ascii_offset;
 
-	ptr = &buf[50];
+	ptr = &buf[(sizeof(uintptr_t) * 2)];
 	*ptr = '\0';
 	num = value;
-	//if (value < 0 && base == 10)
-	//  value *= -1;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)
@@ -23,25 +21,20 @@ int	ft_uintptrtoaprint_base(uintptr_t value, int base, int fd)
 		*--ptr = '0' + ((value % base) + ascii_offset);
 		value /= base;
 	}
-	//if (num < 0 && base == 10)
-	//  *--ptr = '-';
-	//return (ptr);
 	write(fd, ptr, ft_strlen(ptr));
 	return (ft_strlen(ptr));
 }
 
 int	ft_uintptrtoalen_base(uintptr_t value, int base, int fd)
 {
-	char	buf[50];
+	char	buf[(sizeof(uintptr_t) * 2) + 1]; // 8 bytes * 2 (2 char per byte ex a7)
 	char    *ptr;
 	int     num;
 	int	    ascii_offset;
 
-	ptr = &buf[50];
+	ptr = &buf[(sizeof(uintptr_t) * 2)];
 	*ptr = '\0';
 	num = value;
-	//if (value < 0 && base == 10)
-	//  value *= -1;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)
@@ -52,8 +45,5 @@ int	ft_uintptrtoalen_base(uintptr_t value, int base, int fd)
 		*--ptr = '0' + ((value % base) + ascii_offset);
 		value /= base;
 	}
-	//if (num < 0 && base == 10)
-	//  *--ptr = '-';
-	//return (ptr);
 	return (ft_strlen(ptr));
 }

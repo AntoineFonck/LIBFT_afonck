@@ -7,11 +7,11 @@ int pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - 2;
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
     write(fd, "0x", 2);
     while (nbzero > 0)
     {
@@ -35,11 +35,11 @@ int pad_pointer_prec(int hexlen, t_flags *flags, int fd)
     int nbpad;
     int nbzero;
     int padlen;
-    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - 2;
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
     if (flags->precision < flags->field_width)
     {
         while (nbpad)
@@ -70,56 +70,25 @@ int pad_pointer(int hexlen, t_flags *flags, int fd)
 {
     int nbpad;
     int padlen;
-    int test;
 
     if (flags->precision)
         return (pad_pointer_prec(hexlen, flags, fd));
-    nbpad = flags->field_width - hexlen;
+    nbpad = flags->field_width - hexlen - (flags->hashtag ? 2 : 0);
     padlen = 0;
-    test = hexlen + 1;
-    padlen += nbpad > 0 ? nbpad : 0;
+    padlen += (nbpad > 0 ? nbpad : 0) + (flags->hashtag ? 2 : 0);
     if (nbpad < 0)
         nbpad = 0;
-    if (flags->hashtag && !flags->zero)
-    {
-        if (flags->hashtag)
-            nbpad -= 2;
-        while (nbpad > 0)
-        {
-            ft_putchar_fd(' ', fd);
-            nbpad--;
-        }
-    }
-    if (flags->hashtag)
-    {
-        if (flags->zero)
-             write(fd, "0x", 2);
-        nbpad -= 2;
-        if (hexlen >= flags->field_width)
-            padlen += 2;
-        if (test == flags->field_width)
-            padlen++;
-    }
-    //padlen = nbpad + 2;
-    
     if (flags->zero)
-    {
-        if (flags->hashtag)
-        {
-            while (nbpad > 0)
-            {
-                ft_putchar_fd('0', fd);
-                nbpad--;
-            }
-        }
-        return (padlen);
-    }
+    	write(fd, "0x", 2);
     while (nbpad > 0)
     {
-        ft_putchar_fd(' ', fd);
+	if (flags->zero)
+                ft_putchar_fd('0', fd);
+	else
+		ft_putchar_fd(' ', fd);
         nbpad--;
     }
-    if (flags->hashtag && !flags->zero)
+    if (!flags->zero)
         write(fd, "0x", 2);
     return (padlen);
 }
@@ -133,8 +102,8 @@ int special_convert_pointer(uintptr_t hex, int fd, t_flags *flags)
     hexlen = ft_uintptrtoalen_base(hex, 16, fd);
     if (flags->minus)
     {
-        if (!flags->precision && !flags->hashtag)
-            ft_uintptrtoaprint_base(hex, 16, fd);
+        //if (!flags->precision)
+        //    ft_uintptrtoaprint_base(hex, 16, fd);
         full_len += pad_pointer_prec_min(hexlen, flags, fd, hex);
         return (full_len + hexlen);
     }
