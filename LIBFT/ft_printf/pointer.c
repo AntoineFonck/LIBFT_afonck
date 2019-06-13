@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pointer.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afonck <afonck@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/12 18:15:51 by afonck          #+#    #+#             */
+/*   Updated: 2019/06/12 18:15:56 by sluetzen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft.h"
 #include "ft_printf.h"
 
@@ -13,19 +25,21 @@ int pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
     padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
     write(fd, "0x", 2);
-    while (nbzero > 0)
+    pad_zero(nbzero, fd);
+    /*while (nbzero > 0)
     {
         ft_putchar_fd('0', fd);
         nbzero--;
-    }
+    }*/
     ft_uintptrtoaprint_base(hex, 16, fd);
     if (flags->precision < flags->field_width)
     {
-        while (nbpad)
+        pad_space(nbpad, fd);
+        /* while (nbpad)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
     }
     return (padlen);
 }
@@ -42,26 +56,29 @@ int pad_pointer_prec(int hexlen, t_flags *flags, int fd)
     padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
     if (flags->precision < flags->field_width)
     {
-        while (nbpad)
+        pad_space(nbpad, fd);
+        /* while (nbpad)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
         write(fd, "0x", 2);
-        while (nbzero > 0)
+        pad_zero(nbzero, fd);
+        /* while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
             nbzero--;
-        }
+        }*/
     }
     else
     {
         write(fd, "0x", 2);
-        while (nbzero > 0)
+        pad_zero(nbzero, fd);
+        /* while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
             nbzero--;
-        }
+        }*/
     }
     return (padlen);
 }
