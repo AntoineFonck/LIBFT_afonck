@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/13 15:56:06 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/13 22:31:35 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int int_no_precision(int number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
+	if (flags->space)
+		ft_putchar_fd(' ', fd);
 	if (!flags->minus)
 	{
 		if (flags->plus && flags->zero && number >= 0)
