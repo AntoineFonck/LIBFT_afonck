@@ -25,19 +25,21 @@ int pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
     padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
     write(fd, "0x", 2);
-    while (nbzero > 0)
+    pad_zero(nbzero, fd);
+    /*while (nbzero > 0)
     {
         ft_putchar_fd('0', fd);
         nbzero--;
-    }
+    }*/
     ft_uintptrtoaprint_base(hex, 16, fd);
     if (flags->precision < flags->field_width)
     {
-        while (nbpad)
+        pad_space(nbpad, fd);
+        /* while (nbpad)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
     }
     return (padlen);
 }
@@ -54,26 +56,29 @@ int pad_pointer_prec(int hexlen, t_flags *flags, int fd)
     padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
     if (flags->precision < flags->field_width)
     {
-        while (nbpad)
+        pad_space(nbpad, fd);
+        /* while (nbpad)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
         write(fd, "0x", 2);
-        while (nbzero > 0)
+        pad_zero(nbzero, fd);
+        /* while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
             nbzero--;
-        }
+        }*/
     }
     else
     {
         write(fd, "0x", 2);
-        while (nbzero > 0)
+        pad_zero(nbzero, fd);
+        /* while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
             nbzero--;
-        }
+        }*/
     }
     return (padlen);
 }
@@ -96,11 +101,12 @@ int pad_pointer(int hexlen, t_flags *flags, int fd)
     {
         if (flags->hashtag)
             nbpad -= 2;
-        while (nbpad > 0)
+        pad_space(nbpad, fd);
+        /* while (nbpad > 0)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
     }
     if (flags->hashtag)
     {
@@ -118,19 +124,21 @@ int pad_pointer(int hexlen, t_flags *flags, int fd)
     {
         if (flags->hashtag)
         {
-            while (nbpad > 0)
+            pad_space(nbpad, fd);
+            /* while (nbpad > 0)
             {
                 ft_putchar_fd('0', fd);
                 nbpad--;
-            }
+            }*/
         }
         return (padlen);
     }
-    while (nbpad > 0)
+    pad_space(nbpad, fd);
+    /* while (nbpad > 0)
     {
         ft_putchar_fd(' ', fd);
         nbpad--;
-    }
+    }*/
     if (flags->hashtag && !flags->zero)
         write(fd, "0x", 2);
     return (padlen);

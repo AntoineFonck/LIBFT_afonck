@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/12 18:19:20 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/13 16:01:44 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,21 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex, char 
     padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
     if (flags->hashtag)
         letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
-    while (nbzero > 0)
+    pad_zero(nbzero, fd);
+    /* while (nbzero > 0)
     {
         ft_putchar_fd('0', fd);
         nbzero--;
-    }
+    }*/
     ft_uitoaprint_base(hex, 16, fd, letter);
     if (flags->precision < flags->field_width)
     {
-        while (nbpad)
+        pad_space(nbpad, fd);
+        /* while (nbpad)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
     }
     return (padlen);
 }
@@ -48,6 +50,7 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
     int nbpad;
     int nbzero;
     int padlen;
+
     nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
     if (nbpad < 0)
         nbpad = 0;
@@ -55,28 +58,31 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
     padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
     if (flags->precision < flags->field_width)
     {
-        while (nbpad)
+        pad_space(nbpad, fd);
+        /* while (nbpad)
         {
             ft_putchar_fd(' ', fd);
             nbpad--;
-        }
+        }*/
         if (flags->hashtag)
             letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
-        while (nbzero > 0)
+        pad_zero(nbzero, fd);
+        /* while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
             nbzero--;
-        }
+        }*/ 
     }
     else
     {
         if (flags->hashtag)
             letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
-        while (nbzero > 0)
+        pad_zero(nbzero, fd);
+        /* while (nbzero > 0)
         {
             ft_putchar_fd('0', fd);
             nbzero--;
-        }
+        }*/
     }
     return (padlen);
 }

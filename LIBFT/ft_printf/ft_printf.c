@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/12 18:20:03 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/13 16:07:26 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,18 +140,20 @@ int pad_str(int number, t_flags *flags, int fd)
 	padlen = nbpad;
 	if (flags->zero && !flags->minus)
 	{
-		while (nbpad > 0)
+		pad_zero(nbpad, fd);
+		/* while (nbpad > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbpad--;
-		}
+		}*/
 		return (padlen);
 	}
-	while (nbpad > 0)
+	pad_space(nbpad, fd);
+	/* while (nbpad > 0)
 	{
 		ft_putchar_fd(' ', fd);
 		nbpad--;
-	}
+	}*/
 	printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
@@ -169,19 +171,21 @@ int pad(int number, t_flags *flags, int fd)
 	padlen = nbpad + (flags->plus);
 	if (flags->zero && !flags->minus)
 	{
-		while (nbpad > 0)
+		pad_zero(nbpad, fd);
+		/*while (nbpad > 0)
 		{
 			ft_putchar_fd('0', fd);
 			nbpad--;
-		}
+		}*/
 		return (padlen);
 	}
-	while (nbpad > 0)
+	pad_space(nbpad, fd);
+	/* while (nbpad > 0)
 	{
 		ft_putchar_fd(' ', fd);
 		nbpad--;
-	}
-	printf("PADLEN = %d\n", padlen);
+	}*/
+	//printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 
