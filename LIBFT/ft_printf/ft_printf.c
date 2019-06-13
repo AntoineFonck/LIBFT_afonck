@@ -196,6 +196,7 @@ static const t_converter g_converters[] =
 		{'s', convert_string},
 		{'d', convert_int},
 		{'i', convert_int},
+		{'u', convert_uint},
 		{'x', convert_hex},
 		{'X', convert_cap_hex},
 		{'p', convert_pointer}

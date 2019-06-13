@@ -61,4 +61,9 @@ int convert_pointer(va_list args, int fd, t_flags *flags);
 
 int convert_int(va_list args, int fd, t_flags *flags);
 
+int convert_uint(va_list args, int fd, t_flags *flags);
+
+int pad_uint(unsigned int number, t_flags *flags, int fd);
+
+int ft_unbrlen(unsigned int n);
 #endif
