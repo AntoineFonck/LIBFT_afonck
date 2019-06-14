@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/13 16:07:26 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/14 13:24:30 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ static const t_converter g_converters[] =
 		{'s', convert_string},
 		{'d', convert_int},
 		{'i', convert_int},
+		{'o', convert_oct},
 		{'u', convert_uint},
 		{'x', convert_hex},
 		{'X', convert_cap_hex},
