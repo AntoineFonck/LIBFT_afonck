@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/12 18:13:49 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/14 13:14:56 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int convert_pointer(va_list args, int fd, t_flags *flags);
 int convert_int(va_list args, int fd, t_flags *flags);
 
 int convert_uint(va_list args, int fd, t_flags *flags);
+
+//int convert_float(va_list args, int fd, t_flags *flags);
+
+int convert_oct(va_list args, int fd, t_flags *flags);
 
 int pad_uint(unsigned int number, t_flags *flags, int fd);
 
