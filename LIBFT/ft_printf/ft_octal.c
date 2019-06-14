@@ -19,13 +19,13 @@ int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct, char 
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen) - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen) - (flags->precision <= octlen ? flags->hashtag : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
-    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < octlen ? 0 : 0);
-    if (flags->hashtag)
-        letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
+    padlen = nbpad + nbzero + (flags->hashtag && flags->precision <= octlen ? 1 : 0);
+    if (flags->hashtag && flags->precision <= octlen)
+        write(fd, "0", 1);
     pad_zero(nbzero, fd);
     /* while (nbzero > 0)
     {
@@ -51,11 +51,11 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd, char letter)
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen) - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen) - (flags->precision <= octlen ? flags->hashtag : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
-    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < octlen ? 0 : 0);
+    padlen = nbpad + nbzero + (flags->hashtag && flags->precision <= octlen ? 1 : 0);
     if (flags->precision < flags->field_width)
     {
         pad_space(nbpad, fd);
@@ -64,8 +64,8 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd, char letter)
             ft_putchar_fd(' ', fd);
             nbpad--;
         }*/
-        if (flags->hashtag)
-            letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
+        if (flags->hashtag && flags->precision <= octlen)
+            write(fd, "0", 1);
         pad_zero(nbzero, fd);
         /* while (nbzero > 0)
         {
@@ -75,8 +75,8 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd, char letter)
     }
     else
     {
-        if (flags->hashtag)
-            letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
+        if (flags->hashtag && flags->precision <= octlen)
+            write(fd, "0", 1);
         pad_zero(nbzero, fd);
         /* while (nbzero > 0)
         {
@@ -94,13 +94,13 @@ int pad_oct(int octlen, t_flags *flags, int fd, char letter)
 
     if (flags->precision)
         return (pad_oct_prec(octlen, flags, fd, letter));
-    nbpad = flags->field_width - octlen - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - octlen - (flags->hashtag ? 1 : 0);
     padlen = 0;
-    padlen += (nbpad > 0 ? nbpad : 0) + (flags->hashtag ? 2 : 0);
+    padlen += (nbpad > 0 ? nbpad : 0) + (flags->hashtag ? 1 : 0);
     if (nbpad < 0)
         nbpad = 0;
     if (flags->hashtag && flags->zero)
-             letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
+	    write(fd, "0", 1);
     while (nbpad > 0)
     {
         if (flags->zero)
@@ -110,7 +110,7 @@ int pad_oct(int octlen, t_flags *flags, int fd, char letter)
         nbpad--;
     }
     if (flags->hashtag && !flags->zero)
-        letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
+     	write(fd, "0", 1);
     return (padlen);
 }
 
