@@ -18,25 +18,34 @@ int pad_int_prec(int number, t_flags *flags, int fd)
 	int nbpad;
 	int nbzero;
 	int padlen;
+	int nbrlen;
 
-	nbpad = flags->field_width - (flags->precision >= ft_nbrlen(number) ? flags->precision : ft_nbrlen(number)) - (number < 0 ? 1 : 0);
+	nbrlen = ft_nbrlen(number);
+	if (number < 0) // '-' sign in front must be ignored ?
+		nbrlen--;
+	//nbpad = flags->field_width - (flags->precision >= ft_nbrlen(number) ? flags->precision : ft_nbrlen(number)) - (number < 0 ? 1 : 0);
+	nbpad = flags->field_width - (flags->precision >= nbrlen ? flags->precision : nbrlen) - (number < 0 ? 1 : 0);
 	if ((flags->plus || flags->space) && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = (flags->precision >= ft_nbrlen(number) ? flags->precision : ft_nbrlen(number)) - ft_nbrlen(number) + (number < 0 ? 1 : 0);
-	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);
+	//nbzero = (flags->precision >= ft_nbrlen(number) ? flags->precision : ft_nbrlen(number)) - ft_nbrlen(number) - (number < 0 ? 1 : 0);
+	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;// - (number < 0 ? 1 : 0);
+	printf("nbzero = %d\n", nbzero);
+	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);//+ (number < 0 ? 1 : 0);
 	printf("nbpad=%d, nbzero=%d, padlen=%d\n", nbpad, nbzero, padlen);
+	printf("ft_nbrlen = %d\n", ft_nbrlen(number));
 	if (!flags->minus)
 		pad_space(nbpad, fd);
 	if (flags->plus && number >= 0)
 		ft_putchar_fd('+', fd);
 	if (flags->space && number >= 0 && !flags->plus)
 		ft_putchar_fd(' ', fd);
-	if (number < 0 && !flags->minus)
+	if (number < 0)
 		ft_putchar_fd('-', fd);
 	pad_zero(nbzero, fd);
 	ft_putnbr_fd(ft_absolute(number), fd);
+	//ft_putnbr_fd(number, fd);
 	if (flags->minus)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -57,7 +66,7 @@ int int_precision(int number, int fd, t_flags *flags)
 	{
 		//if (flags->plus && number > 0)
 		//	ft_putchar_fd('+', fd);
-		if (number < 0)
+		if (number < 0 && flags->zero)
 			ft_putchar_fd('-', fd);
 		len += pad_int_prec(number, flags, fd);
 	}
@@ -69,20 +78,18 @@ int int_no_precision(int number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (flags->space)
-		ft_putchar_fd(' ', fd);
 	if (!flags->minus)
 	{
 		if (flags->plus && flags->zero && number >= 0)
 			ft_putchar_fd('+', fd);
-		if (number < 0)
+		if (number < 0 && flags->zero)
 			ft_putchar_fd('-', fd);
 		len += pad_int(number, flags, fd);
 		if (flags->plus && !flags->zero && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(ft_absolute(number), fd);
 	}
-	else
+	else if (flags->minus)
 	{
 		if (flags->plus && number >= 0)
 			ft_putchar_fd('+', fd);
@@ -107,24 +114,18 @@ int pad_int(int number, t_flags *flags, int fd)
 	padlen = nbpad + (number >= 0 ? flags->plus || flags->space : 0);
 	if (flags->zero && !flags->minus)
 	{
-		if (flags->space && !flags->plus)
-		{
+		if (flags->space && !flags->plus && number >= 0)
 			ft_putchar_fd(' ', fd);
-			nbpad--;
-		}
-		while (nbpad > 0)
-		{
-			ft_putchar_fd('0', fd);
-			nbpad--;
-		}
+		pad_zero(nbpad, fd);
+		printf("PADLEN = %d\n", padlen);
 		return (padlen);
 	}
-	while (nbpad > 0)
-	{
+	if (flags->space && !flags->plus && number >= 0)
 		ft_putchar_fd(' ', fd);
-		nbpad--;
-	}
-	//printf("PADLEN = %d\n", padlen);
+	pad_space(nbpad, fd);
+	if (number < 0 && !flags->minus)
+		ft_putchar_fd('-', fd);
+	printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 
