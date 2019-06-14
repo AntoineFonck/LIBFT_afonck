@@ -32,7 +32,10 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex, char 
         ft_putchar_fd('0', fd);
         nbzero--;
     }*/
-    ft_uitoaprint_base(hex, 16, fd, letter);
+    if (letter == 'x')
+    	ft_uitoaprint_base(hex, 16, fd);
+    else if (letter == 'X')
+	ft_uitocapaprint_base(hex, 16, fd);
     if (flags->precision < flags->field_width)
     {
         pad_space(nbpad, fd);
@@ -127,7 +130,10 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags, char letter)
         return (full_len + hexlen);
     }
     full_len += pad_hex(hexlen, flags, fd, letter);
-    ft_uitoaprint_base(hex, 16, fd, letter);
+    if (letter == 'x')
+    	ft_uitoaprint_base(hex, 16, fd);
+    else if (letter == 'X')
+	    ft_uitocapaprint_base(hex, 16, fd);
     return (full_len + hexlen);
 }
 
@@ -139,7 +145,7 @@ int convert_hex(va_list args, int fd, t_flags *flags)
     hex = va_arg(args, unsigned int);
     if (is_activated(flags))
         return (special_convert_hex(hex, fd, flags, 'x'));
-    hexlen = ft_uitoaprint_base(hex, 16, fd, 'x');
+    hexlen = ft_uitoaprint_base(hex, 16, fd);
     return (hexlen);
 }
 
@@ -152,6 +158,6 @@ int convert_cap_hex(va_list args, int fd, t_flags *flags)
     hex = va_arg(args, unsigned int);
     if (is_activated(flags))
         return (special_convert_hex(hex, fd, flags, 'X'));
-    hexlen = ft_uitoaprint_base(hex, 16, fd, 'X');
+    hexlen = ft_uitocapaprint_base(hex, 16, fd);
     return (hexlen);
 }

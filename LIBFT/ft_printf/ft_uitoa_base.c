@@ -1,19 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/07 14:50:06 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/11 10:43:52 by afonck           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 #include "../libft.h"
 
-int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter)
+int	ft_uitoaprint_base(unsigned int value, int base, int fd)
 {
 	char	buf[50];
 	char    *ptr;
@@ -31,7 +19,7 @@ int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter)
 	{
 		ascii_offset = 0;
 		if (value % base > 9)
-			ascii_offset = (letter == 'x' ? 39 : 7);
+			ascii_offset = 39;
 		*--ptr = '0' + ((value % base) + ascii_offset);
 		value /= base;
 	}

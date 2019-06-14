@@ -16,7 +16,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-int	ft_uitoaprint_base(unsigned int value, int base, int fd, char letter);
+int	ft_uitoaprint_base(unsigned int value, int base, int fd);
+
+int	ft_uitocapaprint_base(unsigned int value, int base, int fd);
 
 int	ft_uitoalen_base(unsigned int value, int base, int fd);
 

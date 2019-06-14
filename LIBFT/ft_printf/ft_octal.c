@@ -32,7 +32,7 @@ int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct, char 
         ft_putchar_fd('0', fd);
         nbzero--;
     }*/
-    ft_uitoaprint_base(oct, 8, fd, letter);
+    ft_uitoaprint_base(oct, 8, fd);
     if (flags->precision < flags->field_width)
     {
         pad_space(nbpad, fd);
@@ -127,7 +127,7 @@ int special_convert_oct(unsigned int oct, int fd, t_flags *flags, char letter)
         return (full_len + octlen);
     }
     full_len += pad_oct(octlen, flags, fd, letter);
-    ft_uitoaprint_base(oct, 8, fd, letter);
+    ft_uitoaprint_base(oct, 8, fd);
     return (full_len + octlen);
 }
 
@@ -139,6 +139,6 @@ int convert_oct(va_list args, int fd, t_flags *flags)
     oct = va_arg(args, unsigned int);
     if (is_activated(flags))
         return (special_convert_oct(oct, fd, flags, 'x'));
-    octlen = ft_uitoaprint_base(oct, 8, fd, 'x');
+    octlen = ft_uitoaprint_base(oct, 8, fd);
     return (octlen);
 }

@@ -18,7 +18,7 @@ int pad_uint_prec(unsigned int number, t_flags *flags, int fd)
 	if (!flags->minus)
 		pad_space(nbpad, fd);
 	pad_zero(nbzero, fd);
-	ft_uitoaprint_base(number, 10, fd, 'x');
+	ft_uitoaprint_base(number, 10, fd);
 	if (flags->minus)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -52,11 +52,11 @@ int uint_no_precision(unsigned int number, int fd, t_flags *flags)
 	if (!flags->minus)
 	{
 		len += pad_uint(number, flags, fd);
-		ft_uitoaprint_base(number, 10, fd, 'x');
+		ft_uitoaprint_base(number, 10, fd);
 	}
 	else
 	{
-		ft_uitoaprint_base(number, 10, fd, 'x');
+		ft_uitoaprint_base(number, 10, fd);
 		len += pad_uint(number, flags, fd);
 	}
 	return (len);
@@ -114,6 +114,6 @@ int convert_uint(va_list args, int fd, t_flags *flags)
 	number = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_uint(number, fd, flags));
-	ft_uitoaprint_base(number, 10, fd, 'x');
+	ft_uitoaprint_base(number, 10, fd);
 	return (ft_unbrlen(number));
 }
