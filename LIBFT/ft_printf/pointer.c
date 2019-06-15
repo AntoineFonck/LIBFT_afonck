@@ -116,7 +116,7 @@ int special_convert_pointer(uintptr_t hex, int fd, t_flags *flags)
     int hexlen;
 
     full_len = 0;
-    hexlen = ft_uintptrtoalen_base(hex, 16, fd);
+    hexlen = ft_uintptrtoalen_base(hex, 16);
     if (flags->minus)
     {
         //if (!flags->precision)
@@ -132,7 +132,6 @@ int special_convert_pointer(uintptr_t hex, int fd, t_flags *flags)
 int convert_pointer(va_list args, int fd, t_flags *flags)
 {
     uintptr_t hex;
-    int len;
     int hexlen;
 
     hex = va_arg(args, uintptr_t);

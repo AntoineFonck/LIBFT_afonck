@@ -13,7 +13,7 @@
 #include "../libft.h"
 #include "ft_printf.h"
 
-int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct, char letter)
+int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct)
 {
     int nbpad;
     int nbzero;
@@ -45,7 +45,7 @@ int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct, char 
     return (padlen);
 }
 
-int pad_oct_prec(int octlen, t_flags *flags, int fd, char letter)
+int pad_oct_prec(int octlen, t_flags *flags, int fd)
 {
     int nbpad;
     int nbzero;
@@ -87,13 +87,13 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd, char letter)
     return (padlen);
 }
 
-int pad_oct(int octlen, t_flags *flags, int fd, char letter)
+int pad_oct(int octlen, t_flags *flags, int fd)
 {
     int nbpad;
     int padlen;
 
     if (flags->precision)
-        return (pad_oct_prec(octlen, flags, fd, letter));
+        return (pad_oct_prec(octlen, flags, fd));
     nbpad = flags->field_width - octlen - (flags->hashtag ? 1 : 0);
     padlen = 0;
     padlen += (nbpad > 0 ? nbpad : 0) + (flags->hashtag ? 1 : 0);
@@ -114,19 +114,19 @@ int pad_oct(int octlen, t_flags *flags, int fd, char letter)
     return (padlen);
 }
 
-int special_convert_oct(unsigned int oct, int fd, t_flags *flags, char letter)
+int special_convert_oct(unsigned int oct, int fd, t_flags *flags)
 {
     int full_len;
     int octlen;
 
     full_len = 0;
-    octlen = ft_uitoalen_base(oct, 8, fd);
+    octlen = ft_uitoalen_base(oct, 8);
     if (flags->minus)
     {
-        full_len += pad_oct_prec_min(octlen, flags, fd, oct, letter);
+        full_len += pad_oct_prec_min(octlen, flags, fd, oct);
         return (full_len + octlen);
     }
-    full_len += pad_oct(octlen, flags, fd, letter);
+    full_len += pad_oct(octlen, flags, fd);
     ft_uitoaprint_base(oct, 8, fd);
     return (full_len + octlen);
 }
@@ -134,11 +134,10 @@ int special_convert_oct(unsigned int oct, int fd, t_flags *flags, char letter)
 int convert_oct(va_list args, int fd, t_flags *flags)
 {
     unsigned int oct;
-    int len;
     int octlen;
     oct = va_arg(args, unsigned int);
     if (is_activated(flags))
-        return (special_convert_oct(oct, fd, flags, 'x'));
+        return (special_convert_oct(oct, fd, flags));
     octlen = ft_uitoaprint_base(oct, 8, fd);
     return (octlen);
 }

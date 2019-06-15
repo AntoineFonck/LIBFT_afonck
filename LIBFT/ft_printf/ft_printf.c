@@ -51,6 +51,7 @@ int special_convert_percent(int fd, t_flags *flags)
 
 int convert_percent(va_list args, int fd, t_flags *flags)
 {
+	(void)args;
 	if (is_activated(flags))
 		return (special_convert_percent(fd, flags));
 	ft_putchar_fd('%', fd);
@@ -228,6 +229,10 @@ t_flags *init_flags()
 	flags->zero = 0;
 	flags->field_width = 0;
 	flags->precision = 0;
+	flags->hh = 0;
+	flags->h = 0;
+	flags->l = 0;
+	flags->ll = 0;
 	return (flags);
 }
 
@@ -331,6 +336,32 @@ void check_precision(const char **fmt, t_flags *flags)
 	}
 }
 
+void check_lmod(const char **fmt, t_flags *flags)
+{
+	if (**fmt == 'h')
+	{
+		(*fmt)++;
+		if (**fmt == 'h')
+		{
+			flags->hh = 1;
+			(*fmt)++;
+		}
+		else
+			flags->h = 1;
+	}
+	else if (**fmt == 'l')
+	{
+		(*fmt)++;
+		if (**fmt == 'l')
+		{
+			flags->ll = 1;
+			(*fmt)++;
+		}
+		else
+			flags->l = 1;
+	}
+}
+
 void flush_flags(t_flags *flags)
 {
 	flags->hashtag = 0;
@@ -340,6 +371,10 @@ void flush_flags(t_flags *flags)
 	flags->zero = 0;
 	flags->field_width = 0;
 	flags->precision = 0;
+	flags->hh = 0;
+	flags->h = 0;
+	flags->l = 0;
+	flags->ll = 0;
 }
 
 void check_all(const char **fmt, t_flags *flags)
@@ -347,13 +382,11 @@ void check_all(const char **fmt, t_flags *flags)
 	check_flags(fmt, flags);
 	check_field_width(fmt, flags);
 	check_precision(fmt, flags);
+	check_lmod(fmt, flags);
 }
 
 int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 {
-	int tmp_int;
-	char tmp_char;
-	char *tmp_str;
 	int total_len;
 
 	total_len = 0;

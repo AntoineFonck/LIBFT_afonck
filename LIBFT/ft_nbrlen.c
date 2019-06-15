@@ -1,4 +1,6 @@
-int      ft_nbrlen(int n)
+#include <stdint.h>
+
+int      ft_nbrlen(intmax_t n)
 {
         int             nbdigits;
 

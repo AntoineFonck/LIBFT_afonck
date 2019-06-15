@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <unistd.h>
 
 static void	putdis(char c, int fd)
@@ -17,7 +18,7 @@ static void	putdis(char c, int fd)
 	write(fd, &c, 1);
 }
 
-void		ft_putnbr_fd(int n, int fd)
+void		ft_putnbr_fd(intmax_t n, int fd)
 {
 	if (n == -2147483648)
 	{

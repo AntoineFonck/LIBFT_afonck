@@ -3,7 +3,7 @@
 
 int      ft_unbrlen(unsigned int n)
 {
-        int             nbdigits;
+        unsigned int	nbdigits;
 
         nbdigits = 0;
         if (n == 0)

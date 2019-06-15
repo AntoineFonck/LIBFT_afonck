@@ -25,7 +25,7 @@ int	ft_uintptrtoaprint_base(uintptr_t value, int base, int fd)
 	return (ft_strlen(ptr));
 }
 
-int	ft_uintptrtoalen_base(uintptr_t value, int base, int fd)
+int	ft_uintptrtoalen_base(uintptr_t value, int base)
 {
 	char	buf[(sizeof(uintptr_t) * 2) + 1]; // 8 bytes * 2 (2 char per byte ex a7)
 	char    *ptr;

@@ -123,7 +123,7 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags, char letter)
     int hexlen;
 
     full_len = 0;
-    hexlen = ft_uitoalen_base(hex, 16, fd);
+    hexlen = ft_uitoalen_base(hex, 16);
     if (flags->minus)
     {
         full_len += pad_hex_prec_min(hexlen, flags, fd, hex, letter);
@@ -140,7 +140,6 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags, char letter)
 int convert_hex(va_list args, int fd, t_flags *flags)
 {
     unsigned int hex;
-    int len;
     int hexlen;
     hex = va_arg(args, unsigned int);
     if (is_activated(flags))
@@ -152,7 +151,6 @@ int convert_hex(va_list args, int fd, t_flags *flags)
 int convert_cap_hex(va_list args, int fd, t_flags *flags)
 {
     unsigned int    hex;
-    int             len;
     int             hexlen;
 
     hex = va_arg(args, unsigned int);

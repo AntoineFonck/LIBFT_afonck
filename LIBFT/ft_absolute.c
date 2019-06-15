@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_absolute(int i)
+#include <stdint.h>
+
+intmax_t ft_absolute(intmax_t i)
 {
 	if (i < 0)
 		return (-i);

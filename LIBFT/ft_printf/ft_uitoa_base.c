@@ -25,7 +25,7 @@ int	ft_uitoaprint_base(unsigned int value, int base, int fd)
 	return (ft_strlen(ptr));
 }
 
-int	ft_uitoalen_base(unsigned int value, int base, int fd)
+int	ft_uitoalen_base(unsigned int value, int base)
 {
 	char	buf[50];
 	char    *ptr;

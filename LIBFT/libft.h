@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdint.h>
 # define BUFF_SIZE 8
 
 int					get_next_line(const int fd, char **line);
@@ -24,12 +25,12 @@ int					get_next_line(const int fd, char **line);
 **	EXTRAS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 */
 
-int					ft_absolute(int i);
+intmax_t				ft_absolute(intmax_t i);
 /*
 ** converts a negative int into a positive int
 */
 
-int					ft_nbrlen(int n);
+int					ft_nbrlen(intmax_t n);
 /*
 ** returns the length of the int n
 */
@@ -130,7 +131,7 @@ void				ft_putnbr(int n);
 ** prints the int n on the standard input | doesn't return anything
 */
 
-void				ft_putnbr_fd(int n, int fd);
+void				ft_putnbr_fd(intmax_t n, int fd);
 /*
 ** prints the int n on the file descriptor fd | doesn't return anything
 */

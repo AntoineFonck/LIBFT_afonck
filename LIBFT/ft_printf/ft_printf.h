@@ -20,11 +20,11 @@ int	ft_uitoaprint_base(unsigned int value, int base, int fd);
 
 int	ft_uitocapaprint_base(unsigned int value, int base, int fd);
 
-int	ft_uitoalen_base(unsigned int value, int base, int fd);
+int	ft_uitoalen_base(unsigned int value, int base);
 
 int     ft_uintptrtoaprint_base(uintptr_t value, int base, int fd);
 
-int     ft_uintptrtoalen_base(uintptr_t value, int base, int fd);
+int     ft_uintptrtoalen_base(uintptr_t value, int base);
 
 void pad_zero(int nbzero, int fd);
 
@@ -39,6 +39,10 @@ typedef	struct s_flags
 	int zero;
 	int field_width;
 	int precision;
+	int hh;
+	int h;
+	int l;
+	int ll;
 }				t_flags;
 
 typedef struct s_converter 
@@ -49,7 +53,7 @@ typedef struct s_converter
 
 int		pad(int number, t_flags *flags, int fd);
 
-int		pad_int(int number, t_flags *flags, int fd);
+int		pad_int(intmax_t number, t_flags *flags, int fd);
 
 int		pad_str(int number, t_flags *flags, int fd);
 
