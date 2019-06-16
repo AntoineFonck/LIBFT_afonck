@@ -1,30 +1,31 @@
 #include "../libft.h"
 #include "ft_printf.h"
 
-int pad_uint_prec(unsigned int number, t_flags *flags, int fd)
+int pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number)) - (number < 0 ? 1 : 0);
+	nbpad = flags->field_width - (flags->precision >= ft_unbrlen(number)
+			? flags->precision : ft_unbrlen(number)) - (number < 0 ? 1 : 0);
 	if (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number)) - ft_unbrlen(number) + (number < 0 ? 1 : 0);
+	nbzero = (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number))
+		- ft_unbrlen(number) + (number < 0 ? 1 : 0);
 	padlen = nbpad + nbzero + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
-	printf("nbpad=%d, nbzero=%d, padlen=%d\n", nbpad, nbzero, padlen);
 	if (!(flags->state & MINUS))
 		pad_space(nbpad, fd);
 	pad_zero(nbzero, fd);
 	ft_uitoaprint_base(number, 10, fd);
-	if ((flags->state & MINUS))
+	if (flags->state & MINUS)
 		pad_space(nbpad, fd);
 	return (padlen);
 }
 
-int uint_precision(unsigned int number, int fd, t_flags *flags)
+int uint_precision(uintmax_t number, int fd, t_flags *flags)
 {
 	int len;
 
@@ -44,7 +45,7 @@ int uint_precision(unsigned int number, int fd, t_flags *flags)
 	return (len);
 }
 
-int uint_no_precision(unsigned int number, int fd, t_flags *flags)
+int uint_no_precision(uintmax_t number, int fd, t_flags *flags)
 {
 	int len;
 
@@ -62,7 +63,7 @@ int uint_no_precision(unsigned int number, int fd, t_flags *flags)
 	return (len);
 }
 
-int pad_uint(unsigned int number, t_flags *flags, int fd)
+int pad_uint(uintmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -95,7 +96,7 @@ int pad_uint(unsigned int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int special_convert_uint(unsigned int number, int fd, t_flags *flags)
+int special_convert_uint(uintmax_t number, int fd, t_flags *flags)
 {
 	int full_len;
 
@@ -109,9 +110,18 @@ int special_convert_uint(unsigned int number, int fd, t_flags *flags)
 
 int convert_uint(va_list args, int fd, t_flags *flags)
 {
-	int number;
+	uintmax_t number;
 
-	number = va_arg(args, unsigned int);
+	if (flags->state & HH)
+            number = (unsigned char)va_arg(args, unsigned int);
+    	else if (flags->state & H)
+            number = (unsigned short)va_arg(args, unsigned int);
+    	else if (flags->state & L)
+            number = (unsigned long)va_arg(args, unsigned long);
+    	else if (flags->state & LL)
+            number = (unsigned long long)va_arg(args, unsigned long long);
+    	else
+	    number = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_uint(number, fd, flags));
 	ft_uitoaprint_base(number, 10, fd);
