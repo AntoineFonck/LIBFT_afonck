@@ -13,13 +13,14 @@
 #include "../libft.h"
 #include "ft_printf.h"
 
-int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct)
+int pad_oct_prec_min(int octlen, t_flags *flags, int fd, uintmax_t oct)
 {
     int nbpad;
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen) - (flags->precision <= octlen ? (flags->state & HASHTAG) : 0);
+    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen)
+	    - (flags->precision <= octlen ? (flags->state & HASHTAG) : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
@@ -27,21 +28,9 @@ int pad_oct_prec_min(int octlen, t_flags *flags, int fd, unsigned int oct)
     if ((flags->state & HASHTAG) && flags->precision <= octlen)
         write(fd, "0", 1);
     pad_zero(nbzero, fd);
-    /* while (nbzero > 0)
-    {
-        ft_putchar_fd('0', fd);
-        nbzero--;
-    }*/
     ft_uitoaprint_base(oct, 8, fd);
     if (flags->precision < flags->field_width)
-    {
         pad_space(nbpad, fd);
-        /* while (nbpad)
-        {
-            ft_putchar_fd(' ', fd);
-            nbpad--;
-        }*/
-    }
     return (padlen);
 }
 
@@ -51,7 +40,8 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd)
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen) - (flags->precision <= octlen ? (flags->state & HASHTAG) : 0);
+    nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen)
+	    - (flags->precision <= octlen ? (flags->state & HASHTAG) : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
@@ -59,30 +49,15 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd)
     if (flags->precision < flags->field_width)
     {
         pad_space(nbpad, fd);
-        /* while (nbpad)
-        {
-            ft_putchar_fd(' ', fd);
-            nbpad--;
-        }*/
         if ((flags->state & HASHTAG) && flags->precision <= octlen)
             write(fd, "0", 1);
         pad_zero(nbzero, fd);
-        /* while (nbzero > 0)
-        {
-            ft_putchar_fd('0', fd);
-            nbzero--;
-        }*/ 
     }
     else
     {
         if ((flags->state & HASHTAG) && flags->precision <= octlen)
             write(fd, "0", 1);
         pad_zero(nbzero, fd);
-        /* while (nbzero > 0)
-        {
-            ft_putchar_fd('0', fd);
-            nbzero--;
-        }*/
     }
     return (padlen);
 }
@@ -114,14 +89,14 @@ int pad_oct(int octlen, t_flags *flags, int fd)
     return (padlen);
 }
 
-int special_convert_oct(unsigned int oct, int fd, t_flags *flags)
+int special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
 {
     int full_len;
     int octlen;
 
     full_len = 0;
     octlen = ft_uitoalen_base(oct, 8);
-    if ((flags->state & MINUS))
+    if (flags->state & MINUS)
     {
         full_len += pad_oct_prec_min(octlen, flags, fd, oct);
         return (full_len + octlen);
@@ -133,9 +108,18 @@ int special_convert_oct(unsigned int oct, int fd, t_flags *flags)
 
 int convert_oct(va_list args, int fd, t_flags *flags)
 {
-    unsigned int oct;
+    uintmax_t oct;
     int octlen;
-    oct = va_arg(args, unsigned int);
+    if (flags->state & HH)
+            oct = (unsigned char)va_arg(args, unsigned int);
+    else if (flags->state & H)
+            oct = (unsigned short)va_arg(args, unsigned int);
+    else if (flags->state & L)
+            oct = (unsigned long)va_arg(args, unsigned long);
+    else if (flags->state & LL)
+            oct = (unsigned long long)va_arg(args, unsigned long long);
+    else
+    	oct = va_arg(args, unsigned int);
     if (is_activated(flags))
         return (special_convert_oct(oct, fd, flags));
     octlen = ft_uitoaprint_base(oct, 8, fd);
