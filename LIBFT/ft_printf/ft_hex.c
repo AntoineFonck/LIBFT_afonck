@@ -19,12 +19,12 @@ int pad_hex_prec_min(int hexlen, t_flags *flags, int fd, unsigned int hex, char 
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - ((flags->state & HASHTAG) ? 2 : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
-    if (flags->hashtag)
+    padlen = nbpad + nbzero + ((flags->state & HASHTAG) ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    if ((flags->state & HASHTAG))
         letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
     pad_zero(nbzero, fd);
     /* while (nbzero > 0)
@@ -54,11 +54,11 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
     int nbzero;
     int padlen;
 
-    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - ((flags->state & HASHTAG) ? 2 : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-    padlen = nbpad + nbzero + (flags->hashtag ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
+    padlen = nbpad + nbzero + ((flags->state & HASHTAG) ? 2 : 0) + (flags->precision < hexlen ? 0 : 0);
     if (flags->precision < flags->field_width)
     {
         pad_space(nbpad, fd);
@@ -67,7 +67,7 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
             ft_putchar_fd(' ', fd);
             nbpad--;
         }*/
-        if (flags->hashtag)
+        if ((flags->state & HASHTAG))
             letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
         pad_zero(nbzero, fd);
         /* while (nbzero > 0)
@@ -78,7 +78,7 @@ int pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
     }
     else
     {
-        if (flags->hashtag)
+        if ((flags->state & HASHTAG))
             letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
         pad_zero(nbzero, fd);
         /* while (nbzero > 0)
@@ -97,22 +97,22 @@ int pad_hex(int hexlen, t_flags *flags, int fd, char letter)
 
     if (flags->precision)
         return (pad_hex_prec(hexlen, flags, fd, letter));
-    nbpad = flags->field_width - hexlen - (flags->hashtag ? 2 : 0);
+    nbpad = flags->field_width - hexlen - ((flags->state & HASHTAG) ? 2 : 0);
     padlen = 0;
-    padlen += (nbpad > 0 ? nbpad : 0) + (flags->hashtag ? 2 : 0);
+    padlen += (nbpad > 0 ? nbpad : 0) + ((flags->state & HASHTAG) ? 2 : 0);
     if (nbpad < 0)
         nbpad = 0;
-    if (flags->hashtag && flags->zero)
+    if ((flags->state & HASHTAG) && (flags->state & ZERO))
              letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
     while (nbpad > 0)
     {
-        if (flags->zero)
+        if ((flags->state & ZERO))
             ft_putchar_fd('0', fd);
         else
             ft_putchar_fd(' ', fd);
         nbpad--;
     }
-    if (flags->hashtag && !flags->zero)
+    if ((flags->state & HASHTAG) && !(flags->state & ZERO))
         letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
     return (padlen);
 }
@@ -124,7 +124,7 @@ int special_convert_hex(unsigned int hex, int fd, t_flags *flags, char letter)
 
     full_len = 0;
     hexlen = ft_uitoalen_base(hex, 16);
-    if (flags->minus)
+    if ((flags->state & MINUS))
     {
         full_len += pad_hex_prec_min(hexlen, flags, fd, hex, letter);
         return (full_len + hexlen);

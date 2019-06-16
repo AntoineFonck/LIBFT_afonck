@@ -15,8 +15,8 @@
 
 int is_activated(t_flags *flags)
 {
-	if (flags->hashtag || flags->minus || flags->plus || flags->space ||
-		flags->zero || flags->field_width || flags->precision)
+	if ((flags->state & HASHTAG) || (flags->state & MINUS) || (flags->state & PLUS)
+	|| (flags->state & SPACE) || (flags->state & ZERO) || flags->field_width || flags->precision)
 		return (1);
 	return (0);
 }
@@ -26,20 +26,20 @@ int special_convert_percent(int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->minus)
+	if (flags->state & MINUS)
 	{
-		if (flags->plus)
+		if (flags->state & PLUS)
 			ft_putchar_fd('+', fd);
 		ft_putchar_fd('%', fd);
 		full_len += pad(1, flags, fd);
 		return (full_len + 1);
 	}
-	if (flags->plus)
+	if (flags->state & PLUS)
 	{
-		if (flags->zero)
+		if (flags->state & ZERO)
 			ft_putchar_fd('+', fd);
 		full_len += pad(1, flags, fd);
-		if (!flags->zero)
+		if (!(flags->state & ZERO))
 			ft_putchar_fd('+', fd);
 		ft_putchar_fd('%', fd);
 		return (full_len + 1);
@@ -63,13 +63,13 @@ int special_convert_char(char c, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->minus)
+	if (flags->state & MINUS)
 	{
 		ft_putchar_fd(c, fd);
 		full_len += pad_str(1, flags, fd);
 		return (full_len + 1);
 	}
-	if (flags->plus)
+	if (flags->state & PLUS)
 	{
 		full_len += pad_str(1, flags, fd);
 		ft_putchar_fd(c, fd);
@@ -100,13 +100,13 @@ int special_convert_string(char *s, int len, int fd, t_flags *flags)
 		len = flags->precision;
 	if (flags->precision < 0)
 		len = ft_absolute(flags->precision);
-	if (flags->minus)
+	if (flags->state & MINUS)
 	{
 		write(fd, s, len);
 		full_len += pad_str(len, flags, fd);
 		return (full_len + len);
 	}
-	if (flags->plus)
+	if (flags->state & PLUS)
 	{
 		full_len += pad_str(len, flags, fd);
 		write(fd, s, len);
@@ -139,7 +139,7 @@ int pad_str(int number, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	padlen = nbpad;
-	if (flags->zero && !flags->minus)
+	if ((flags->state & ZERO) && !(flags->state & MINUS))
 	{
 		pad_zero(nbpad, fd);
 		/* while (nbpad > 0)
@@ -165,12 +165,12 @@ int pad(int number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_nbrlen(number);
-	if (flags->plus || flags->space)
+	if ((flags->state & PLUS) || (flags->state & SPACE))
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	padlen = nbpad + (flags->plus);
-	if (flags->zero && !flags->minus)
+	padlen = nbpad + (flags->state & PLUS);
+	if ((flags->state & ZERO) && !(flags->state & MINUS))
 	{
 		pad_zero(nbpad, fd);
 		/*while (nbpad > 0)
@@ -222,17 +222,9 @@ t_flags *init_flags()
 
 	if ((flags = (t_flags *)malloc(sizeof(t_flags))) == NULL)
 		return (NULL);
-	flags->hashtag = 0;
-	flags->minus = 0;
-	flags->plus = 0;
-	flags->space = 0;
-	flags->zero = 0;
+	flags->state = 0;
 	flags->field_width = 0;
 	flags->precision = 0;
-	flags->hh = 0;
-	flags->h = 0;
-	flags->l = 0;
-	flags->ll = 0;
 	return (flags);
 }
 
@@ -246,16 +238,19 @@ int is_flag(char c)
 
 void activate_flags(t_flags *flags, char c)
 {
+	/* activate them in nearly the equivalent of doing += for each flag (HASHTAG + MINUS for example if both are activated), using | (OR) instead for a very gud reason: if a flag is repeated twice (%##x for instance), the += logic would give this result: flags->state += HASHTAG so flags->state is now equal 1 (0000 0001) BUT if you repeat this operation (second hashtag in format %##d) you get this: flags->state += HASHTAG is equal to 2 which is WRONG (would randomly activate flags MINUS because MINUS = 2 (0000 0010)).
+	   SO the solution is to use OR (|) instead of + because 1 (0000 0001) | 1 (0000 0001) is still equal to 1 (0000 0001) ;D
+	   */
 	if (c == '#')
-		flags->hashtag = 1;
+		flags->state |= HASHTAG;
 	else if (c == '-')
-		flags->minus = 1;
+		flags->state |= MINUS;
 	else if (c == '+')
-		flags->plus = 1;
+		flags->state |= PLUS;
 	else if (c == ' ')
-		flags->space = 1;
+		flags->state |= SPACE;
 	else if (c == '0')
-		flags->zero = 1;
+		flags->state |= ZERO;
 	else
 		return;
 }
@@ -343,38 +338,30 @@ void check_lmod(const char **fmt, t_flags *flags)
 		(*fmt)++;
 		if (**fmt == 'h')
 		{
-			flags->hh = 1;
+			flags->state |= HH;
 			(*fmt)++;
 		}
 		else
-			flags->h = 1;
+			flags->state |= H;
 	}
 	else if (**fmt == 'l')
 	{
 		(*fmt)++;
 		if (**fmt == 'l')
 		{
-			flags->ll = 1;
+			flags->state |= LL;
 			(*fmt)++;
 		}
 		else
-			flags->l = 1;
+			flags->state = L;
 	}
 }
 
 void flush_flags(t_flags *flags)
 {
-	flags->hashtag = 0;
-	flags->minus = 0;
-	flags->plus = 0;
-	flags->space = 0;
-	flags->zero = 0;
+	flags->state = 0;
 	flags->field_width = 0;
 	flags->precision = 0;
-	flags->hh = 0;
-	flags->h = 0;
-	flags->l = 0;
-	flags->ll = 0;
 }
 
 void check_all(const char **fmt, t_flags *flags)

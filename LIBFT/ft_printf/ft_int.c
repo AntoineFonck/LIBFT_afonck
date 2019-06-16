@@ -22,22 +22,22 @@ int pad_int_prec(intmax_t number, t_flags *flags, int fd)
 
 	nbrlen = ft_nbrlen(number) - (number < 0 ? 1 : 0);
 	nbpad = flags->field_width - (flags->precision >= nbrlen ? flags->precision : nbrlen) \
-		- (number < 0 ? 1 : 0) - ((flags->plus || flags->space) && number >= 0 ? 1 : 0);
+		- (number < 0 ? 1 : 0) - (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0 ? 1 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
-	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);
-	if (!flags->minus)
+	padlen = nbpad + nbzero + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
+	if (!(flags->state & MINUS))
 		pad_space(nbpad, fd);
-	if (flags->plus && number >= 0)
+	if ((flags->state & PLUS) && number >= 0)
 		ft_putchar_fd('+', fd);
-	if (flags->space && number >= 0 && !flags->plus)
+	if ((flags->state & SPACE) && number >= 0 && !(flags->state & PLUS))
 		ft_putchar_fd(' ', fd);
 	if (number < 0)
 		ft_putchar_fd('-', fd);
 	pad_zero(nbzero, fd);
 	ft_putnbr_fd(ft_absolute(number), fd);
-	if (flags->minus)
+	if ((flags->state & MINUS))
 		pad_space(nbpad, fd);
 	return (padlen);
 }
@@ -47,17 +47,17 @@ int int_precision(intmax_t number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!flags->minus)
+	if (!(flags->state & MINUS))
 	{
 		len += pad_int_prec(number, flags, fd);
-		//if (flags->plus && flags->field_width > flags->precision && number >= 0)
+		//if ((flags->state & PLUS) && flags->field_width > flags->precision && number >= 0)
 		//	ft_putchar_fd('+', fd);
 	}
 	else
 	{
-		//if (flags->plus && number > 0)
+		//if ((flags->state & PLUS) && number > 0)
 		//	ft_putchar_fd('+', fd);
-		if (number < 0 && flags->zero)
+		if (number < 0 && (flags->state & ZERO))
 			ft_putchar_fd('-', fd);
 		len += pad_int_prec(number, flags, fd);
 	}
@@ -69,23 +69,23 @@ int int_no_precision(intmax_t number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!flags->minus)
+	if (!(flags->state & MINUS))
 	{
-		if (flags->plus && flags->zero && number >= 0)
+		if ((flags->state & PLUS) && (flags->state & ZERO) && number >= 0)
 			ft_putchar_fd('+', fd);
-		if (number < 0 && flags->zero)
+		if (number < 0 && (flags->state & ZERO))
 			ft_putchar_fd('-', fd);
 		len += pad_int(number, flags, fd);
-		if (flags->plus && !flags->zero && number >= 0)
+		if ((flags->state & PLUS) && !(flags->state & ZERO) && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(ft_absolute(number), fd);
 		printf("WTF NUMBER = %jd\n", ft_absolute(number));
 	}
-	else if (flags->minus)
+	else if ((flags->state & MINUS))
 	{
-		if (flags->plus && number >= 0)
+		if ((flags->state & PLUS) && number >= 0)
 			ft_putchar_fd('+', fd);
-		else if (flags->space && number >= 0)
+		else if ((flags->state & SPACE) && number >= 0)
 			ft_putchar_fd(' ', fd);
 		ft_putnbr_fd(number, fd);
 		len += pad_int(number, flags, fd);
@@ -99,23 +99,23 @@ int pad_int(intmax_t number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_nbrlen(number);
-	if ((flags->plus || flags->space) && number >= 0)
+	if (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	padlen = nbpad + (number >= 0 ? flags->plus || flags->space : 0);
-	if (flags->zero && !flags->minus)
+	padlen = nbpad + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
+	if ((flags->state & ZERO) && !(flags->state & MINUS))
 	{
-		if (flags->space && !flags->plus && number >= 0)
+		if ((flags->state & SPACE) && !(flags->state & PLUS) && number >= 0)
 			ft_putchar_fd(' ', fd);
 		pad_zero(nbpad, fd);
 		printf("PADLEN = %d\n", padlen);
 		return (padlen);
 	}
-	if (flags->space && !flags->plus && number >= 0)
+	if ((flags->state & SPACE) && !(flags->state & PLUS) && number >= 0)
 		ft_putchar_fd(' ', fd);
 	pad_space(nbpad, fd);
-	if (number < 0 && !flags->minus)
+	if (number < 0 && !(flags->state & MINUS))
 		ft_putchar_fd('-', fd);
 	printf("PADLEN = %d\n", padlen);
 	return (padlen);
@@ -137,13 +137,13 @@ int convert_int(va_list args, int fd, t_flags *flags)
 {
 	intmax_t number;
 
-	if (flags->hh)
+	if (flags->state & HH)
 		number = (signed char)va_arg(args, int);
-	else if (flags->h)
+	else if (flags->state & H)
 		number = (short)va_arg(args, int);
-	else if (flags->l)
+	else if (flags->state & L)
 		number = va_arg(args, long);
-	else if (flags->ll)
+	else if (flags->state & LL)
 		number = va_arg(args, long long);
 	else
 		number = va_arg(args, int);

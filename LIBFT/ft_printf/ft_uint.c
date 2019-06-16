@@ -8,18 +8,18 @@ int pad_uint_prec(unsigned int number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number)) - (number < 0 ? 1 : 0);
-	if ((flags->plus || flags->space) && number >= 0)
+	if (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number)) - ft_unbrlen(number) + (number < 0 ? 1 : 0);
-	padlen = nbpad + nbzero + (number >= 0 ? flags->plus || flags->space : 0);
+	padlen = nbpad + nbzero + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
 	printf("nbpad=%d, nbzero=%d, padlen=%d\n", nbpad, nbzero, padlen);
-	if (!flags->minus)
+	if (!(flags->state & MINUS))
 		pad_space(nbpad, fd);
 	pad_zero(nbzero, fd);
 	ft_uitoaprint_base(number, 10, fd);
-	if (flags->minus)
+	if ((flags->state & MINUS))
 		pad_space(nbpad, fd);
 	return (padlen);
 }
@@ -29,15 +29,15 @@ int uint_precision(unsigned int number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!flags->minus)
+	if (!(flags->state & MINUS))
 	{
 		len += pad_uint_prec(number, flags, fd);
-		//if (flags->plus && flags->field_width > flags->precision && number >= 0)
+		//if ((flags->state & PLUS) && flags->field_width > flags->precision && number >= 0)
 		//	ft_putchar_fd('+', fd);
 	}
 	else
 	{
-		//if (flags->plus && number > 0)
+		//if ((flags->state & PLUS) && number > 0)
 		//	ft_putchar_fd('+', fd);
 		len += pad_uint_prec(number, flags, fd);
 	}
@@ -49,7 +49,7 @@ int uint_no_precision(unsigned int number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!flags->minus)
+	if (!(flags->state & MINUS))
 	{
 		len += pad_uint(number, flags, fd);
 		ft_uitoaprint_base(number, 10, fd);
@@ -72,9 +72,9 @@ int pad_uint(unsigned int number, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	padlen = nbpad;
-	if (flags->zero && !flags->minus)
+	if ((flags->state & ZERO) && !(flags->state & MINUS))
 	{
-		if (flags->space && !flags->plus)
+		if ((flags->state & SPACE) && !(flags->state & PLUS))
 		{
 			ft_putchar_fd(' ', fd);
 			nbpad--;
