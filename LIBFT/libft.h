@@ -342,6 +342,12 @@ int					ft_atoi(const char *str);
 ** converted int
 */
 
+long long				ft_atol(const char *str);
+/*
+** converts possible portion of the string str to a long long | returns the
+** converted long long
+*/
+
 char				*ft_itoa(int n);
 /*
 ** allocates a fresh new string representating the int passed as a

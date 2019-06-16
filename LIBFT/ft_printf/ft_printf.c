@@ -425,10 +425,10 @@ int main(int argc, char *argv[])
 		test = &hi;
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		myone = ft_printf(argv[1], ft_atoi(argv[2]), argv[3][0], test);
+		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		realone = printf(argv[1], ft_atoi(argv[2]), argv[3][0], test);
+		realone = printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);

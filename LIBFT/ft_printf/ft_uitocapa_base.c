@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../libft.h"
 
-int	ft_uitocapaprint_base(unsigned int value, int base, int fd)
+int	ft_uitocapaprint_base(uintmax_t value, int base, int fd)
 {
 	char	buf[50];
 	char    *ptr;

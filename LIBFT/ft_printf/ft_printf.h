@@ -26,11 +26,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-int	ft_uitoaprint_base(unsigned int value, int base, int fd);
+int	ft_uitoaprint_base(uintmax_t value, int base, int fd);
 
-int	ft_uitocapaprint_base(unsigned int value, int base, int fd);
+int	ft_uitocapaprint_base(uintmax_t value, int base, int fd);
 
-int	ft_uitoalen_base(unsigned int value, int base);
+int	ft_uitoalen_base(uintmax_t value, int base);
 
 int     ft_uintptrtoaprint_base(uintptr_t value, int base, int fd);
 
@@ -77,5 +77,5 @@ int convert_oct(va_list args, int fd, t_flags *flags);
 
 int pad_uint(unsigned int number, t_flags *flags, int fd);
 
-int ft_unbrlen(unsigned int n);
+int ft_unbrlen(uintmax_t n);
 #endif

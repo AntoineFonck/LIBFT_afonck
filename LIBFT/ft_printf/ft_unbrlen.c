@@ -1,7 +1,7 @@
 #include "../libft.h"
 #include "ft_printf.h"
 
-int      ft_unbrlen(unsigned int n)
+int      ft_unbrlen(uintmax_t n)
 {
         unsigned int	nbdigits;
 
