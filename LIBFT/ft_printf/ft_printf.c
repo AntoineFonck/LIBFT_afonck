@@ -142,19 +142,9 @@ int pad_str(int number, t_flags *flags, int fd)
 	if ((flags->state & ZERO) && !(flags->state & MINUS))
 	{
 		pad_zero(nbpad, fd);
-		/* while (nbpad > 0)
-		{
-			ft_putchar_fd('0', fd);
-			nbpad--;
-		}*/
 		return (padlen);
 	}
 	pad_space(nbpad, fd);
-	/* while (nbpad > 0)
-	{
-		ft_putchar_fd(' ', fd);
-		nbpad--;
-	}*/
 	printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
@@ -173,20 +163,9 @@ int pad(int number, t_flags *flags, int fd)
 	if ((flags->state & ZERO) && !(flags->state & MINUS))
 	{
 		pad_zero(nbpad, fd);
-		/*while (nbpad > 0)
-		{
-			ft_putchar_fd('0', fd);
-			nbpad--;
-		}*/
 		return (padlen);
 	}
 	pad_space(nbpad, fd);
-	/* while (nbpad > 0)
-	{
-		ft_putchar_fd(' ', fd);
-		nbpad--;
-	}*/
-	//printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 
@@ -201,7 +180,8 @@ static const t_converter g_converters[] =
 		{'u', convert_uint},
 		{'x', convert_hex},
 		{'X', convert_cap_hex},
-		{'p', convert_pointer}
+		{'p', convert_pointer},
+		{'b', convert_bin}
 	};
 
 int do_function(char c, int fd, va_list args, t_flags *flags)
@@ -425,10 +405,10 @@ int main(int argc, char *argv[])
 		test = &hi;
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
+		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		realone = printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
+		realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);

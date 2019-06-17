@@ -75,6 +75,8 @@ int convert_uint(va_list args, int fd, t_flags *flags);
 
 int convert_oct(va_list args, int fd, t_flags *flags);
 
+int convert_bin(va_list args, int fd, t_flags *flags);
+
 int pad_uint(uintmax_t number, t_flags *flags, int fd);
 
 int ft_unbrlen(uintmax_t n);
