@@ -13,16 +13,18 @@
 #ifndef FT_PRINTF
 # define FT_PRINTF
 
-#define HASHTAG  1   /* 0000 0001 */
-#define MINUS  2   /* 0000 0010 */
-#define PLUS  4   /* 0000 0100 */
-#define SPACE  8   /* 0000 1000 */
-#define ZERO  16  /* 0001 0000 */
-#define HH  32  /* 0010 0000 */
-#define H  64  /* 0100 0000 */
-#define L  128 /* 1000 0000 */
-#define LL  256 /* 1 0000 0000 */
-#define PREC  512 /* 10 0000 0000 */
+# define HASHTAG  1   /* 0000 0001 */
+# define MINUS  2   /* 0000 0010 */
+# define PLUS  4   /* 0000 0100 */
+# define SPACE  8   /* 0000 1000 */
+# define ZERO  16  /* 0001 0000 */
+# define HH  32  /* 0010 0000 */
+# define H  64  /* 0100 0000 */
+# define L  128 /* 1000 0000 */
+# define LL  256 /* 1 0000 0000 */
+# define PREC  512 /* 10 0000 0000 */
+
+# define NBFORMATS 11
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -54,13 +56,17 @@ typedef struct s_converter
 	int (*fun_ptr)(va_list, int, t_flags*);
 }	t_converter;
 
-int		pad(int number, t_flags *flags, int fd);
+/*
+**int		pad_percent(int number, t_flags *flags, int fd);
+*/
 
 int		pad_int(intmax_t number, t_flags *flags, int fd);
 
 int		pad_str(int number, t_flags *flags, int fd);
 
 int is_activated(t_flags *flags);
+
+int convert_percent(va_list args, int fd, t_flags *flags);
 
 int convert_string(va_list args, int fd, t_flags *flags);
 
