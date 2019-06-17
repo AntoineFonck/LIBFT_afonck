@@ -217,7 +217,9 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 		{
 			fmt++;
 			check_all(&fmt, flags);
+			write(fd, "\e[1;34m", 7);
 			total_len += do_function(*fmt, fd, args, flags);
+			write(fd, "\e[m", 3);
 			flush_flags(flags);
 			fmt++;
 		}
@@ -256,12 +258,12 @@ int main(int argc, char *argv[])
 		test = &hi;
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		myone = ft_printf(argv[1], ft_atof(argv[2]), argv[3][0], test);
+		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		//myone = ft_printf(argv[1], ft_atof(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		//realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		realone = printf(argv[1], ft_atof(argv[2]), argv[3][0], test);
+		realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		//realone = printf(argv[1], ft_atof(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);
