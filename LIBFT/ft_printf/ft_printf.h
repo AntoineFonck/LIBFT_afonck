@@ -24,10 +24,15 @@
 # define LL  256 /* 1 0000 0000 */
 # define PREC  512 /* 10 0000 0000 */
 
-# define NBFORMATS 11
+# define NBFORMATS 12
 
 #include <stdarg.h>
 #include <stdio.h>
+
+/////////////////////////////
+int ft_ftoa(double n, int afterpoint, int fd);
+float stof(const char* s);
+/////////////////////////////
 
 int	ft_uitoaprint_base(uintmax_t value, int base, int fd);
 
@@ -60,12 +65,19 @@ typedef struct s_converter
 **int		pad_percent(int number, t_flags *flags, int fd);
 */
 
+/////////////////
+int pad_float(double number, t_flags *flags, int fd);
+//////////////////
+
+
 int		pad_int(intmax_t number, t_flags *flags, int fd);
 
 int		pad_str(int number, t_flags *flags, int fd);
 
 int is_activated(t_flags *flags);
-
+//////////////////////////////
+int convert_float(va_list args, int fd, t_flags *flags);
+//////////////////////////////
 int convert_percent(va_list args, int fd, t_flags *flags);
 
 int convert_string(va_list args, int fd, t_flags *flags);

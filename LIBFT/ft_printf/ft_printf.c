@@ -33,7 +33,8 @@ static const t_converter g_converters[] =
 		{'x', convert_hex},
 		{'X', convert_cap_hex},
 		{'p', convert_pointer},
-		{'b', convert_bin}
+		{'b', convert_bin},
+		{'f', convert_float}
 	};
 
 int do_function(char c, int fd, va_list args, t_flags *flags)
@@ -256,11 +257,11 @@ int main(int argc, char *argv[])
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
+		myone = ft_printf(argv[1], stof(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		realone = printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
+		realone = printf(argv[1], stof(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);
@@ -285,3 +286,22 @@ int main(int argc, char *argv[])
    return (0);
    }
    */
+float stof(const char* s){
+  float rez = 0, fact = 1;
+  if (*s == '-'){
+    s++;
+    fact = -1;
+  };
+  for (int point_seen = 0; *s; s++){
+    if (*s == '.'){
+      point_seen = 1;
+      continue;
+    };
+    int d = *s - '0';
+    if (d >= 0 && d <= 9){
+      if (point_seen) fact /= 10.0f;
+      rez = rez * 10.0f + (float)d;
+    };
+  };
+  return rez * fact;
+};
