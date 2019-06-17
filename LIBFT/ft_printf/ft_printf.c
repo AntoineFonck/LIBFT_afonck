@@ -91,64 +91,6 @@ int convert_char(va_list args, int fd, t_flags *flags)
 	return (1);
 }
 
-int special_convert_string(char *s, int len, int fd, t_flags *flags)
-{
-	int full_len;
-
-	full_len = 0;
-	if (flags->precision < len && flags->precision)
-		len = flags->precision;
-	if (flags->precision < 0)
-		len = ft_absolute(flags->precision);
-	if (flags->state & MINUS)
-	{
-		write(fd, s, len);
-		full_len += pad_str(len, flags, fd);
-		return (full_len + len);
-	}
-	if (flags->state & PLUS)
-	{
-		full_len += pad_str(len, flags, fd);
-		write(fd, s, len);
-		return (full_len + len);
-	}
-	full_len += pad_str(len, flags, fd);
-	write(fd, s, len);
-	return (full_len + len);
-}
-
-int convert_string(va_list args, int fd, t_flags *flags)
-{
-	char *s;
-	int len;
-
-	s = va_arg(args, char *);
-	len = ft_strlen(s);
-	if (is_activated(flags))
-		return (special_convert_string(s, len, fd, flags));
-	write(fd, s, len);
-	return (len);
-}
-
-int pad_str(int number, t_flags *flags, int fd)
-{
-	int nbpad;
-	int padlen;
-
-	nbpad = flags->field_width - number;
-	if (nbpad < 0)
-		nbpad = 0;
-	padlen = nbpad;
-	if ((flags->state & ZERO) && !(flags->state & MINUS))
-	{
-		pad_zero(nbpad, fd);
-		return (padlen);
-	}
-	pad_space(nbpad, fd);
-	printf("PADLEN = %d\n", padlen);
-	return (padlen);
-}
-
 int pad(int number, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -304,6 +246,7 @@ void check_precision(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '.')
 	{
+		flags->state |= PREC;
 		(*fmt)++;
 		//if (!ft_isdigit(**fmt))
 		//	return ;
@@ -362,9 +305,6 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 		if (*fmt == '%')
 		{
 			fmt++;
-			//check_flags(&fmt, flags);
-			//check_field_width(&fmt, flags);
-			//check_precision(&fmt, flags);
 			check_all(&fmt, flags);
 			total_len += do_function(*fmt, fd, args, flags);
 			flush_flags(flags);

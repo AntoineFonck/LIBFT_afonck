@@ -22,6 +22,7 @@
 #define H  64  /* 0100 0000 */
 #define L  128 /* 1000 0000 */
 #define LL  256 /* 1 0000 0000 */
+#define PREC  512 /* 10 0000 0000 */
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -60,6 +61,8 @@ int		pad_int(intmax_t number, t_flags *flags, int fd);
 int		pad_str(int number, t_flags *flags, int fd);
 
 int is_activated(t_flags *flags);
+
+int convert_string(va_list args, int fd, t_flags *flags);
 
 int convert_cap_hex(va_list args, int fd, t_flags *flags);
 
