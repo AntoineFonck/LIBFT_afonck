@@ -58,39 +58,6 @@ int convert_percent(va_list args, int fd, t_flags *flags)
 	return (1);
 }
 
-int special_convert_char(char c, int fd, t_flags *flags)
-{
-	int full_len;
-
-	full_len = 0;
-	if (flags->state & MINUS)
-	{
-		ft_putchar_fd(c, fd);
-		full_len += pad_str(1, flags, fd);
-		return (full_len + 1);
-	}
-	if (flags->state & PLUS)
-	{
-		full_len += pad_str(1, flags, fd);
-		ft_putchar_fd(c, fd);
-		return (full_len + 1);
-	}
-	full_len += pad_str(1, flags, fd);
-	ft_putchar_fd(c, fd);
-	return (full_len + 1);
-}
-
-int convert_char(va_list args, int fd, t_flags *flags)
-{
-	char c;
-
-	c = va_arg(args, int);
-	if (is_activated(flags))
-		return (special_convert_char(c, fd, flags));
-	ft_putchar_fd(c, fd);
-	return (1);
-}
-
 int pad(int number, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -345,10 +312,12 @@ int main(int argc, char *argv[])
 		test = &hi;
 		int realone;
 		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
 		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-		realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		//realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		realone = printf(argv[1], ft_atol(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);

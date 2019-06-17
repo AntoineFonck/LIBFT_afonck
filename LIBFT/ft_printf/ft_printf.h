@@ -64,6 +64,8 @@ int is_activated(t_flags *flags);
 
 int convert_string(va_list args, int fd, t_flags *flags);
 
+int convert_char(va_list args, int fd, t_flags *flags);
+
 int convert_cap_hex(va_list args, int fd, t_flags *flags);
 
 int convert_hex(va_list args, int fd, t_flags *flags);
