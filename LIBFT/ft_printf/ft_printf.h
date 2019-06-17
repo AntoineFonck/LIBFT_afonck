@@ -31,7 +31,8 @@
 
 /////////////////////////////
 int ft_ftoa(double n, int afterpoint, int fd);
-float stof(const char* s);
+int ft_floatlen(double n);
+float ft_atof(const char* s);
 /////////////////////////////
 
 int	ft_uitoaprint_base(uintmax_t value, int base, int fd);
