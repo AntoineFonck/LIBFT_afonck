@@ -28,6 +28,7 @@ static const t_converter g_converters[] =
 		{'c', convert_char},
 		{'C', convert_wchar},
 		{'s', convert_string},
+		{'S', convert_wstring},
 		{'d', convert_int},
 		{'i', convert_int},
 		{'o', convert_oct},
@@ -297,16 +298,15 @@ int ft_printf(const char *fmt, ...)
 
 int main(void)
 {
-    wchar_t s;
+    wchar_t s[] = L"இŵŢ";
     int mine;
     int real;
-    s = L'இ';
 
     setlocale(LC_ALL, "");
 
-    mine = ft_printf("%43C", s);
+    mine = ft_printf("%43S", s);
     printf("\n");
-    real = printf("%43C", s);
+    real = printf("%43S", s);
     printf("\nmy printf len = %d and real printf len = %d\n", mine, real);
     return (0);
 }

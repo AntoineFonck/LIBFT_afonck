@@ -33,7 +33,7 @@
 # define COLORLEN 7
 # define RESET "\e[0m"
 
-# define NBFORMATS 13
+# define NBFORMATS 14
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -44,6 +44,9 @@
 int ft_ftoa(double n, int afterpoint, int fd);
 int ft_floatlen(double n);
 float ft_atof(const char* s);
+int ft_putwchar_fd(wchar_t wchar, int fd);
+int get_wchar_size(int nbbits);
+int nbits(unsigned int nbr);
 /////////////////////////////
 
 int	ft_uitoaprint_base(uintmax_t value, int base, int fd);
@@ -94,6 +97,8 @@ int convert_float(va_list args, int fd, t_flags *flags);
 int convert_percent(va_list args, int fd, t_flags *flags);
 
 int convert_string(va_list args, int fd, t_flags *flags);
+
+int convert_wstring(va_list args, int fd, t_flags *flags);
 
 int convert_char(va_list args, int fd, t_flags *flags);
 
