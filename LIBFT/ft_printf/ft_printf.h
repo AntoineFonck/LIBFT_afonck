@@ -24,6 +24,15 @@
 # define LL  256 /* 1 0000 0000 */
 # define PREC  512 /* 10 0000 0000 */
 
+# define RED "\e[0;31m"
+# define GREEN "\e[0;32m"
+# define YELLOW "\e[0;33m"
+# define BLUE "\e[0;34m"
+# define MAGENTA "\e[0;35m"
+# define CYAN "\e[0;36m"
+# define COLORLEN 7
+# define RESET "\e[0m"
+
 # define NBFORMATS 12
 
 #include <stdarg.h>
@@ -54,6 +63,7 @@ typedef	struct s_flags
 	int state;
 	int field_width;
 	int precision;
+	int color;
 }				t_flags;
 
 typedef struct s_converter 

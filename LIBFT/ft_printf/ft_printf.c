@@ -58,6 +58,7 @@ t_flags *init_flags()
 	flags->state = 0;
 	flags->field_width = 0;
 	flags->precision = 0;
+	flags->color = 0;
 	return (flags);
 }
 
@@ -191,11 +192,37 @@ void check_lmod(const char **fmt, t_flags *flags)
 	}
 }
 
+void check_color(const char **fmt, t_flags *flags)
+{
+	if (**fmt == '{')
+	{
+		(*fmt)++;
+		if (**fmt == 'r')
+			flags->color = 1;
+		else if (**fmt == 'g')
+			flags->color = 2;
+		else if (**fmt == 'y')
+			flags->color = 3;
+		else if (**fmt == 'b')
+			flags->color = 4;
+		else if (**fmt == 'm')
+			flags->color = 5;
+		else if (**fmt == 'c')
+			flags->color = 6;
+		(*fmt)++;
+		if (**fmt == '}')
+			(*fmt)++;
+		else
+			flags->color = 0;
+	}
+}
+
 void flush_flags(t_flags *flags)
 {
 	flags->state = 0;
 	flags->field_width = 0;
 	flags->precision = 0;
+	flags->color = 0;
 }
 
 void check_all(const char **fmt, t_flags *flags)
@@ -204,6 +231,23 @@ void check_all(const char **fmt, t_flags *flags)
 	check_field_width(fmt, flags);
 	check_precision(fmt, flags);
 	check_lmod(fmt, flags);
+	check_color(fmt, flags);
+}
+
+void choose_color(int fd, int color)
+{
+	if (color == 1)
+		write(fd, RED, COLORLEN);
+	else if (color == 2)
+		write(fd, GREEN, COLORLEN);
+	else if (color == 3)
+		write(fd, YELLOW, COLORLEN);
+	else if (color == 4)
+		write(fd, BLUE, COLORLEN);
+	else if (color == 5)
+		write(fd, MAGENTA, COLORLEN);
+	else if (color == 6)
+		write(fd, CYAN, COLORLEN);
 }
 
 int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
@@ -217,9 +261,9 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 		{
 			fmt++;
 			check_all(&fmt, flags);
-			write(fd, "\e[1;34m", 7);
+			choose_color(fd, flags->color);
 			total_len += do_function(*fmt, fd, args, flags);
-			write(fd, "\e[m", 3);
+			write(fd, RESET, 4);
 			flush_flags(flags);
 			fmt++;
 		}
