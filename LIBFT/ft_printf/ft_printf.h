@@ -33,10 +33,12 @@
 # define COLORLEN 7
 # define RESET "\e[0m"
 
-# define NBFORMATS 12
+# define NBFORMATS 13
 
 #include <stdarg.h>
 #include <stdio.h>
+
+#include <wchar.h>
 
 /////////////////////////////
 int ft_ftoa(double n, int afterpoint, int fd);
@@ -94,6 +96,8 @@ int convert_percent(va_list args, int fd, t_flags *flags);
 int convert_string(va_list args, int fd, t_flags *flags);
 
 int convert_char(va_list args, int fd, t_flags *flags);
+
+int convert_wchar(va_list args, int fd, t_flags *flags);
 
 int convert_cap_hex(va_list args, int fd, t_flags *flags);
 

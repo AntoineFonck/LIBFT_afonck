@@ -12,6 +12,7 @@
 
 #include "../libft.h"
 #include "ft_printf.h"
+#include <locale.h>
 
 int is_activated(t_flags *flags)
 {
@@ -25,6 +26,7 @@ static const t_converter g_converters[] =
 	{
 		{'%', convert_percent},
 		{'c', convert_char},
+		{'C', convert_wchar},
 		{'s', convert_string},
 		{'d', convert_int},
 		{'i', convert_int},
@@ -263,7 +265,8 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 			check_all(&fmt, flags);
 			choose_color(fd, flags->color);
 			total_len += do_function(*fmt, fd, args, flags);
-			write(fd, RESET, 4);
+			if (flags->color)
+				write(fd, RESET, 4);
 			flush_flags(flags);
 			fmt++;
 		}
@@ -292,6 +295,23 @@ int ft_printf(const char *fmt, ...)
 	return (done);
 }
 
+int main(void)
+{
+    wchar_t s;
+    int mine;
+    int real;
+    s = L'இ';
+
+    setlocale(LC_ALL, "");
+
+    mine = ft_printf("%43C", s);
+    printf("\n");
+    real = printf("%43C", s);
+    printf("\nmy printf len = %d and real printf len = %d\n", mine, real);
+    return (0);
+}
+
+/*
 int main(int argc, char *argv[])
 {
 	if (argc == 4)
@@ -312,7 +332,7 @@ int main(int argc, char *argv[])
 	}
 	return (0);
 }
-
+*/
 /*
    int main(int argc, char *argv[])
    {
