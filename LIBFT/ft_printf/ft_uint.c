@@ -8,14 +8,14 @@ int pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - (flags->precision >= ft_unbrlen(number)
-			? flags->precision : ft_unbrlen(number)) - (number < 0 ? 1 : 0);
-	if (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0)
+			? flags->precision : ft_unbrlen(number));
+	if (((flags->state & PLUS) || (flags->state & SPACE)))
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number))
-		- ft_unbrlen(number) + (number < 0 ? 1 : 0);
-	padlen = nbpad + nbzero + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
+		- ft_unbrlen(number);
+	padlen = nbpad + nbzero + ((flags->state & PLUS) || (flags->state & SPACE));
 	if (!(flags->state & MINUS))
 		pad_space(nbpad, fd);
 	pad_zero(nbzero, fd);

@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/14 13:14:56 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/20 00:22:54 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@
 # define NBFORMATS 14
 
 #include <stdarg.h>
-#include <stdio.h>
 
+#include <stdint.h>
 #include <wchar.h>
 
 /////////////////////////////
 int ft_ftoa(double n, int afterpoint, int fd);
-int ft_floatlen(double n);
+int ft_floatlen(double n, int afterpoint);
 float ft_atof(const char* s);
 int ft_putwchar_fd(wchar_t wchar, int fd);
 int get_wchar_size(int nbbits);
