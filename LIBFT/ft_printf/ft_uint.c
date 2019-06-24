@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_uint.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/24 15:31:06 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/06/24 15:32:04 by sluetzen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft.h"
 #include "ft_printf.h"
 
-int pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
+int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int nbzero;
@@ -25,7 +37,7 @@ int pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int uint_precision(uintmax_t number, int fd, t_flags *flags)
+int	uint_precision(uintmax_t number, int fd, t_flags *flags)
 {
 	int len;
 
@@ -38,14 +50,14 @@ int uint_precision(uintmax_t number, int fd, t_flags *flags)
 	}
 	else
 	{
-		//if ((PLUS_FLAG) && number > 0)
-		//	ft_putchar_fd('+', fd);
+	//if ((PLUS_FLAG) && number > 0)
+	//ft_putchar_fd('+', fd);
 		len += pad_uint_prec(number, flags, fd);
 	}
 	return (len);
 }
 
-int uint_no_precision(uintmax_t number, int fd, t_flags *flags)
+int	uint_no_precision(uintmax_t number, int fd, t_flags *flags)
 {
 	int len;
 
@@ -63,7 +75,7 @@ int uint_no_precision(uintmax_t number, int fd, t_flags *flags)
 	return (len);
 }
 
-int pad_uint(uintmax_t number, t_flags *flags, int fd)
+int	pad_uint(uintmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -96,7 +108,7 @@ int pad_uint(uintmax_t number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int special_convert_uint(uintmax_t number, int fd, t_flags *flags)
+int	special_convert_uint(uintmax_t number, int fd, t_flags *flags)
 {
 	int full_len;
 
@@ -108,20 +120,20 @@ int special_convert_uint(uintmax_t number, int fd, t_flags *flags)
 	return (full_len + ft_unbrlen(number));
 }
 
-int convert_uint(va_list args, int fd, t_flags *flags)
+int	convert_uint(va_list args, int fd, t_flags *flags)
 {
 	uintmax_t number;
 
 	if (HH_FLAG)
-            number = (unsigned char)va_arg(args, unsigned int);
-    	else if (H_FLAG)
-            number = (unsigned short)va_arg(args, unsigned int);
-    	else if (L_FLAG)
-            number = (unsigned long)va_arg(args, unsigned long);
-    	else if (LL_FLAG)
-            number = (unsigned long long)va_arg(args, unsigned long long);
-    	else
-	    number = va_arg(args, unsigned int);
+		number = (unsigned char)va_arg(args, unsigned int);
+	else if (H_FLAG)
+		number = (unsigned short)va_arg(args, unsigned int);
+	else if (L_FLAG)
+		number = (unsigned long)va_arg(args, unsigned long);
+	else if (LL_FLAG)
+		number = (unsigned long long)va_arg(args, unsigned long long);
+	else
+		number = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_uint(number, fd, flags));
 	ft_uitoaprint_base(number, 10, fd);

@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_uitocapa_base.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/24 15:34:46 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/06/24 15:34:53 by sluetzen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "../libft.h"
 
 int	ft_uitocapaprint_base(uintmax_t value, int base, int fd)
 {
 	char	buf[50];
-	char    *ptr;
-	int     num;
-	int	    ascii_offset;
+	char	*ptr;
+	int		num;
+	int		ascii_offset;
 
 	ptr = &buf[49];
 	*ptr = '\0';

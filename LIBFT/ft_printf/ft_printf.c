@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 14:45:49 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/24 15:29:12 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,33 @@
 #include "ft_printf.h"
 #include <locale.h>
 
-int is_activated(t_flags *flags)
+int	is_activated(t_flags *flags)
 {
 	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
-	|| (SPACE_FLAG) || (ZERO_FLAG) || flags->field_width || flags->precision)
+			|| (SPACE_FLAG) || (ZERO_FLAG) || flags->field_width || flags->precision)
 		return (1);
 	return (0);
 }
 
-static const t_converter g_converters[] =
-	{
-		{'%', convert_percent},
-		{'c', convert_char},
-		{'C', convert_wchar},
-		{'s', convert_string},
-		{'S', convert_wstring},
-		{'d', convert_int},
-		{'i', convert_int},
-		{'o', convert_oct},
-		{'u', convert_uint},
-		{'x', convert_hex},
-		{'X', convert_cap_hex},
-		{'p', convert_pointer},
-		{'b', convert_bin},
-		{'f', convert_float}
-	};
+static const	t_converter g_converters[] =
+{
+	{'%', convert_percent},
+	{'c', convert_char},
+	{'C', convert_wchar},
+	{'s', convert_string},
+	{'S', convert_wstring},
+	{'d', convert_int},
+	{'i', convert_int},
+	{'o', convert_oct},
+	{'u', convert_uint},
+	{'x', convert_hex},
+	{'X', convert_cap_hex},
+	{'p', convert_pointer},
+	{'b', convert_bin},
+	{'f', convert_float}
+};
 
-int do_function(char c, int fd, va_list args, t_flags *flags)
+int		do_function(char c, int fd, va_list args, t_flags *flags)
 {
 	int i;
 
@@ -65,7 +65,7 @@ t_flags *init_flags()
 	return (flags);
 }
 
-int is_flag(char c)
+int		is_flag(char c)
 {
 	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
 		return (1);
@@ -73,7 +73,7 @@ int is_flag(char c)
 		return (0);
 }
 
-void activate_flags(t_flags *flags, char c)
+void	activate_flags(t_flags *flags, char c)
 {
 	/* activate them in nearly the equivalent of doing += for each flag (HASHTAG + MINUS for example if both are activated), using | (OR) instead for a very gud reason: if a flag is repeated twice (%##x for instance), the += logic would give this result: flags->state += HASHTAG so flags->state is now equal 1 (0000 0001) BUT if you repeat this operation (second hashtag in format %##d) you get this: flags->state += HASHTAG is equal to 2 which is WRONG (would randomly activate flags MINUS because MINUS = 2 (0000 0010)).
 	   SO the solution is to use OR (|) instead of + because 1 (0000 0001) | 1 (0000 0001) is still equal to 1 (0000 0001) ;D
@@ -92,7 +92,7 @@ void activate_flags(t_flags *flags, char c)
 		return;
 }
 
-void check_flags(const char **fmt, t_flags *flags)
+void	check_flags(const char **fmt, t_flags *flags)
 {
 	while (is_flag(**fmt))
 	{
@@ -103,10 +103,10 @@ void check_flags(const char **fmt, t_flags *flags)
 	//printf("[DEBUG] flag loop activated, flag working? hash= %d\n, minus= %d, plus= %d, space= %d, zero= %d\n\n", flags->hashtag, flags->minus, flags->plus, flags->space, flags->zero);
 }
 
-void store_field_width(const char **fmt, t_flags *flags)
+void	store_field_width(const char **fmt, t_flags *flags)
 {
-	char field_width[10];
-	int i;
+	char	field_width[10];
+	int		i;
 
 	i = 0;
 	ft_bzero((void *)field_width, 10);
@@ -127,17 +127,17 @@ void store_field_width(const char **fmt, t_flags *flags)
 	//printf("[DEBUG] total field width == %d and is at %p\n", flags->field_width, &(flags->field_width));
 }
 
-void check_field_width(const char **fmt, t_flags *flags)
+void	check_field_width(const char **fmt, t_flags *flags)
 {
 	if (!ft_isdigit(**fmt))
 		return;
 	store_field_width(fmt, flags);
 }
 
-void store_precision(const char **fmt, t_flags *flags)
+void	store_precision(const char **fmt, t_flags *flags)
 {
-	char precision[10];
-	int i;
+	char	precision[10];
+	int		i;
 
 	i = 0;
 	ft_bzero((void *)precision, 10);
@@ -157,7 +157,7 @@ void store_precision(const char **fmt, t_flags *flags)
 	//printf("[DEBUG] total precision == %d and is at %p\n", flags->precision, &(flags->precision));
 }
 
-void check_precision(const char **fmt, t_flags *flags)
+void	check_precision(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '.')
 	{
@@ -169,7 +169,7 @@ void check_precision(const char **fmt, t_flags *flags)
 	}
 }
 
-void check_lmod(const char **fmt, t_flags *flags)
+void	check_lmod(const char **fmt, t_flags *flags)
 {
 	if (**fmt == 'h')
 	{
@@ -195,7 +195,7 @@ void check_lmod(const char **fmt, t_flags *flags)
 	}
 }
 
-void check_color(const char **fmt, t_flags *flags)
+void	check_color(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '{')
 	{
@@ -220,7 +220,7 @@ void check_color(const char **fmt, t_flags *flags)
 	}
 }
 
-void flush_flags(t_flags *flags)
+void	flush_flags(t_flags *flags)
 {
 	flags->state = 0;
 	flags->field_width = 0;
@@ -228,7 +228,7 @@ void flush_flags(t_flags *flags)
 	flags->color = 0;
 }
 
-void check_all(const char **fmt, t_flags *flags)
+void	check_all(const char **fmt, t_flags *flags)
 {
 	check_flags(fmt, flags);
 	check_field_width(fmt, flags);
@@ -237,7 +237,7 @@ void check_all(const char **fmt, t_flags *flags)
 	check_color(fmt, flags);
 }
 
-void choose_color(int fd, int color)
+void	choose_color(int fd, int color)
 {
 	if (color == 1)
 		write(fd, RED, COLORLEN);
@@ -253,7 +253,7 @@ void choose_color(int fd, int color)
 		write(fd, CYAN, COLORLEN);
 }
 
-int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
+int		ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 {
 	int total_len;
 
@@ -281,11 +281,11 @@ int ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 	return (total_len);
 }
 
-int ft_printf(const char *fmt, ...)
+int		ft_printf(const char *fmt, ...)
 {
-	int done;
-	va_list args;
-	t_flags *flags;
+	int		done;
+	va_list	args;
+	t_flags	*flags;
 
 	if ((flags = init_flags()) == NULL)
 		return (-1);
@@ -296,31 +296,33 @@ int ft_printf(const char *fmt, ...)
 	return (done);
 }
 /*
-int main(void)
-{
-    wchar_t s[] = L"இŵŢ";
-    int mine;
-    int real;
+   int main(void)
+   {
+   wchar_t s[] = L"இŵŢ";
+   int mine;
+   int real;
 
-    setlocale(LC_ALL, "");
+   setlocale(LC_ALL, "");
 
-    mine = ft_printf("%43S", s);
-    printf("\n");
-    real = printf("%43S", s);
-    printf("\nmy printf len = %d and real printf len = %d\n", mine, real);
-    return (0);
-}
-*/
+   mine = ft_printf("%43S", s);
+   printf("\n");
+   real = printf("%43S", s);
+   printf("\nmy printf len = %d and real printf len = %d\n", mine, real);
+   return (0);
+   }
+   */
 
-int main(int argc, char *argv[])
+int		main(int argc, char *argv[])
 {
 	if (argc == 4)
 	{
 		char *test;
 		int myone;
-		char hi = 'h';
-		test = &hi;
+		char hi;
 		int realone;
+
+		hi = 'h';
+		test = &hi;
 		myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
 		//myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
@@ -352,33 +354,34 @@ int main(int argc, char *argv[])
    return (0);
    }
    */
-float ft_atof(const char* s)
+float	ft_atof(const char *s)
 {
-	float rez;
-	float fact;
-	int d;
-	int point_seen;
+	float	res;
+	float	fact;
+	int		d;
+	int		point_seen;
 
-	rez = 0;
+	res = 0;
 	fact = 1;
 	d = 0;
 	point_seen = 0;
-  if (*s == '-')
-  {
-    s++;
-    fact = -1;
-  }
-  while (*s)
-  {
-    if (*s == '.')
-      point_seen = 1;
-    d = *s - '0';
-    if (d >= 0 && d <= 9)
-    {
-      if (point_seen) fact /= 10.0f;
-      rez = rez * 10.0f + (float)d;
-    }
-    s++;
-  }
-  return (rez * fact);
+	if (*s == '-')
+	{
+		s++;
+		fact = -1;
+	}
+	while (*s)
+	{
+		if (*s == '.')
+			point_seen = 1;
+		d = *s - '0';
+		if (d >= 0 && d <= 9)
+		{
+			if (point_seen)
+				fact /= 10.0f;
+			res = res * 10.0f + (float)d;
+		}
+		s++;
+	}
+	return (res * fact);
 }

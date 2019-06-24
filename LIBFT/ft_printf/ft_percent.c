@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_percent.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/24 15:17:05 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/06/24 15:18:56 by sluetzen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft.h"
 #include "ft_printf.h"
 
@@ -30,16 +42,17 @@
 **        return (full_len + 1);
 **}
 */
-int convert_percent(va_list args, int fd, t_flags *flags)
+
+int	convert_percent(va_list args, int fd, t_flags *flags)
 {
-        (void)args;
+	(void)args;
 	(void)flags;
-	/*
-        **if (is_activated(flags))
-        **        return (special_convert_percent(fd, flags));
-	*/
-        ft_putchar_fd('%', fd);
-        return (1);
+/*
+**	if (is_activated(flags))
+**	return (special_convert_percent(fd, flags));
+*/
+	ft_putchar_fd('%', fd);
+	return (1);
 }
 /*
 **int pad_percent(int number, t_flags *flags, int fd)
