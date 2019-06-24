@@ -6,14 +6,14 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/13 22:31:35 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/24 11:53:18 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
-int pad_int_prec(intmax_t number, t_flags *flags, int fd)
+int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int nbzero;
@@ -42,7 +42,7 @@ int pad_int_prec(intmax_t number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int int_precision(intmax_t number, int fd, t_flags *flags)
+int	int_precision(intmax_t number, int fd, t_flags *flags)
 {
 	int len;
 
@@ -50,13 +50,9 @@ int int_precision(intmax_t number, int fd, t_flags *flags)
 	if (!(flags->state & MINUS))
 	{
 		len += pad_int_prec(number, flags, fd);
-		//if ((flags->state & PLUS) && flags->field_width > flags->precision && number >= 0)
-		//	ft_putchar_fd('+', fd);
 	}
 	else
 	{
-		//if ((flags->state & PLUS) && number > 0)
-		//	ft_putchar_fd('+', fd);
 		if (number < 0 && (flags->state & ZERO))
 			ft_putchar_fd('-', fd);
 		len += pad_int_prec(number, flags, fd);
@@ -64,7 +60,7 @@ int int_precision(intmax_t number, int fd, t_flags *flags)
 	return (len);
 }
 
-int int_no_precision(intmax_t number, int fd, t_flags *flags)
+int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 {
 	int len;
 
@@ -79,7 +75,7 @@ int int_no_precision(intmax_t number, int fd, t_flags *flags)
 		if ((flags->state & PLUS) && !(flags->state & ZERO) && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(ft_absolute(number), fd);
-		printf("WTF NUMBER = %jd\n", ft_absolute(number));
+		//printf("WTF NUMBER = %jd\n", ft_absolute(number));
 	}
 	else if ((flags->state & MINUS))
 	{
@@ -93,7 +89,7 @@ int int_no_precision(intmax_t number, int fd, t_flags *flags)
 	return (len);
 }
 
-int pad_int(intmax_t number, t_flags *flags, int fd)
+int	pad_int(intmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
 	int padlen;
@@ -121,7 +117,7 @@ int pad_int(intmax_t number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int special_convert_int(intmax_t number, int fd, t_flags *flags)
+int	special_convert_int(intmax_t number, int fd, t_flags *flags)
 {
 	int full_len;
 
@@ -133,7 +129,7 @@ int special_convert_int(intmax_t number, int fd, t_flags *flags)
 	return (full_len + ft_nbrlen(number));
 }
 
-int convert_int(va_list args, int fd, t_flags *flags)
+int	convert_int(va_list args, int fd, t_flags *flags)
 {
 	intmax_t number;
 

@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 13:00:21 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/14 13:11:23 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/24 11:59:06 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int pad_oct_prec_min(int octlen, t_flags *flags, int fd, uintmax_t oct)
     int padlen;
 
     nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen)
-	    - (flags->precision <= octlen ? (flags->state & HASHTAG) : 0);
+	    - (flags->precision <= octlen ? (HASHTAG_FLAG) : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
-    padlen = nbpad + nbzero + ((flags->state & HASHTAG) && flags->precision <= octlen ? 1 : 0);
-    if ((flags->state & HASHTAG) && flags->precision <= octlen)
+    padlen = nbpad + nbzero + ((HASHTAG_FLAG) && flags->precision <= octlen ? 1 : 0);
+    if ((HASHTAG_FLAG) && flags->precision <= octlen)
         write(fd, "0", 1);
     pad_zero(nbzero, fd);
     ft_uitoaprint_base(oct, 8, fd);
@@ -41,21 +41,21 @@ int pad_oct_prec(int octlen, t_flags *flags, int fd)
     int padlen;
 
     nbpad = flags->field_width - (flags->precision >= octlen ? flags->precision : octlen)
-	    - (flags->precision <= octlen ? (flags->state & HASHTAG) : 0);
+	    - (flags->precision <= octlen ? (HASHTAG_FLAG) : 0);
     if (nbpad < 0)
         nbpad = 0;
     nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
-    padlen = nbpad + nbzero + ((flags->state & HASHTAG) && flags->precision <= octlen ? 1 : 0);
+    padlen = nbpad + nbzero + ((HASHTAG_FLAG) && flags->precision <= octlen ? 1 : 0);
     if (flags->precision < flags->field_width)
     {
         pad_space(nbpad, fd);
-        if ((flags->state & HASHTAG) && flags->precision <= octlen)
+        if ((HASHTAG_FLAG) && flags->precision <= octlen)
             write(fd, "0", 1);
         pad_zero(nbzero, fd);
     }
     else
     {
-        if ((flags->state & HASHTAG) && flags->precision <= octlen)
+        if ((HASHTAG_FLAG) && flags->precision <= octlen)
             write(fd, "0", 1);
         pad_zero(nbzero, fd);
     }
@@ -69,12 +69,12 @@ int pad_oct(int octlen, t_flags *flags, int fd)
 
     if (flags->precision)
         return (pad_oct_prec(octlen, flags, fd));
-    nbpad = flags->field_width - octlen - ((flags->state & HASHTAG) ? 1 : 0);
+    nbpad = flags->field_width - octlen - ((HASHTAG_FLAG) ? 1 : 0);
     padlen = 0;
-    padlen += (nbpad > 0 ? nbpad : 0) + ((flags->state & HASHTAG) ? 1 : 0);
+    padlen += (nbpad > 0 ? nbpad : 0) + ((HASHTAG_FLAG) ? 1 : 0);
     if (nbpad < 0)
         nbpad = 0;
-    if ((flags->state & HASHTAG) && (flags->state & ZERO))
+    if ((HASHTAG_FLAG) && (flags->state & ZERO))
 	    write(fd, "0", 1);
     while (nbpad > 0)
     {
@@ -84,7 +84,7 @@ int pad_oct(int octlen, t_flags *flags, int fd)
             ft_putchar_fd(' ', fd);
         nbpad--;
     }
-    if ((flags->state & HASHTAG) && !(flags->state & ZERO))
+    if ((HASHTAG_FLAG) && !(flags->state & ZERO))
      	write(fd, "0", 1);
     return (padlen);
 }

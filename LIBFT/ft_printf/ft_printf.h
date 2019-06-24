@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/20 00:22:54 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/24 12:00:41 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # define L  128 /* 1000 0000 */
 # define LL  256 /* 1 0000 0000 */
 # define PREC  512 /* 10 0000 0000 */
+
+# define HASHTAG_FLAG flags->state & HASHTAG
+
 
 # define RED "\e[0;31m"
 # define GREEN "\e[0;32m"
