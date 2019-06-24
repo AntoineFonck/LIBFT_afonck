@@ -28,13 +28,24 @@ double		ft_pow(double x, int y)
 	return (r);
 }
 
-static int	print_deci(double fpart)//, int afterpoint, int fd)
+static int	print_deci(double fpart, int afterpoint, int fd)
 {
-	while (fpart > 0)
+	int i;
+	char buf[afterpoint + 1];
+	char *ptr;
+
+	i = 0;
+	ptr = &buf[afterpoint];
+	*ptr = '\0';
+	while (i < afterpoint)
 	{
 		printf("fpart in print deci = %f\n", fpart);
+		printf("*ptr = %c\n", ('0' + (char)((long)fpart % 10)));
+		*--ptr = '0' + ((long)fpart % 10);
 		fpart /= 10;
+		i++;
 	}
+	write(fd, buf, afterpoint);
 	return (1);
 }
 
@@ -47,10 +58,10 @@ static int	handle_decimal(double n, double fpart, int afterpoint, int fd, int mo
 	{
 		ft_putchar_fd('.', fd);
 		length++;
-		printf("fpart = %f and long fpart = %ld\n", fpart, (long)fpart);
+		//printf("fpart = %f and long fpart = %ld\n", fpart, (long)fpart);
 		fpart = fpart * ft_pow(10, afterpoint);
 		fpart = (n >= 0 ? fpart + 0.5 : fpart - 0.5);
-		printf("fpart = %f and long fpart = %ld\n", fpart, (long)fpart);
+		//printf("fpart = %f and long fpart = %ld\n", fpart, (long)fpart);
 		//fpart = ft_absolute(fpart);
 		morezero = afterpoint - ft_nbrlen((long)fpart);
 		if (morezero > 0)
@@ -61,9 +72,8 @@ static int	handle_decimal(double n, double fpart, int afterpoint, int fd, int mo
 		//length += ft_nbrlen(ft_absolute((long)fpart));
 		//ft_uitoaprint_base(ft_absolute((unsigned long)fpart), 10, fd);
 		length += ft_nbrlen((long)fpart);
-		//ft_uitoaprint_base((unsigned long)fpart, 10, fd);
+		ft_uitoaprint_base((unsigned long)fpart, 10, fd);
 		//print_deci(fpart, afterpoint, fd);
-		print_deci(fpart);
 	}
 	return (length);
 }
