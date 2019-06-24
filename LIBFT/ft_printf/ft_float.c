@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_float.c                                         :+:      :+:    :+:   */
+/*   float.c     	                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 20:56:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/20 00:22:51 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/24 14:24:14 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
-void	flags_spec(t_flags *flags, int nbpad, int fd, int number)
+void	flags_spec(t_flags *flags, int nbpad, int fd, intmax_t number)
 {
-	if (!(flags->state & MINUS))
+	if (!(MIN_FLAG))
 		pad_space(nbpad, fd);
-	if ((flags->state & PLUS) && number >= 0)
+	if ((PLUS_FLAG) && number >= 0)
 		ft_putchar_fd('+', fd);
-	if ((flags->state & SPACE) && number >= 0 && !(flags->state & PLUS))
+	if ((SPACE_FLAG) && number >= 0 && !(PLUS_FLAG))
 		ft_putchar_fd(' ', fd);
 }
 
@@ -32,15 +32,15 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 
 	nbrlen = ft_floatlen(number, preclen) - (number < 0 ? 1 : 0);
 	nbpad = flags->field_width - (flags->precision >= nbrlen ? flags->precision
-		: nbrlen) - (number < 0 ? 1 : 0) - (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0 ? 1 : 0);
+		: nbrlen) - (number < 0 ? 1 : 0) - (((PLUS_FLAG) || (SPACE_FLAG)) && number >= 0 ? 1 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
-	padlen = nbpad + nbzero + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
+	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
 	flags_spec(flags, nbpad, fd, number);
 	pad_zero(nbzero, fd);
 	ft_ftoa(number, preclen, fd);
-	if ((flags->state & MINUS))
+	if ((MIN_FLAG))
 		pad_space(nbpad, fd);
 	return (padlen);
 }
@@ -50,11 +50,11 @@ int		float_precision(double number, int preclen, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!(flags->state & MINUS))
+	if (!(MIN_FLAG))
 		len += pad_float_prec(number, preclen, flags, fd);
 	else
 	{
-		if (number < 0 && (flags->state & ZERO))
+		if (number < 0 && (ZERO_FLAG))
 			ft_putchar_fd('-', fd);
 		len += pad_float_prec(number, preclen, flags, fd);
 	}
@@ -66,22 +66,22 @@ int		float_no_precision(double number, int preclen, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!(flags->state & MINUS))
+	if (!(MIN_FLAG))
 	{
-		if ((flags->state & PLUS) && (flags->state & ZERO) && number >= 0)
+		if ((PLUS_FLAG) && (ZERO_FLAG) && number >= 0)
 			ft_putchar_fd('+', fd);
-		if (number < 0 && (flags->state & ZERO))
+		if (number < 0 && (ZERO_FLAG))
 			ft_putchar_fd('-', fd);
 		len += pad_float(number, flags, fd);
-		if ((flags->state & PLUS) && !(flags->state & ZERO) && number >= 0)
+		if ((PLUS_FLAG) && !(ZERO_FLAG) && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_ftoa(number, preclen, fd);
 	}
-	else if ((flags->state & MINUS))
+	else if ((MIN_FLAG))
 	{
-		if ((flags->state & PLUS) && number >= 0)
+		if ((PLUS_FLAG) && number >= 0)
 			ft_putchar_fd('+', fd);
-		else if ((flags->state & SPACE) && number >= 0)
+		else if ((SPACE_FLAG) && number >= 0)
 			ft_putchar_fd(' ', fd);
 		ft_ftoa(number, preclen, fd);
 		len += pad_float(number, flags, fd);
@@ -95,23 +95,23 @@ int		pad_float(double number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_floatlen(number, 6);
-	if (((flags->state & PLUS) || (flags->state & SPACE)) && number >= 0)
+	if (((PLUS_FLAG) || (SPACE_FLAG)) && number >= 0)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	padlen = nbpad + (number >= 0 ? (flags->state & PLUS) || (flags->state & SPACE) : 0);
-	if ((flags->state & ZERO) && !(flags->state & MINUS))
+	padlen = nbpad + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
+	if ((ZERO_FLAG) && !(MIN_FLAG))
 	{
-		if ((flags->state & SPACE) && !(flags->state & PLUS) && number >= 0)
+		if ((SPACE_FLAG) && !(PLUS_FLAG) && number >= 0)
 			ft_putchar_fd(' ', fd);
 		pad_zero(nbpad, fd);
 		//printf("PADLEN = %d\n", padlen);
 		return (padlen);
 	}
-	if ((flags->state & SPACE) && !(flags->state & PLUS) && number >= 0)
+	if ((SPACE_FLAG) && !(PLUS_FLAG) && number >= 0)
 		ft_putchar_fd(' ', fd);
 	pad_space(nbpad, fd);
-	//if (number < 0 && !(flags->state & MINUS))
+	//if (number < 0 && !(MIN_FLAG))
 	//	ft_putchar_fd('-', fd);
 	//printf("PADLEN = %d\n", padlen);
 	return (padlen);
@@ -127,7 +127,7 @@ int		special_convert_float(double number, int fd, t_flags *flags)
 		full_len += float_precision(number, flags->precision, fd, flags);
 		return (full_len + ft_floatlen(number, flags->precision));
 	}
-	else if (!flags->precision && (flags->state & PREC))
+	else if (!flags->precision && (PREC_FLAG))
 	{
 		full_len += float_precision(number, 0, fd, flags);
 		return (full_len + ft_floatlen(number, 0));
@@ -141,12 +141,12 @@ int		special_convert_float(double number, int fd, t_flags *flags)
 
 int		convert_float(va_list args, int fd, t_flags *flags)
 {
-	double number;
-	int nblen;
+	double	number;
+	int		nblen;
 
 	nblen = 0;
 	number = va_arg(args, double);
-	if (is_activated(flags) || (flags->state & PREC))
+	if (is_activated(flags) || (PREC_FLAG))
 		return (special_convert_float(number, fd, flags));
 	nblen += ft_ftoa(number, 6, fd);
 	return (nblen);

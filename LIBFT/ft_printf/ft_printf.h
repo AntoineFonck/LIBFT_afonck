@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 12:00:41 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/24 14:44:47 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,16 @@
 # define LL  256 /* 1 0000 0000 */
 # define PREC  512 /* 10 0000 0000 */
 
-# define HASHTAG_FLAG flags->state & HASHTAG
+# define HASH_FLAG flags->state & HASHTAG
+# define MIN_FLAG flags->state & MINUS
+# define PLUS_FLAG flags->state & PLUS
+# define SPACE_FLAG flags->state & SPACE
+# define ZERO_FLAG flags->state & ZERO
+# define HH_FLAG flags->state & HH
+# define H_FLAG flags->state & H
+# define L_FLAG flags->state & L
+# define LL_FLAG flags->state & LL
+# define PREC_FLAG flags->state & PREC
 
 
 # define RED "\e[0;31m"
@@ -124,6 +133,8 @@ int convert_oct(va_list args, int fd, t_flags *flags);
 int convert_bin(va_list args, int fd, t_flags *flags);
 
 int pad_uint(uintmax_t number, t_flags *flags, int fd);
+
+void	flags_spec(t_flags *flags, int nbpad, int fd, intmax_t number);
 
 int ft_unbrlen(uintmax_t n);
 #endif

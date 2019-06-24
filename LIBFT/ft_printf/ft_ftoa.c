@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ftoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 22:21:42 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 14:32:54 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/24 15:14:53 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
-double ft_pow(double x, int y) {
-	double r = 1;
+double		ft_pow(double x, int y)
+{
+	double r;
 
+	r = 1;
 	while (y > 0)
 	{
 		if (y & 1)
@@ -26,15 +28,15 @@ double ft_pow(double x, int y) {
 	return (r);
 }
 
-static int handle_decimal(double n, double fpart, int afterpoint, int fd, int morezero)
+static int	handle_decimal(double n, double fpart, int afterpoint, int fd, int morezero)
 {
 	int length;
 
 	length = 0;
-	if (afterpoint != 0) 
+	if (afterpoint != 0)
 	{
 		ft_putchar_fd('.', fd);
-		length++; 
+		length++;
 		fpart = fpart * ft_pow(10, afterpoint);
 		printf("FPART after pow = %f\n", fpart);
 		fpart = (n >= 0 ? fpart + 0.5 : fpart - 0.5);
@@ -57,15 +59,15 @@ static int handle_decimal(double n, double fpart, int afterpoint, int fd, int mo
 	return (length);
 }
 
-int ft_ftoa(double n, int afterpoint, int fd) 
-{ 
-	int len;
-	int ipart;
-	double fpart;
-	int morezero;
+int			ft_ftoa(double n, int afterpoint, int fd)
+{
+	int		len;
+	int		ipart;
+	double	fpart;
+	int		morezero;
 
 	len = 0;
-	ipart = (int)n; 
+	ipart = (int)n;
 	fpart = n - (double)ipart;
 	morezero = 0;
 	len += ft_nbrlen(ipart);
@@ -81,11 +83,11 @@ int ft_ftoa(double n, int afterpoint, int fd)
 	return (len);
 }
 
-int ft_floatlen(double n, int afterpoint)
+int		ft_floatlen(double n, int afterpoint)
 {
-	int len;
-	int ipart;
-	double fpart;
+	int		len;
+	int		ipart;
+	double	fpart;
 
 	len = 0;
 	ipart = ((int)n);

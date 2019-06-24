@@ -9,18 +9,18 @@ int pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 
 	nbpad = flags->field_width - (flags->precision >= ft_unbrlen(number)
 			? flags->precision : ft_unbrlen(number));
-	if (((flags->state & PLUS) || (flags->state & SPACE)))
+	if (((PLUS_FLAG) || (SPACE_FLAG)))
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number))
 		- ft_unbrlen(number);
-	padlen = nbpad + nbzero + ((flags->state & PLUS) || (flags->state & SPACE));
-	if (!(flags->state & MINUS))
+	padlen = nbpad + nbzero + ((PLUS_FLAG) || (SPACE_FLAG));
+	if (!(MIN_FLAG))
 		pad_space(nbpad, fd);
 	pad_zero(nbzero, fd);
 	ft_uitoaprint_base(number, 10, fd);
-	if (flags->state & MINUS)
+	if (MIN_FLAG)
 		pad_space(nbpad, fd);
 	return (padlen);
 }
@@ -30,15 +30,15 @@ int uint_precision(uintmax_t number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!(flags->state & MINUS))
+	if (!(MIN_FLAG))
 	{
 		len += pad_uint_prec(number, flags, fd);
-		//if ((flags->state & PLUS) && flags->field_width > flags->precision && number >= 0)
+		//if ((PLUS_FLAG) && flags->field_width > flags->precision && number >= 0)
 		//	ft_putchar_fd('+', fd);
 	}
 	else
 	{
-		//if ((flags->state & PLUS) && number > 0)
+		//if ((PLUS_FLAG) && number > 0)
 		//	ft_putchar_fd('+', fd);
 		len += pad_uint_prec(number, flags, fd);
 	}
@@ -50,7 +50,7 @@ int uint_no_precision(uintmax_t number, int fd, t_flags *flags)
 	int len;
 
 	len = 0;
-	if (!(flags->state & MINUS))
+	if (!(MIN_FLAG))
 	{
 		len += pad_uint(number, flags, fd);
 		ft_uitoaprint_base(number, 10, fd);
@@ -73,9 +73,9 @@ int pad_uint(uintmax_t number, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	padlen = nbpad;
-	if ((flags->state & ZERO) && !(flags->state & MINUS))
+	if ((ZERO_FLAG) && !(MIN_FLAG))
 	{
-		if ((flags->state & SPACE) && !(flags->state & PLUS))
+		if ((SPACE_FLAG) && !(PLUS_FLAG))
 		{
 			ft_putchar_fd(' ', fd);
 			nbpad--;
@@ -112,13 +112,13 @@ int convert_uint(va_list args, int fd, t_flags *flags)
 {
 	uintmax_t number;
 
-	if (flags->state & HH)
+	if (HH_FLAG)
             number = (unsigned char)va_arg(args, unsigned int);
-    	else if (flags->state & H)
+    	else if (H_FLAG)
             number = (unsigned short)va_arg(args, unsigned int);
-    	else if (flags->state & L)
+    	else if (L_FLAG)
             number = (unsigned long)va_arg(args, unsigned long);
-    	else if (flags->state & LL)
+    	else if (LL_FLAG)
             number = (unsigned long long)va_arg(args, unsigned long long);
     	else
 	    number = va_arg(args, unsigned int);

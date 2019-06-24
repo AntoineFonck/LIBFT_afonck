@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/19 22:50:51 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/24 14:45:49 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 int is_activated(t_flags *flags)
 {
-	if ((flags->state & HASHTAG) || (flags->state & MINUS) || (flags->state & PLUS)
-	|| (flags->state & SPACE) || (flags->state & ZERO) || flags->field_width || flags->precision)
+	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
+	|| (SPACE_FLAG) || (ZERO_FLAG) || flags->field_width || flags->precision)
 		return (1);
 	return (0);
 }
@@ -321,13 +321,13 @@ int main(int argc, char *argv[])
 		char hi = 'h';
 		test = &hi;
 		int realone;
-		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
+		//myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
-		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		realone = printf(argv[1], atof(argv[2]), argv[3][0], test);
+		//realone = printf(argv[1], atof(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);

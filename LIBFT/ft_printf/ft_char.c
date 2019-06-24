@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_char.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 20:53:01 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/19 20:56:32 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/24 13:32:03 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	special_convert_wchar(wchar_t c, int fd, t_flags *flags)
 
 	full_len = 0;
 	size = get_wchar_size(nbits(c));
-	if (flags->state & MINUS)
+	if (MIN_FLAG)
 	{
 		full_len += ft_putwchar_fd(c, fd);
 		full_len += pad_str(size, flags, fd);
@@ -89,13 +89,13 @@ int	special_convert_char(char c, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->state & MINUS)
+	if (MIN_FLAG)
 	{
 		ft_putchar_fd(c, fd);
 		full_len += pad_str(1, flags, fd);
 		return (full_len + 1);
 	}
-	if (flags->state & PLUS)
+	if (PLUS_FLAG)
 	{
 		full_len += pad_str(1, flags, fd);
 		ft_putchar_fd(c, fd);
@@ -124,7 +124,7 @@ int	convert_char(va_list args, int fd, t_flags *flags)
 	char	c;
 	int		ret;
 
-	if (flags->state & L)
+	if (L_FLAG)
 		return (convert_wchar(args, fd, flags));
 	ret = 0;
 	c = va_arg(args, int);
