@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   float.c     	                                    :+:      :+:    :+:   */
+/*   ft_float.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/19 20:56:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 14:24:14 by sluetzen         ###   ########.fr       */
+/*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/06/24 16:12:56 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 
 	nbrlen = ft_floatlen(number, preclen) - (number < 0 ? 1 : 0);
 	nbpad = flags->field_width - (flags->precision >= nbrlen ? flags->precision
-		: nbrlen) - (number < 0 ? 1 : 0) - (((PLUS_FLAG) || (SPACE_FLAG)) && number >= 0 ? 1 : 0);
+			: nbrlen) - (number < 0 ? 1 : 0) - (((PLUS_FLAG) || (SPACE_FLAG))
+				&& number >= 0 ? 1 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
