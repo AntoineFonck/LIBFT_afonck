@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 15:29:12 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/24 15:48:10 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,13 +323,13 @@ int		main(int argc, char *argv[])
 
 		hi = 'h';
 		test = &hi;
-		myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		//myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
+		myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
 		ft_putchar('\n');
-		realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
 		//realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
-		//realone = printf(argv[1], atof(argv[2]), argv[3][0], test);
+		realone = printf(argv[1], atof(argv[2]), argv[3][0], test);
 		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
 	}
 	return (0);
