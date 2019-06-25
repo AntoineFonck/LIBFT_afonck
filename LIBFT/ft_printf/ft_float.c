@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 16:12:56 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/25 17:49:54 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 		nbpad = 0;
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
 	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
+	printf("NBPAD = %d\n", nbpad);
 	flags_spec(flags, nbpad, fd, number);
-	pad_zero(nbzero, fd);
+	printf("HERE nbzero = %d\n", nbzero);
+	//pad_zero(nbzero, fd);
 	ft_ftoa(number, preclen, fd);
 	if ((MIN_FLAG))
 		pad_space(nbpad, fd);
