@@ -144,13 +144,18 @@ int		special_convert_float(double number, int fd, t_flags *flags)
 
 int		convert_float(va_list args, int fd, t_flags *flags)
 {
-	double	number;
+	//double	number;
+	long double	number;
 	int		nblen;
 
 	nblen = 0;
-	number = va_arg(args, double);
+	if (BIGL_FLAG)
+		number = va_arg(args, long double);
+	else
+		number = va_arg(args, double);
 	if (is_activated(flags) || (PREC_FLAG))
 		return (special_convert_float(number, fd, flags));
+	//printf("bigl flag = %d\n", BIGL_FLAG);
 	nblen += ft_ftoa(number, 6, fd);
 	return (nblen);
 }

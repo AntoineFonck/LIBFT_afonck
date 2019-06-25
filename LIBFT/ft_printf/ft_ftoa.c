@@ -27,7 +27,7 @@ double		ft_pow(double x, int y)
 	}
 	return (r);
 }
-
+/*
 static int	print_deci(double fpart, int afterpoint, int fd)
 {
 	int i;
@@ -48,7 +48,7 @@ static int	print_deci(double fpart, int afterpoint, int fd)
 	write(fd, buf, afterpoint);
 	return (1);
 }
-
+*/
 static void	handle_decimal(double n, double fpart, int afterpoint, int fd, int morezero)
 {
 	if (afterpoint != 0)
@@ -77,9 +77,14 @@ int			ft_ftoa(double n, int afterpoint, int fd)
 	double	fpart;
 	int		morezero;
 
-	len = 0;
+	len = afterpoint + (afterpoint > 0 ? 1 : 0);
 	ipart = (long)n;
 	fpart = n - (double)ipart;
+	if (ipart == 0 && !(1 / n > 0))
+	{
+		len++;
+		write(fd, "-", 1);
+	}
 	morezero = 0;
 	len += ft_nbrlen(ipart);
 	if (afterpoint == 0)
@@ -88,9 +93,8 @@ int			ft_ftoa(double n, int afterpoint, int fd)
 			ipart += 1;
 	}
 	ft_putnbr_fd(ipart, fd);
-	//len += handle_decimal(n, fpart, afterpoint, fd, morezero);
 	handle_decimal(n, fpart, afterpoint, fd, morezero);
-	len = afterpoint + ft_nbrlen(ipart) + (afterpoint > 0 ? 1 : 0); // the dot
+	//len = afterpoint + ft_nbrlen(ipart) + (afterpoint > 0 ? 1 : 0); // the dot
 	return (len);
 }
 
@@ -108,5 +112,7 @@ int		ft_floatlen(double n, int afterpoint)
 	len += ft_nbrlen(ipart);
 	if (afterpoint != 0)
 		len += afterpoint + 1;
+	if (ipart == 0 && !(1 / n > 0))
+		len++;
 	return (len);
 }

@@ -23,6 +23,7 @@
 # define L  128 /* 1000 0000 */
 # define LL  256 /* 1 0000 0000 */
 # define PREC  512 /* 10 0000 0000 */
+# define BIGL  1024 /* 100 0000 0000 */
 
 # define HASH_FLAG flags->state & HASHTAG
 # define MIN_FLAG flags->state & MINUS
@@ -34,6 +35,7 @@
 # define L_FLAG flags->state & L
 # define LL_FLAG flags->state & LL
 # define PREC_FLAG flags->state & PREC
+# define BIGL_FLAG flags->state & BIGL
 
 
 # define RED "\e[0;31m"

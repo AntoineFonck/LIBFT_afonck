@@ -169,6 +169,12 @@ void	check_precision(const char **fmt, t_flags *flags)
 	}
 }
 
+void	activate_biglmod(const char **fmt, t_flags *flags)
+{
+	(*fmt)++;
+	flags->state |= BIGL;
+}
+
 void	check_lmod(const char **fmt, t_flags *flags)
 {
 	if (**fmt == 'h')
@@ -191,8 +197,10 @@ void	check_lmod(const char **fmt, t_flags *flags)
 			(*fmt)++;
 		}
 		else
-			flags->state = L;
+			flags->state |= L;
 	}
+	else if (**fmt == 'L')
+		activate_biglmod(fmt, flags);
 }
 
 void	check_color(const char **fmt, t_flags *flags)
