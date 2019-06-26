@@ -54,6 +54,7 @@
 #include <stdint.h>
 #include <wchar.h>
 
+int ft_printf(const char *fmt, ...); /*__attribute__((format(printf,1,2)));*/
 /////////////////////////////
 int ft_ftoa(double n, int afterpoint, int fd);
 int ft_floatlen(double n, int afterpoint);
