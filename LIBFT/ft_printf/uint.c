@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:31:06 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 15:32:04 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 14:52:22 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 	if (!(MIN_FLAG))
 		pad_space(nbpad, fd);
 	pad_zero(nbzero, fd);
-	ft_uitoaprint_base(number, 10, fd);
+	ft_uitoa_base(number, 10, fd);
 	if (MIN_FLAG)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -65,11 +65,11 @@ int	uint_no_precision(uintmax_t number, int fd, t_flags *flags)
 	if (!(MIN_FLAG))
 	{
 		len += pad_uint(number, flags, fd);
-		ft_uitoaprint_base(number, 10, fd);
+		ft_uitoa_base(number, 10, fd);
 	}
 	else
 	{
-		ft_uitoaprint_base(number, 10, fd);
+		ft_uitoa_base(number, 10, fd);
 		len += pad_uint(number, flags, fd);
 	}
 	return (len);
@@ -136,6 +136,6 @@ int	convert_uint(va_list args, int fd, t_flags *flags)
 		number = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_uint(number, fd, flags));
-	ft_uitoaprint_base(number, 10, fd);
+	ft_uitoa_base(number, 10, fd);
 	return (ft_unbrlen(number));
 }

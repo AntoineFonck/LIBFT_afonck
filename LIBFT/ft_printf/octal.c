@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 13:00:21 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 15:03:27 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:11:16 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	pad_oct_prec_min(int octlen, t_flags *flags, int fd, uintmax_t oct)
 	if ((HASH_FLAG) && flags->precision <= octlen)
 		write(fd, "0", 1);
 	pad_zero(nbzero, fd);
-	ft_uitoaprint_base(oct, 8, fd);
+	ft_uitoa_base(oct, 8, fd);
 	if (flags->precision < flags->field_width)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -93,14 +93,14 @@ int	special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
 	int octlen;
 
 	full_len = 0;
-	octlen = ft_uitoalen_base(oct, 8);
+	octlen = ft_uintlen_base(oct, 8);
 	if (MIN_FLAG)
 	{
 		full_len += pad_oct_prec_min(octlen, flags, fd, oct);
 		return (full_len + octlen);
 	}
 	full_len += pad_oct(octlen, flags, fd);
-	ft_uitoaprint_base(oct, 8, fd);
+	ft_uitoa_base(oct, 8, fd);
 	return (full_len + octlen);
 }
 
@@ -121,6 +121,6 @@ int	convert_oct(va_list args, int fd, t_flags *flags)
 		oct = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_oct(oct, fd, flags));
-	octlen = ft_uitoaprint_base(oct, 8, fd);
+	octlen = ft_uitoa_base(oct, 8, fd);
 	return (octlen);
 }

@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:40:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 15:40:35 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:17:20 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
 	  ft_putchar_fd('0', fd);
 	  nbzero--;
 	  }*/
-	ft_uintptrtoaprint_base(hex, 16, fd);
+	ft_uintptrtoa_base(hex, 16, fd);
 	if (flags->precision < flags->field_width)
 	{
 		pad_space(nbpad, fd);
@@ -121,12 +121,12 @@ int	special_convert_pointer(uintptr_t hex, int fd, t_flags *flags)
 	if ((MIN_FLAG))
 	{
 	//if (!flags->precision)
-	//ft_uintptrtoaprint_base(hex, 16, fd);
+	//ft_uintptrtoa_base(hex, 16, fd);
 		full_len += pad_pointer_prec_min(hexlen, flags, fd, hex);
 		return (full_len + hexlen);
 	}
 	full_len += pad_pointer(hexlen, flags, fd);
-	ft_uintptrtoaprint_base(hex, 16, fd);
+	ft_uintptrtoa_base(hex, 16, fd);
 	return (full_len + hexlen);
 }
 
@@ -139,6 +139,6 @@ int	convert_pointer(va_list args, int fd, t_flags *flags)
 	if (is_activated(flags))
 		return (special_convert_pointer(hex, fd, flags));
 	write(fd, "0x", 2);
-	hexlen = ft_uintptrtoaprint_base(hex, 16, fd);
+	hexlen = ft_uintptrtoa_base(hex, 16, fd);
 	return (hexlen + 2);
 }

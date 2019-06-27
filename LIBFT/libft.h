@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 14:42:09 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:21:02 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ double				ft_pow(double x, int y);
 int					ft_nbrlen(intmax_t n);
 /*
 ** returns the length of the int n
+*/
+
+int					ft_unbrlen(uintmax_t n);
+/*
+** returns the length of the unsigned int n
+*/
+
+int					ft_uintlen_base(uintmax_t value, int base);
+/*
+** returns the length of the unsigned value value from the base base
 */
 
 int					ft_floatlen(double n, int afterpoint);
@@ -149,6 +159,16 @@ void				ft_putnbr_fd(intmax_t n, int fd);
 int					ft_ftoa_fd(double n, int afterpoint, int fd);
 /*
 ** prints the double n with afterpoint decimal numbers in the file descriptor fd
+*/
+
+int					ft_uitoa_base(uintmax_t value, int base, int fd);
+/*
+** prints the unsigned value in the base base, in small letters from a, on the file descriptor fd
+*/
+
+int ft_uitocapa_base(uintmax_t value, int base, int fd);
+/*
+** prints the unsigned value int the base base, in capital letters from A, on the file descriptor fd
 */
 
 /*

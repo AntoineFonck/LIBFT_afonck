@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_uitocapa_base.c                                 :+:      :+:    :+:   */
+/*   ft_uintlen_base.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 15:34:46 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 15:34:53 by sluetzen         ###   ########.fr       */
+/*   Created: 2019/06/27 15:08:43 by afonck            #+#    #+#             */
+/*   Updated: 2019/06/27 15:11:22 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "../libft.h"
+#include "libft.h"
 
-int	ft_uitocapaprint_base(uintmax_t value, int base, int fd)
+int		ft_uintlen_base(uintmax_t value, int base)
 {
 	char	buf[50];
 	char	*ptr;
@@ -29,10 +28,9 @@ int	ft_uitocapaprint_base(uintmax_t value, int base, int fd)
 	{
 		ascii_offset = 0;
 		if (value % base > 9)
-			ascii_offset = 7;
+			ascii_offset = 39;
 		*--ptr = '0' + ((value % base) + ascii_offset);
 		value /= base;
 	}
-	write(fd, ptr, ft_strlen(ptr));
 	return (ft_strlen(ptr));
 }

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_uitoa_base.c                                    :+:      :+:    :+:   */
+/*   ft_uitocapa_base.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 15:33:58 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 15:34:23 by sluetzen         ###   ########.fr       */
+/*   Created: 2019/06/24 15:34:46 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/06/27 15:13:55 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "../libft.h"
 
-int	ft_uitoaprint_base(uintmax_t value, int base, int fd)
+int	ft_uitocapa_base(uintmax_t value, int base, int fd)
 {
 	char	buf[50];
 	char	*ptr;
@@ -29,33 +28,10 @@ int	ft_uitoaprint_base(uintmax_t value, int base, int fd)
 	{
 		ascii_offset = 0;
 		if (value % base > 9)
-			ascii_offset = 39;
+			ascii_offset = 7;
 		*--ptr = '0' + ((value % base) + ascii_offset);
 		value /= base;
 	}
 	write(fd, ptr, ft_strlen(ptr));
-	return (ft_strlen(ptr));
-}
-
-int	ft_uitoalen_base(uintmax_t value, int base)
-{
-	char	buf[50];
-	char	*ptr;
-	int		num;
-	int		ascii_offset;
-
-	ptr = &buf[49];
-	*ptr = '\0';
-	num = value;
-	if (value == 0)
-		*--ptr = '0' + (value % base);
-	while (value != 0)
-	{
-		ascii_offset = 0;
-		if (value % base > 9)
-			ascii_offset = 39;
-		*--ptr = '0' + ((value % base) + ascii_offset);
-		value /= base;
-	}
 	return (ft_strlen(ptr));
 }
