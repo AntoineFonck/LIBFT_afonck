@@ -56,8 +56,8 @@ int	int_precision(intmax_t number, int fd, t_flags *flags)
 	}
 	else
 	{
-		if (number < 0 && (ZERO_FLAG))
-			ft_putchar_fd('-', fd);
+		//if (number < 0 && (ZERO_FLAG))
+		//	ft_putchar_fd('-', fd);
 		len += pad_int_prec(number, flags, fd);
 	}
 	return (len);
@@ -103,20 +103,18 @@ int	pad_int(intmax_t number, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	padlen = nbpad + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
-	if ((ZERO_FLAG) && !(MIN_FLAG))
+	if ((ZERO_FLAG) && !(MIN_FLAG) && !((PREC_FLAG) && (flags->precision == 0)))
 	{
 		if ((SPACE_FLAG) && !(PLUS_FLAG) && number >= 0)
 			ft_putchar_fd(' ', fd);
 		pad_zero(nbpad, fd);
-		printf("PADLEN = %d\n", padlen);
 		return (padlen);
 	}
-	if ((SPACE_FLAG) && !(PLUS_FLAG) && number >= 0)
+	if ((SPACE_FLAG) && !(PLUS_FLAG) && !(MIN_FLAG) && number >= 0)
 		ft_putchar_fd(' ', fd);
 	pad_space(nbpad, fd);
 	if (number < 0 && !(MIN_FLAG))
 		ft_putchar_fd('-', fd);
-	printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 
@@ -125,7 +123,7 @@ int	special_convert_int(intmax_t number, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->precision)
+	if (flags->precision || (PREC_FLAG))
 		full_len += int_precision(number, fd, flags);
 	else
 		full_len += int_no_precision(number, fd, flags);
