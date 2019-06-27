@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 14:09:40 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 14:26:18 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
 	flags_spec(flags, nbpad, fd, number);
 	//pad_zero(nbzero, fd);
-	ft_ftoa(number, preclen, fd);
+	ft_ftoa_fd(number, preclen, fd);
 	if ((MIN_FLAG))
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -76,7 +76,7 @@ int		float_no_precision(double number, int preclen, int fd, t_flags *flags)
 		len += pad_float(number, flags, fd);
 		if ((PLUS_FLAG) && !(ZERO_FLAG) && number >= 0)
 			ft_putchar_fd('+', fd);
-		ft_ftoa(number, preclen, fd);
+		ft_ftoa_fd(number, preclen, fd);
 	}
 	else if ((MIN_FLAG))
 	{
@@ -84,7 +84,7 @@ int		float_no_precision(double number, int preclen, int fd, t_flags *flags)
 			ft_putchar_fd('+', fd);
 		else if ((SPACE_FLAG) && number >= 0)
 			ft_putchar_fd(' ', fd);
-		ft_ftoa(number, preclen, fd);
+		ft_ftoa_fd(number, preclen, fd);
 		len += pad_float(number, flags, fd);
 	}
 	return (len);
@@ -157,13 +157,13 @@ int		convert_float(va_list args, int fd, t_flags *flags)
 	{
 		if (is_activated(flags) || (PREC_FLAG))
 			return (special_convert_float(numberldb, fd, flags));
-		nblen += ft_ftoa(numberldb, 6, fd);
+		nblen += ft_ftoa_fd(numberldb, 6, fd);
 	}
 	else
 	{
 		if (is_activated(flags) || (PREC_FLAG))
 			return (special_convert_float(numberdb, fd, flags));
-		nblen += ft_ftoa(numberdb, 6, fd);
+		nblen += ft_ftoa_fd(numberdb, 6, fd);
 	}
 	return (nblen);
 }

@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/03/18 16:38:20 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 14:42:09 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,24 @@ int					get_next_line(const int fd, char **line);
 **	EXTRAS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 */
 
-intmax_t				ft_absolute(intmax_t i);
+intmax_t			ft_absolute(intmax_t i);
 /*
 ** converts a negative int into a positive int
+*/
+
+double				ft_pow(double x, int y);
+/*
+** returns x to the power of y
 */
 
 int					ft_nbrlen(intmax_t n);
 /*
 ** returns the length of the int n
+*/
+
+int					ft_floatlen(double n, int afterpoint);
+/*
+** returns the length of the double n depending on the afterpoint decimal number
 */
 
 /*
@@ -134,6 +144,11 @@ void				ft_putnbr(int n);
 void				ft_putnbr_fd(intmax_t n, int fd);
 /*
 ** prints the int n on the file descriptor fd | doesn't return anything
+*/
+
+int					ft_ftoa_fd(double n, int afterpoint, int fd);
+/*
+** prints the double n with afterpoint decimal numbers in the file descriptor fd
 */
 
 /*

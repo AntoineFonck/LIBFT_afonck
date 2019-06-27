@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 14:44:47 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 14:26:35 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@
 
 int ft_printf(const char *fmt, ...); /*__attribute__((format(printf,1,2)));*/
 /////////////////////////////
-int ft_ftoa(double n, int afterpoint, int fd);
 int ft_floatlen(double n, int afterpoint);
 float ft_atof(const char* s);
 int ft_putwchar_fd(wchar_t wchar, int fd);
