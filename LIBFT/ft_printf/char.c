@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_char.c                                          :+:      :+:    :+:   */
+/*   char.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 20:53:01 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 13:32:03 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:10:19 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
+
+//IN OTHER FILE
 
 int	nbits(unsigned int nbr)
 {
@@ -22,6 +24,8 @@ int	nbits(unsigned int nbr)
 		i++;
 	return (i);
 }
+
+//IN OTHER FILE
 
 int	get_wchar_size(int nbbits)
 {
@@ -36,6 +40,8 @@ int	get_wchar_size(int nbbits)
 	else
 		return (-1);
 }
+
+//IN OTHER FILE?
 
 int	ft_putwchar_fd(wchar_t wchar, int fd)
 {

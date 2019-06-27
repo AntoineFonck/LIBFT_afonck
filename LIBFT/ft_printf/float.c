@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_float.c                                         :+:      :+:    :+:   */
+/*   float.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 14:26:18 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 14:50:02 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
+//HAVE TO REMOVE AT LEAST 2 FUNCTIONS AND PUT IT IN ANOTHER FILE
 void	flags_spec(t_flags *flags, int nbpad, int fd, intmax_t number)
 {
 	if (!(MIN_FLAG))
@@ -144,7 +145,7 @@ int		convert_float(va_list args, int fd, t_flags *flags)
 {
 	long double	numberldb;
 	double		numberdb;
-	int		nblen;
+	int			nblen;
 
 	nblen = 0;
 	numberldb = 0;

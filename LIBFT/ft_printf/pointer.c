@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:40:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 15:40:35 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:08:43 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - 2;
+	nbpad = flags->field_width -
+		(flags->precision >= hexlen ? flags->precision : hexlen) - 2;
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
@@ -50,7 +51,8 @@ int	pad_pointer_prec(int hexlen, t_flags *flags, int fd)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - 2;
+	nbpad = flags->field_width -
+		(flags->precision >= hexlen ? flags->precision : hexlen) - 2;
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;

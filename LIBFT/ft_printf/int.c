@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_int.c                                           :+:      :+:    :+:   */
+/*   int.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 14:49:17 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:32:13 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 	int nbrlen;
 
 	nbrlen = ft_nbrlen(number) - (number < 0 ? 1 : 0);
-	nbpad = flags->field_width - (flags->precision >= nbrlen ? flags->precision : nbrlen) - (number < 0 ? 1 : 0) - (((PLUS_FLAG) || (SPACE_FLAG)) && number >= 0 ? 1 : 0);
+	nbpad = flags->field_width -
+		(flags->precision >= nbrlen ? flags->precision : nbrlen) -
+		(number < 0 ? 1 : 0) -
+		(((PLUS_FLAG) || (SPACE_FLAG)) && number >= 0 ? 1 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
@@ -59,7 +62,7 @@ int	int_precision(intmax_t number, int fd, t_flags *flags)
 	}
 	return (len);
 }
-
+//NEW FILE 'NO PRECISION INT'
 int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 {
 	int len;
@@ -88,7 +91,7 @@ int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 	}
 	return (len);
 }
-
+//INCLUDE THIS TOO
 int	pad_int(intmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;

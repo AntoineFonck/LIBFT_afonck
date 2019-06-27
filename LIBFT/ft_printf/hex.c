@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_hex.c                                           :+:      :+:    :+:   */
+/*   hex.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 14:33:26 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:19:19 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
+//MAKE EITHER NEW FILE FOR CAPITAL X OR MAKE NEW FILE FOR PRECISION ONLY
 int	pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex)
 {
 	int nbpad;
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - ((HASH_FLAG) ? 2 : 0);
+	nbpad = flags->field_width -
+		(flags->precision >= hexlen ? flags->precision : hexlen) -
+		((HASH_FLAG) ? 2 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen)
@@ -41,7 +44,9 @@ int	pad_hex_prec_min(int hexlen, t_flags *flags, int fd, uintmax_t hex)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - ((HASH_FLAG) ? 2 : 0);
+	nbpad = flags->field_width -
+		(flags->precision >= hexlen ? flags->precision : hexlen) -
+		((HASH_FLAG) ? 2 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
@@ -62,12 +67,21 @@ int	pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width - (flags->precision >= hexlen ? flags->precision : hexlen) - ((HASH_FLAG) ? 2 : 0);
+	nbpad = flags->field_width -
+		(flags->precision >= hexlen ? flags->precision : hexlen) -
+		((HASH_FLAG) ? 2 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
 	padlen = nbpad + nbzero + ((HASH_FLAG) ? 2 : 0)
 		+ (flags->precision < hexlen ? 0 : 0);
+	/*
+	if (flags->precision < flags->field_width)
+		pad_space(nbpad, fd);
+	if (HASH_FLAG)
+		letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
+	pad_zero(nbzero, fd);
+	*/
 	if (flags->precision < flags->field_width)
 	{
 		pad_space(nbpad, fd);
