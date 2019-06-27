@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_uintptrtoa_base.c                               :+:      :+:    :+:   */
+/*   ft_uitoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 15:32:29 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:17:35 by afonck           ###   ########.fr       */
+/*   Created: 2019/06/24 15:33:58 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/06/27 15:11:40 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-int	ft_uintptrtoa_base(uintptr_t value, int base, int fd)
+int	ft_uitoa_base(uintmax_t value, int base, int fd)
 {
-	char	buf[(sizeof(uintptr_t) * 2) + 1];
+	char	buf[50];
 	char	*ptr;
 	int		num;
 	int		ascii_offset;
 
-	ptr = &buf[(sizeof(uintptr_t) * 2)];
+	ptr = &buf[49];
 	*ptr = '\0';
 	num = value;
 	if (value == 0)

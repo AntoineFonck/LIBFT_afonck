@@ -6,12 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 11:36:37 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/24 11:37:38 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:29:02 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
-#include "ft_printf.h"
+#include <stdint.h>
 
 int	ft_unbrlen(uintmax_t n)
 {

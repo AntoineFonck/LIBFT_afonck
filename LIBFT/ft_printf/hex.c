@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:19:19 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:38:17 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex)
 	if ((HASH_FLAG))
 		write(fd, "0X", 2);
 	pad_zero(nbzero, fd);
-	ft_uitocapaprint_base(hex, 16, fd);
+	ft_uitocapa_base(hex, 16, fd);
 	if (flags->precision < flags->field_width)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -55,7 +55,7 @@ int	pad_hex_prec_min(int hexlen, t_flags *flags, int fd, uintmax_t hex)
 	if ((HASH_FLAG))
 		write(fd, "0x", 2);
 	pad_zero(nbzero, fd);
-	ft_uitoaprint_base(hex, 16, fd);
+	ft_uitoa_base(hex, 16, fd);
 	if (flags->precision < flags->field_width)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -131,7 +131,7 @@ int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter)
 	int hexlen;
 
 	full_len = 0;
-	hexlen = ft_uitoalen_base(hex, 16);
+	hexlen = ft_uintlen_base(hex, 16);
 	if (MIN_FLAG)
 	{
 		if (letter == 'x')
@@ -142,9 +142,9 @@ int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter)
 	}
 	full_len += pad_hex(hexlen, flags, fd, letter);
 	if (letter == 'x')
-		ft_uitoaprint_base(hex, 16, fd);
+		ft_uitoa_base(hex, 16, fd);
 	else if (letter == 'X')
-		ft_uitocapaprint_base(hex, 16, fd);
+		ft_uitocapa_base(hex, 16, fd);
 	return (full_len + hexlen);
 }
 
@@ -165,7 +165,7 @@ int	convert_hex(va_list args, int fd, t_flags *flags)
 		hex = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_hex(hex, fd, flags, 'x'));
-	hexlen = ft_uitoaprint_base(hex, 16, fd);
+	hexlen = ft_uitoa_base(hex, 16, fd);
 	return (hexlen);
 }
 
@@ -186,6 +186,6 @@ int	convert_cap_hex(va_list args, int fd, t_flags *flags)
 		hex = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_hex(hex, fd, flags, 'X'));
-	hexlen = ft_uitocapaprint_base(hex, 16, fd);
+	hexlen = ft_uitocapa_base(hex, 16, fd);
 	return (hexlen);
 }

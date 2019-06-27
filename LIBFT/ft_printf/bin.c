@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 20:44:18 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 14:48:31 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:38:01 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	pad_bin_prec_min(int binlen, t_flags *flags, int fd, uintmax_t bin)
 	if ((HASH_FLAG) && flags->precision <= binlen)
 		write(fd, "0", 1);
 	pad_zero(nbzero, fd);
-	ft_uitoaprint_base(bin, 2, fd);
+	ft_uitoa_base(bin, 2, fd);
 	if (flags->precision < flags->field_width)
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -97,14 +97,14 @@ int	special_convert_bin(uintmax_t bin, int fd, t_flags *flags)
 	int binlen;
 
 	full_len = 0;
-	binlen = ft_uitoalen_base(bin, 2);
+	binlen = ft_uintlen_base(bin, 2);
 	if (MIN_FLAG)
 	{
 		full_len += pad_bin_prec_min(binlen, flags, fd, bin);
 		return (full_len + binlen);
 	}
 	full_len += pad_bin(binlen, flags, fd);
-	ft_uitoaprint_base(bin, 2, fd);
+	ft_uitoa_base(bin, 2, fd);
 	return (full_len + binlen);
 }
 
@@ -125,6 +125,6 @@ int	convert_bin(va_list args, int fd, t_flags *flags)
 		bin = va_arg(args, unsigned int);
 	if (is_activated(flags))
 		return (special_convert_bin(bin, fd, flags));
-	binlen = ft_uitoaprint_base(bin, 2, fd);
+	binlen = ft_uitoa_base(bin, 2, fd);
 	return (binlen);
 }

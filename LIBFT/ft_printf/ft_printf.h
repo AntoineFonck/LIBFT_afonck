@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 14:26:35 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:19:35 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,6 @@ int ft_putwchar_fd(wchar_t wchar, int fd);
 int get_wchar_size(int nbbits);
 int nbits(unsigned int nbr);
 /////////////////////////////
-
-int	ft_uitoaprint_base(uintmax_t value, int base, int fd);
-
-int	ft_uitocapaprint_base(uintmax_t value, int base, int fd);
-
-int	ft_uitoalen_base(uintmax_t value, int base);
-
-int     ft_uintptrtoaprint_base(uintptr_t value, int base, int fd);
-
-int     ft_uintptrtoalen_base(uintptr_t value, int base);
 
 void pad_zero(int nbzero, int fd);
 
@@ -138,5 +128,4 @@ int pad_uint(uintmax_t number, t_flags *flags, int fd);
 
 void	flags_spec(t_flags *flags, int nbpad, int fd, intmax_t number);
 
-int ft_unbrlen(uintmax_t n);
 #endif

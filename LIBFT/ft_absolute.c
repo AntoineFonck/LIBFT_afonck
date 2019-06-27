@@ -6,13 +6,13 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 16:20:11 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/03/29 12:53:37 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:27:59 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 
-intmax_t ft_absolute(intmax_t i)
+intmax_t	ft_absolute(intmax_t i)
 {
 	if (i < 0)
 		return (-i);
