@@ -6,11 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:41:48 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 16:44:55 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:52:29 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../libft.h"
+#include "libft.h"
 
 void	pad_zero(int nbzero, int fd)
 {

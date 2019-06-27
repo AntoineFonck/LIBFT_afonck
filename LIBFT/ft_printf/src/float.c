@@ -6,11 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 17:54:27 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:50:26 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../libft.h"
+#include "libft.h"
 #include "ft_printf.h"
 
 //HAVE TO REMOVE AT LEAST 2 FUNCTIONS AND PUT IT IN ANOTHER FILE

@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 17:44:28 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:50:54 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../libft.h"
+#include "libft.h"
 #include "ft_printf.h"
 
 //MAKE EITHER NEW FILE FOR CAPITAL X OR MAKE NEW FILE FOR PRECISION ONLY

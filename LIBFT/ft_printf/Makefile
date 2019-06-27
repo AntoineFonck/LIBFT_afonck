@@ -6,7 +6,7 @@
 #    By: afonck <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/24 12:48:10 by afonck            #+#    #+#              #
-#    Updated: 2019/06/27 18:07:21 by afonck           ###   ########.fr        #
+#    Updated: 2019/06/27 18:43:22 by afonck           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ OBJ_DIR  = ./obj/
 LIBFT_DIR	= ./libft/
 LIBFT	= $(LIBFT_DIR)libft.a
 
-SRC_LIST	=	float.c \
+SRC_LIST	=	ft_printf.c \
+				float.c \
 				percent.c \
 				char.c \
 				string.c \
@@ -48,6 +49,7 @@ OBJ		=	$(addprefix $(OBJ_DIR), $(OBJ_LIST))
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
+	@cp libft/libft.a ./$(NAME)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
@@ -55,7 +57,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c $(INC_DIR)ft_printf.h
-	@gcc $(CFLAGS) $(INCLUDES) -include ./libft/libft.h -c $< -o $@
+	@gcc $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
