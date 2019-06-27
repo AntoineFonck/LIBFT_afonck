@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 15:32:27 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:32:41 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 16:00:41 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,41 +29,42 @@
    printf("\nmy printf len = %d and real printf len = %d\n", mine, real);
    return (0);
    }
-   */
+*/
 
-int             main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-        if (argc == 4)
-        {
-                char *test;
-                int myone;
-                char hi;
-                int realone;
+	if (argc == 4)
+	{
+		char *test;
+		int myone;
+		char hi;
+		int realone;
 
-                hi = 'h';
-                test = &hi;
-                //myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-                //myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
-                myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
-                ft_putchar('\n');
-                //realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
-                //realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
-                realone = printf(argv[1], atof(argv[2]), argv[3][0], test);
-                printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
-        }
-        return (0);
+		hi = 'h';
+		test = &hi;
+		//myone = ft_printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		//myone = ft_printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		myone = ft_printf(argv[1], atof(argv[2]), argv[3][0], test);
+		ft_putchar('\n');
+		//realone = printf(argv[1], ft_atoi(argv[2]), ft_atoi(argv[3]));
+		//realone = printf(argv[1], ft_atol(argv[2]), argv[3], test);
+		realone = printf(argv[1], atof(argv[2]), argv[3][0], test);
+		printf("\nmy printf len = %d and real printf len = %d\n", myone, realone);
+	}
+	return (0);
 }
 
 /*
-int main()
-{
-	//long double test = 412343524354235.565321432514521413;
+   int main()
+   {
+long double test = 412343524354235.565321432514521413;
 
-	ft_printf("%40.19Lf\n", test);
-	printf("%40.19Lf\n", test);
-	return(0);
+ft_printf("%40.19Lf\n", test);
+printf("%40.19Lf\n", test);
+return(0);
 }
 */
+
 /*
    int main(int argc, char *argv[])
    {
@@ -76,10 +77,12 @@ int main()
 
    i = 15643;
    test = 'O';
-   len1 = ft_printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
-   len2 = printf("i = %d and you wrote '%s'\ntest char = %c\nand a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
+   len1 = ft_printf("i = %d and you wrote '%s'\ntest char = %c\n
+   and a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
+   len2 = printf("i = %d and you wrote '%s'\ntest char = %c\n
+   and a percent alone should print a percent = %%\nhallo %d\n0x55 = 0x%x\n", i, argv[1], test, (unsigned int)&i, 0x55);
    printf("ft_printf len == %d and printf len == %d", len1, len2);
    }
    return (0);
    }
-   */
+*/

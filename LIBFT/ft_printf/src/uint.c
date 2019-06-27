@@ -6,13 +6,14 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:31:06 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 14:52:22 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:58:48 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
+//POSSIBLE TO DO A FILE ONLY FOR PRECISION 
 int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -25,8 +26,9 @@ int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 		nbpad--;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = (flags->precision >= ft_unbrlen(number) ? flags->precision : ft_unbrlen(number))
-		- ft_unbrlen(number);
+	nbzero = (flags->precision >= ft_unbrlen(number) ?
+			flags->precision : ft_unbrlen(number)) -
+			ft_unbrlen(number);
 	padlen = nbpad + nbzero + ((PLUS_FLAG) || (SPACE_FLAG));
 	if (!(MIN_FLAG))
 		pad_space(nbpad, fd);
@@ -81,7 +83,7 @@ int	pad_uint(uintmax_t number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_unbrlen(number);
-	printf("nbrlen is %d\n", ft_unbrlen(number));
+	//printf("nbrlen is %d\n", ft_unbrlen(number));
 	if (nbpad < 0)
 		nbpad = 0;
 	padlen = nbpad;
@@ -104,7 +106,7 @@ int	pad_uint(uintmax_t number, t_flags *flags, int fd)
 		ft_putchar_fd(' ', fd);
 		nbpad--;
 	}
-	printf("PADLEN = %d\n", padlen);
+	//printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 

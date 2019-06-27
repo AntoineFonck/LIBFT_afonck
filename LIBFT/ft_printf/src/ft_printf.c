@@ -6,13 +6,14 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/24 15:48:10 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 16:03:49 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include "ft_printf.h"
 
+//FLAG FUNCTION
 int	is_activated(t_flags *flags)
 {
 	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
@@ -51,6 +52,7 @@ int		do_function(char c, int fd, va_list args, t_flags *flags)
 	return (0);
 }
 
+//FLAG FUNCTION
 t_flags *init_flags()
 {
 	t_flags *flags;
@@ -63,7 +65,7 @@ t_flags *init_flags()
 	flags->color = 0;
 	return (flags);
 }
-
+//FLAG FUNCTION
 int		is_flag(char c)
 {
 	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
@@ -71,7 +73,7 @@ int		is_flag(char c)
 	else
 		return (0);
 }
-
+//FLAG FUNCTION
 void	activate_flags(t_flags *flags, char c)
 {
 	/* activate them in nearly the equivalent of doing += for each flag (HASHTAG + MINUS for example if both are activated), using | (OR) instead for a very gud reason: if a flag is repeated twice (%##x for instance), the += logic would give this result: flags->state += HASHTAG so flags->state is now equal 1 (0000 0001) BUT if you repeat this operation (second hashtag in format %##d) you get this: flags->state += HASHTAG is equal to 2 which is WRONG (would randomly activate flags MINUS because MINUS = 2 (0000 0010)).
@@ -90,7 +92,7 @@ void	activate_flags(t_flags *flags, char c)
 	else
 		return;
 }
-
+//FLAG FUNCTION
 void	check_flags(const char **fmt, t_flags *flags)
 {
 	while (is_flag(**fmt))
@@ -167,13 +169,13 @@ void	check_precision(const char **fmt, t_flags *flags)
 		store_precision(fmt, flags);
 	}
 }
-
+//FILE FLAGS
 void	activate_biglmod(const char **fmt, t_flags *flags)
 {
 	(*fmt)++;
 	flags->state |= BIGL;
 }
-
+// FILE FLAGS
 void	check_lmod(const char **fmt, t_flags *flags)
 {
 	if (**fmt == 'h')
@@ -202,6 +204,7 @@ void	check_lmod(const char **fmt, t_flags *flags)
 		activate_biglmod(fmt, flags);
 }
 
+//BONUS FILE
 void	check_color(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '{')
@@ -244,6 +247,7 @@ void	check_all(const char **fmt, t_flags *flags)
 	check_color(fmt, flags);
 }
 
+// BONUS FILE
 void	choose_color(int fd, int color)
 {
 	if (color == 1)
@@ -303,6 +307,7 @@ int		ft_printf(const char *fmt, ...)
 	return (done);
 }
 
+// CAN GO IN LIBFT AND NEEDS TO REMOVE ONE LINE
 float	ft_atof(const char *s)
 {
 	float	res;
