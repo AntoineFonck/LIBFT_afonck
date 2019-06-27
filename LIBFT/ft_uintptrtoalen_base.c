@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:37:01 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 14:37:42 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:34:20 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_uintptrtoalen_base(uintptr_t value, int base)
 {
-	char	buf[(sizeof(uintptr_t) * 2) + 1]; // 8 bytes * 2 (2 char per byte ex a7)
+	char	buf[(sizeof(uintptr_t) * 2) + 1];
 	char	*ptr;
 	int		num;
 	int		ascii_offset;

@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:20:50 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 14:21:59 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:30:00 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		ft_floatlen(double n, int afterpoint)
 {
-	int             len;
-	long    ipart;
-	double  fpart;
+	int		len;
+	long	ipart;
+	double	fpart;
 
 	len = 0;
 	ipart = (long)n;
