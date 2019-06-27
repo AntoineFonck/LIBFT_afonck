@@ -6,11 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:32:29 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:17:35 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:00:20 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 int	ft_uintptrtoa_base(uintptr_t value, int base, int fd)
 {

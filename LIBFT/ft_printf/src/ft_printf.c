@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 16:03:49 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:10:10 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 //FLAG FUNCTION

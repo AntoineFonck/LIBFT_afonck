@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 20:44:18 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:38:01 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 17:54:52 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 int	pad_bin_prec_min(int binlen, t_flags *flags, int fd, uintmax_t bin)

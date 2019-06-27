@@ -6,11 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:34:46 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:13:55 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:00:43 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 int	ft_uitocapa_base(uintmax_t value, int base, int fd)
 {

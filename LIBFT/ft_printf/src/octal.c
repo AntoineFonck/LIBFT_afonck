@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 13:00:21 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:00:16 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:10:44 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 // CAREFUL ABOUT NBPAD STUFF:D

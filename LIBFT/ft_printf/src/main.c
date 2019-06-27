@@ -6,12 +6,12 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 15:32:27 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 16:00:41 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:10:32 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "../libft.h"
+//#include "../libft.h"
 #include <locale.h>
 
 /*

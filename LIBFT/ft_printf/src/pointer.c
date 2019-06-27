@@ -6,11 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:40:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:39:02 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 17:44:48 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 int	pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)

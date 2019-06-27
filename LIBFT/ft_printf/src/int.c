@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:32:13 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 17:44:32 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 int	pad_int_prec(intmax_t number, t_flags *flags, int fd)

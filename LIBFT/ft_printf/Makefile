@@ -6,7 +6,7 @@
 #    By: afonck <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/24 12:48:10 by afonck            #+#    #+#              #
-#    Updated: 2019/06/27 16:33:09 by afonck           ###   ########.fr        #
+#    Updated: 2019/06/27 18:07:21 by afonck           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ CFLAGS	= -Wall -Werror -Wextra
 LIBRARIES	= -lft -L$(LIBFT_DIR)
 
 INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR)
+
+HEADER_LIST = ft_printf.h
 
 SRC_DIR  = ./src/
 INC_DIR  = ./includes/
@@ -35,32 +37,32 @@ SRC_LIST	=	float.c \
 				hex.c \
 				pointer.c \
 				utils.c 
+
+OBJ_LIST = $(SRC_LIST:.c=.o)
+
 SRC		=	$(addprefix $(SRC_DIR), $(SRC_LIST))
-
-OBJ_LIST	= $(patsubst %.c, %.o, $(SRC_LIST))
-
-OBJ		= $(addprefix $(OBJ_DIR), $(OBJ_LIST))
+OBJ		=	$(addprefix $(OBJ_DIR), $(OBJ_LIST))
 
 .PHONY: clean fclean all re
 
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
-	@ar rcs $(NAME) $(OBJ)
+	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-$(OBJ): $(FILES) $(HEADERS)
-	@gcc $(CFLAGS) -c $(INCLUDES) $< -o $@
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(INC_DIR)ft_printf.h
+	@gcc $(CFLAGS) $(INCLUDES) -include ./libft/libft.h -c $< -o $@
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 clean:
 	@make clean -C $(LIBFT_DIR)
-	@rm -f $(OBJ)
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@make fclean -C $(LIBFT_DIR)

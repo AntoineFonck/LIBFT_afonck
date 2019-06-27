@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:31:06 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:00:40 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:11:13 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 //POSSIBLE TO DO A FILE ONLY FOR PRECISION 

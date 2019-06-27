@@ -6,11 +6,11 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:29:53 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:00:26 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 18:11:05 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+//#include "../libft.h"
 #include "ft_printf.h"
 
 int	pad_str(int number, t_flags *flags, int fd)

@@ -6,11 +6,22 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:46:26 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:32:34 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:03:41 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
+
+static void	pad_zero(int nbzero, int fd)
+{
+	char	buf[nbzero];
+
+	if (nbzero > 0)
+	{
+		ft_memset(buf, '0', nbzero);
+		write(fd, buf, nbzero);
+	}
+}
 
 static void	handle_decimal(double n, double fpart, int afterpoint, int fd)
 {
@@ -26,7 +37,7 @@ static void	handle_decimal(double n, double fpart, int afterpoint, int fd)
 		morezero = afterpoint - ft_nbrlen((long)fpart);
 		if (morezero > 0)
 			pad_zero(morezero, fd);
-		ft_uitoaprint_base((unsigned long)fpart, 10, fd);
+		ft_uitoa_base((unsigned long)fpart, 10, fd);
 	}
 }
 

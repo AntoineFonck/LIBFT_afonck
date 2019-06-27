@@ -6,11 +6,11 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:33:58 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 15:11:40 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:00:32 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 int	ft_uitoa_base(uintmax_t value, int base, int fd)
 {
