@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/25 17:49:54 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/06/27 14:09:40 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,18 +142,28 @@ int		special_convert_float(double number, int fd, t_flags *flags)
 
 int		convert_float(va_list args, int fd, t_flags *flags)
 {
-	//double	number;
-	long double	number;
+	long double	numberldb;
+	double		numberdb;
 	int		nblen;
 
 	nblen = 0;
+	numberldb = 0;
+	numberdb = 0;
 	if (BIGL_FLAG)
-		number = va_arg(args, long double);
+		numberldb = va_arg(args, long double);
 	else
-		number = va_arg(args, double);
-	if (is_activated(flags) || (PREC_FLAG))
-		return (special_convert_float(number, fd, flags));
-	//printf("bigl flag = %d\n", BIGL_FLAG);
-	nblen += ft_ftoa(number, 6, fd);
+		numberdb = va_arg(args, double);
+	if (BIGL_FLAG)
+	{
+		if (is_activated(flags) || (PREC_FLAG))
+			return (special_convert_float(numberldb, fd, flags));
+		nblen += ft_ftoa(numberldb, 6, fd);
+	}
+	else
+	{
+		if (is_activated(flags) || (PREC_FLAG))
+			return (special_convert_float(numberdb, fd, flags));
+		nblen += ft_ftoa(numberdb, 6, fd);
+	}
 	return (nblen);
 }

@@ -18,7 +18,7 @@
    return (0);
    }
    */
-/*
+
 int             main(int argc, char *argv[])
 {
         if (argc == 4)
@@ -41,16 +41,17 @@ int             main(int argc, char *argv[])
         }
         return (0);
 }
-*/
 
+/*
 int main()
 {
-	long double test = 412343524354235.565321432514521413;
+	//long double test = 412343524354235.565321432514521413;
 
 	ft_printf("%40.19Lf\n", test);
 	printf("%40.19Lf\n", test);
 	return(0);
 }
+*/
 /*
    int main(int argc, char *argv[])
    {
