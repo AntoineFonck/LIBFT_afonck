@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:51:03 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/28 20:47:31 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 	if (number < 0)
 		ft_putchar_fd('-', fd);
 	pad_zero(nbzero, fd);
-	ft_putnbr_fd(ft_absolute(number), fd);
+	//ft_putnbr_fd(ft_absolute(number), fd); //THIS instead of 2 following conditions (makes about 15 mistakes less)
+	if (!flags->precision && number == 0)
+		padlen--;
+	else
+		ft_putnbr_fd(ft_absolute(number), fd);
 	if ((MIN_FLAG))
 		pad_space(nbpad, fd);
 	return (padlen);
@@ -146,6 +150,8 @@ int	convert_int(va_list args, int fd, t_flags *flags)
 		number = va_arg(args, int);
 	if (is_activated(flags))
 		return (special_convert_int(number, fd, flags));
-	ft_putnbr_fd(number, fd);
+	else
+		ft_putnbr_fd(number, fd);
+	//have to find a condition here to print a 0 if there is no "." and not print a 0 if there is a "."
 	return (ft_nbrlen(number));
 }
