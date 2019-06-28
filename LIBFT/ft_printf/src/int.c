@@ -113,7 +113,7 @@ int	pad_int(intmax_t number, t_flags *flags, int fd)
 	if ((SPACE_FLAG) && !(PLUS_FLAG) && !(MIN_FLAG) && number >= 0)
 		ft_putchar_fd(' ', fd);
 	pad_space(nbpad, fd);
-	if (number < 0 && !(MIN_FLAG))
+	if (number < 0 && !(MIN_FLAG) && number != -9223372036854775807 - 1)
 		ft_putchar_fd('-', fd);
 	return (padlen);
 }
