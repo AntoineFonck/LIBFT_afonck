@@ -22,7 +22,7 @@ void		ft_putnbr_fd(intmax_t n, int fd)
 {
 	if (n < -9223372036854775807)
 	{
-		ft_putnbr_fd(-9223372036, fd);
+		ft_putnbr_fd(9223372036, fd);
 		ft_putnbr_fd(854775808, fd);
 	}
 	else

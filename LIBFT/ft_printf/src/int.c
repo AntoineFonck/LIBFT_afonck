@@ -99,6 +99,8 @@ int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 			ft_putchar_fd('+', fd);
 		else if ((SPACE_FLAG) && number >= 0)
 			ft_putchar_fd(' ', fd);
+		else if (number == -9223372036854775807 - 1)
+			ft_putchar_fd('-', fd);
 		ft_putnbr_fd(number, fd);
 		len += pad_int(number, flags, fd);
 	}
@@ -126,7 +128,7 @@ int	pad_int(intmax_t number, t_flags *flags, int fd)
 	if ((SPACE_FLAG) && !(PLUS_FLAG) && !(MIN_FLAG) && number >= 0)
 		ft_putchar_fd(' ', fd);
 	pad_space(nbpad, fd);
-	if (number < 0 && !(MIN_FLAG) && number != -9223372036854775807 - 1)
+	if (number < 0 && !(MIN_FLAG))// || number == -9223372036854775807 - 1)
 		ft_putchar_fd('-', fd);
 	return (padlen);
 }
@@ -174,7 +176,9 @@ int	special_convert_int(intmax_t number, int fd, t_flags *flags)
 	else if (flags->precision || (PREC_FLAG))
 		full_len += int_precision(number, fd, flags);
 	else
+	{
 		full_len += int_no_precision(number, fd, flags);
+	}
 	return (full_len + ft_nbrlen(number));
 }
 
@@ -195,7 +199,11 @@ int	convert_int(va_list args, int fd, t_flags *flags)
 	if (is_activated(flags) || PREC_FLAG)
 		return (special_convert_int(number, fd, flags));
 	else
+	{
+		if (number == -9223372036854775807 - 1)
+			ft_putchar_fd('-', fd);
 		ft_putnbr_fd(number, fd);
+	}
 	//have to find a condition here to print a 0 if there is no "." and not print a 0 if there is a "."
 	return (ft_nbrlen(number));
 }
