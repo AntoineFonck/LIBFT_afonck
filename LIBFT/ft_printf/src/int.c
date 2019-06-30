@@ -28,27 +28,11 @@ int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 	if (nbpad < 0)
 		nbpad = 0;
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
-	//padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
 	padlen = 0;
 	flags_spec(flags, nbpad, fd, number);
-	/*if (!(MIN_FLAG))
-	  pad_space(nbpad, fd);
-	  if ((PLUS_FLAG) && number >= 0)
-	  ft_putchar_fd('+', fd);
-	  if ((SPACE_FLAG) && number >= 0 && !(PLUS_FLAG))
-	  ft_putchar_fd(' ', fd);*/
 	if (number < 0)
 		ft_putchar_fd('-', fd);
 	pad_zero(nbzero, fd);
-	//ft_putnbr_fd(ft_absolute(number), fd); //THIS instead of 2 following conditions (makes about 15 mistakes less)
-	//if (flags->field_width && !flags->precision && number == 0 && !(SPACE_FLAG) && !(PLUS_FLAG))
-	//{
-	//	printf("nbpad = %d\n", nbpad);
-		//pad_space(nbpad, fd);
-	//}
-	//else if (!flags->precision && number == 0)
-	//	nbpad--;
-	//else
 		ft_putnbr_fd(ft_absolute(number), fd);
 	if (MIN_FLAG)
 	{
@@ -69,8 +53,6 @@ int	int_precision(intmax_t number, int fd, t_flags *flags)
 	}
 	else
 	{
-		//if (number < 0 && (ZERO_FLAG))
-		//	ft_putchar_fd('-', fd);
 		len += pad_int_prec(number, flags, fd);
 	}
 	return (len);
@@ -91,7 +73,6 @@ int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 		if ((PLUS_FLAG) && !(ZERO_FLAG) && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(ft_absolute(number), fd);
-		//printf("WTF NUMBER = %jd\n", ft_absolute(number));
 	}
 	else if ((MIN_FLAG))
 	{
@@ -140,8 +121,6 @@ int	special_zero(int fd, t_flags *flags)
 	len = flags->field_width - (PLUS_FLAG || SPACE_FLAG ? 1 : 0);// + 1;
 	if (len < 0)
 		len = 0;
-	//if ((PLUS_FLAG) && (MIN_FLAG))
-	//	ft_putchar_fd('+', fd);
 	if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
 	{
 		if (PLUS_FLAG)
@@ -149,9 +128,6 @@ int	special_zero(int fd, t_flags *flags)
 		else if (SPACE_FLAG)
 			ft_putchar_fd(' ', fd);
 	}
-	//if ((ZERO_FLAG))
-	//	ft_putchar_fd('-', fd);
-	//len += pad_int(number, flags, fd);
 	pad_space(len, fd);
 	if (((PLUS_FLAG) || (SPACE_FLAG)) && !(MIN_FLAG))
 	{
@@ -204,6 +180,5 @@ int	convert_int(va_list args, int fd, t_flags *flags)
 			ft_putchar_fd('-', fd);
 		ft_putnbr_fd(number, fd);
 	}
-	//have to find a condition here to print a 0 if there is no "." and not print a 0 if there is a "."
 	return (ft_nbrlen(number));
 }

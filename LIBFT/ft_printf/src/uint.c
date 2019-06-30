@@ -110,13 +110,43 @@ int	pad_uint(uintmax_t number, t_flags *flags, int fd)
 	return (padlen);
 }
 
+int     lol_special_zero(int fd, t_flags *flags)
+{
+        int len;
+
+        len = flags->field_width - (PLUS_FLAG || SPACE_FLAG ? 1 : 0);// + 1;
+        if (len < 0)
+                len = 0;
+        if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
+        {
+                if (PLUS_FLAG)
+                        ft_putchar_fd('+', fd);
+                else if (SPACE_FLAG)
+                        ft_putchar_fd(' ', fd);
+        }
+        pad_space(len, fd);
+        if (((PLUS_FLAG) || (SPACE_FLAG)) && !(MIN_FLAG))
+        {
+                if (PLUS_FLAG)
+                        ft_putchar_fd('+', fd);
+                else if (SPACE_FLAG)
+                        ft_putchar_fd(' ', fd);
+                len++;
+        }
+        if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
+                len++;
+        return(len);
+}
+
 int	special_convert_uint(uintmax_t number, int fd, t_flags *flags)
 {
 	int full_len;
 
 	full_len = 0;
-	if (flags->precision)
-		full_len += uint_precision(number, fd, flags);
+	if (((PREC_FLAG) && flags->precision == 0) && number == 0)
+                return (lol_special_zero(fd, flags));
+        else if (flags->precision || (PREC_FLAG))
+                full_len += uint_precision(number, fd, flags);
 	else
 		full_len += uint_no_precision(number, fd, flags);
 	return (full_len + ft_unbrlen(number));
@@ -136,8 +166,13 @@ int	convert_uint(va_list args, int fd, t_flags *flags)
 		number = (unsigned long long)va_arg(args, unsigned long long);
 	else
 		number = va_arg(args, unsigned int);
-	if (is_activated(flags))
+	if (is_activated(flags) || PREC_FLAG)
 		return (special_convert_uint(number, fd, flags));
-	ft_uitoa_base(number, 10, fd);
+	else
+        {
+                //if (number == -9223372036854775807 - 1)
+                 //       ft_putchar_fd('-', fd);
+		ft_uitoa_base(number, 10, fd);
+        }
 	return (ft_unbrlen(number));
 }
