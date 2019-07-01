@@ -103,7 +103,7 @@ int	pad_hex(int hexlen, t_flags *flags, int fd, char letter)
 	int nbpad;
 	int padlen;
 
-	if (flags->precision)
+	if (flags->precision || PREC_FLAG)
 		return (pad_hex_prec(hexlen, flags, fd, letter));
 	nbpad = flags->field_width - hexlen - ((HASH_FLAG) ? 2 : 0);
 	padlen = 0;
@@ -125,6 +125,36 @@ int	pad_hex(int hexlen, t_flags *flags, int fd, char letter)
 	return (padlen);
 }
 
+int	special_hexzero(int fd, t_flags *flags)
+{
+        int spacelen;
+	int fullen;
+
+        spacelen = flags->field_width - flags->precision - (PREC_FLAG ? 0 : 1);//- (PLUS_FLAG || SPACE_FLAG ? 1 : 0);// + 1;
+        if (spacelen < 0)
+                spacelen = 0;
+	fullen = (flags->field_width <= flags->precision ? flags->precision : spacelen + flags->precision)
+		+ (PREC_FLAG ? 0 : 1);
+	if (MIN_FLAG)
+	{
+		if (HASH_FLAG && !(PREC_FLAG))// && (flags->precision == 0))
+			ft_putchar_fd('0', fd);
+		pad_zero(flags->precision, fd);
+        	pad_space(spacelen, fd);
+	}
+	else
+	{
+		if (ZERO_FLAG && !(PREC_FLAG))
+			pad_zero(spacelen, fd);
+		else
+        		pad_space(spacelen, fd);
+		pad_zero(flags->precision, fd);
+		if (HASH_FLAG && !(PREC_FLAG))// && (flags->precision == 0))
+			ft_putchar_fd('0', fd);
+	}
+        return(fullen);
+}
+
 int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter)
 {
 	int full_len;
@@ -132,6 +162,9 @@ int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter)
 
 	full_len = 0;
 	hexlen = ft_uintlen_base(hex, 16);
+	if (((HASH_FLAG) || (PREC_FLAG)) && hex == 0)// && flags->precision == 0)
+	//printf("condition = %d\n", ((HASH_FLAG) || (PREC_FLAG)) && hex == 0 && flags->precision == 0);
+		return (special_hexzero(fd, flags));
 	if (MIN_FLAG)
 	{
 		if (letter == 'x')
@@ -163,7 +196,7 @@ int	convert_hex(va_list args, int fd, t_flags *flags)
 		hex = (unsigned long long)va_arg(args, unsigned long long);
 	else
 		hex = va_arg(args, unsigned int);
-	if (is_activated(flags))
+	if (is_activated(flags) || PREC_FLAG)
 		return (special_convert_hex(hex, fd, flags, 'x'));
 	hexlen = ft_uitoa_base(hex, 16, fd);
 	return (hexlen);
@@ -184,7 +217,7 @@ int	convert_cap_hex(va_list args, int fd, t_flags *flags)
 		hex = (unsigned long long)va_arg(args, unsigned long long);
 	else
 		hex = va_arg(args, unsigned int);
-	if (is_activated(flags))
+	if (is_activated(flags) || PREC_FLAG)
 		return (special_convert_hex(hex, fd, flags, 'X'));
 	hexlen = ft_uitocapa_base(hex, 16, fd);
 	return (hexlen);
