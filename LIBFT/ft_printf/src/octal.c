@@ -80,19 +80,65 @@ int	pad_oct(int octlen, t_flags *flags, int fd)
 	padlen += (nbpad > 0 ? nbpad : 0) + ((HASH_FLAG) ? 1 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
-	if ((HASH_FLAG) && (ZERO_FLAG))
+	if ((HASH_FLAG) && (ZERO_FLAG) && !(PREC_FLAG))
 		write(fd, "0", 1);
 	while (nbpad > 0)
 	{
-		if ((ZERO_FLAG))
+		if ((ZERO_FLAG) && !(PREC_FLAG))
 			ft_putchar_fd('0', fd);
 		else
 			ft_putchar_fd(' ', fd);
 		nbpad--;
 	}
-	if ((HASH_FLAG) && !(ZERO_FLAG))
+	if (((HASH_FLAG) && !(ZERO_FLAG)) || (HASH_FLAG && ZERO_FLAG && PREC_FLAG))
 		write(fd, "0", 1);
 	return (padlen);
+}
+
+int     special_zero1(int fd, t_flags *flags)
+{
+        int len;
+
+        len = 0;
+	if (HASH_FLAG)
+	{
+		if (flags->field_width > 1 && !(ZERO_FLAG) && !(MIN_FLAG))
+		{
+			pad_space(flags->field_width - 1, fd);
+			len = flags->field_width - 1;
+		}
+		else if (flags->field_width > 1 && (ZERO_FLAG) && !(MIN_FLAG) && PREC_FLAG)
+                {
+                        pad_space(flags->field_width - 1, fd);
+                        len = flags->field_width - 1;
+                }
+		if (flags->field_width && ZERO_FLAG && !(MIN_FLAG) && !(PREC_FLAG))
+		{
+			pad_zero(flags->field_width, fd);
+			len = flags->field_width;
+		}
+		else
+		{
+			write (1, "0", 1);
+			len++;
+		}
+		if (!(PREC_FLAG) &&/* ZERO_FLAG && */flags->field_width >= 1 && (MIN_FLAG))
+		{
+			pad_space(flags->field_width - 1, fd);
+			len = flags->field_width;
+		}
+		else if ((PREC_FLAG) &&/* ZERO_FLAG && */flags->field_width >= 1 && (MIN_FLAG))
+                {
+                        pad_space(flags->field_width - 1, fd);
+                        len = flags->field_width;
+                }
+	}
+	else
+	{
+		pad_space(flags->field_width, fd);
+		len = flags->field_width;
+	}
+        return(len);
 }
 
 int	special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
@@ -102,6 +148,8 @@ int	special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
 
 	full_len = 0;
 	octlen = ft_uintlen_base(oct, 8);
+	if (oct == 0 && (PREC_FLAG || HASH_FLAG) && flags->precision == 0)
+		return (special_zero1(fd, flags));
 	if (MIN_FLAG)
 	{
 		full_len += pad_oct_prec_min(octlen, flags, fd, oct);
@@ -127,7 +175,7 @@ int	convert_oct(va_list args, int fd, t_flags *flags)
 		oct = (unsigned long long)va_arg(args, unsigned long long);
 	else
 		oct = va_arg(args, unsigned int);
-	if (is_activated(flags))
+	if (is_activated(flags) || PREC_FLAG)
 		return (special_convert_oct(oct, fd, flags));
 	octlen = ft_uitoa_base(oct, 8, fd);
 	return (octlen);
