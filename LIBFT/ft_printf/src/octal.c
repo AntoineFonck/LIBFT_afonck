@@ -97,48 +97,22 @@ int	pad_oct(int octlen, t_flags *flags, int fd)
 
 int     special_zero1(int fd, t_flags *flags)
 {
-        int len;
+	int len;
 
-        len = 0;
+	len = flags->field_width + ((HASH_FLAG) && !flags->field_width? 1 : 0);
 	if (HASH_FLAG)
 	{
-		if (flags->field_width > 1 && !(ZERO_FLAG) && !(MIN_FLAG))
-		{
+		if (PREC_FLAG && !(MIN_FLAG))
 			pad_space(flags->field_width - 1, fd);
-			len = flags->field_width - 1;
-		}
-		else if (flags->field_width > 1 && (ZERO_FLAG) && !(MIN_FLAG) && PREC_FLAG)
-                {
-                        pad_space(flags->field_width - 1, fd);
-                        len = flags->field_width - 1;
-                }
-		if (flags->field_width && ZERO_FLAG && !(MIN_FLAG) && !(PREC_FLAG))
-		{
-			pad_zero(flags->field_width, fd);
-			len = flags->field_width;
-		}
-		else
-		{
-			write (1, "0", 1);
-			len++;
-		}
-		if (!(PREC_FLAG) &&/* ZERO_FLAG && */flags->field_width >= 1 && (MIN_FLAG))
-		{
+		if (!(PREC_FLAG) && !(MIN_FLAG))
+			pad_zero(flags->field_width - 1, fd);
+		write (1, "0", 1);
+		if (MIN_FLAG)
 			pad_space(flags->field_width - 1, fd);
-			len = flags->field_width;
-		}
-		else if ((PREC_FLAG) &&/* ZERO_FLAG && */flags->field_width >= 1 && (MIN_FLAG))
-                {
-                        pad_space(flags->field_width - 1, fd);
-                        len = flags->field_width;
-                }
+		return(len);
 	}
-	else
-	{
-		pad_space(flags->field_width, fd);
-		len = flags->field_width;
-	}
-        return(len);
+	pad_space(flags->field_width, fd);
+	return(len);
 }
 
 int	special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
