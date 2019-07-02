@@ -93,9 +93,9 @@ int	pad_pointer(int hexlen, t_flags *flags, int fd)
 
 	if (flags->precision)
 		return (pad_pointer_prec(hexlen, flags, fd));
-	nbpad = flags->field_width - hexlen - ((HASH_FLAG) ? 2 : 0);
+	nbpad = flags->field_width - hexlen - 2;
 	padlen = 0;
-	padlen += (nbpad > 0 ? nbpad : 0) + ((HASH_FLAG) ? 2 : 0);
+	padlen += (nbpad > 0 ? nbpad : 0) + 2;
 	if (nbpad < 0)
 		nbpad = 0;
 	if ((ZERO_FLAG))
