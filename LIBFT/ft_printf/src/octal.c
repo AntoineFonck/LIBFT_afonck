@@ -95,7 +95,7 @@ int	pad_oct(int octlen, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int     special_zero1(int fd, t_flags *flags)
+int     special_octzero(int fd, t_flags *flags)
 {
 	int len;
 
@@ -103,15 +103,15 @@ int     special_zero1(int fd, t_flags *flags)
 	if (HASH_FLAG)
 	{
 		if (PREC_FLAG && !(MIN_FLAG))
-			pad_space(flags->field_width - 1, fd);
+			pad_space(len - 1, fd);
 		if (!(PREC_FLAG) && !(MIN_FLAG))
-			pad_zero(flags->field_width - 1, fd);
+			pad_zero(len - 1, fd);
 		write (1, "0", 1);
 		if (MIN_FLAG)
-			pad_space(flags->field_width - 1, fd);
+			pad_space(len - 1, fd);
 		return(len);
 	}
-	pad_space(flags->field_width, fd);
+	pad_space(len, fd);
 	return(len);
 }
 
@@ -123,7 +123,7 @@ int	special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
 	full_len = 0;
 	octlen = ft_uintlen_base(oct, 8);
 	if (oct == 0 && (PREC_FLAG || HASH_FLAG) && flags->precision == 0)
-		return (special_zero1(fd, flags));
+		return (special_octzero(fd, flags));
 	if (MIN_FLAG)
 	{
 		full_len += pad_oct_prec_min(octlen, flags, fd, oct);
