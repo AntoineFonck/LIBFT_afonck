@@ -31,17 +31,21 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 	int padlen;
 	int nbrlen;
 
-	nbrlen = ft_floatlen(number, preclen) - (number < 0 ? 1 : 0);
+	nbrlen = ft_floatlen(number, preclen) - (number < 0 ? 1 : 0) + ((HASH_FLAG)
+			&& (PREC_FLAG) && flags->precision == 0);
 	nbpad = flags->field_width - (flags->precision >= nbrlen ? flags->precision
 			: nbrlen) - (number < 0 ? 1 : 0) - (((PLUS_FLAG) || (SPACE_FLAG))
 				&& number >= 0 ? 1 : 0);
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
+	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen
+		+ ((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0);
 	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
 	flags_spec(flags, nbpad, fd, number);
 	//pad_zero(nbzero, fd);
 	ft_ftoa_fd(number, preclen, fd);
+	if ((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0)
+		ft_putchar_fd('.', fd);
 	if ((MIN_FLAG))
 		pad_space(nbpad, fd);
 	return (padlen);
