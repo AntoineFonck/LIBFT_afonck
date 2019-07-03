@@ -50,7 +50,7 @@ int			ft_ftoa_fd(double n, int afterpoint, int fd)
 	len = afterpoint + (afterpoint > 0 ? 1 : 0);
 	ipart = (long)n;
 	fpart = n - (double)ipart;
-	if (ipart == 0 && !(1 / n > 0))
+	if (ipart == 0 && !(1 / n > 0) && n != 0)
 	{
 		len++;
 		write(fd, "-", 1);
@@ -58,8 +58,10 @@ int			ft_ftoa_fd(double n, int afterpoint, int fd)
 	len += ft_nbrlen(ipart);
 	if (afterpoint == 0)
 	{
-		if (fpart >= 0.5)
+		if (fpart > 0.5)
 			ipart += 1;
+		else if (fpart < -0.5)
+			ipart -= 1;
 	}
 	ft_putnbr_fd(ipart, fd);
 	handle_decimal(n, fpart, afterpoint, fd);

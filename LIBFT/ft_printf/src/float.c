@@ -79,10 +79,14 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 		+ ((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0);
 	padlen = nbpad + nbzero + (/*number >= 0*/(1 / number > 0) ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
 	//ft_printf("nbrlen = %d, nbpad = %d, nbzero = %d, padlen = %d\n", nbrlen, nbpad, nbzero, padlen);
+	if (number == 0 && !(1 / number > 0) && (ZERO_FLAG))
+		ft_putchar_fd('-', fd);
 	flags_specfloat(flags, nbpad, fd, number);
 	//pad_zero(nbzero, fd);
 	//if (number == 0 && !(1 / number > 0))
 	//	ft_putchar_fd(' ', fd);
+	if (number == 0 && !(1 / number > 0) && !(ZERO_FLAG))
+		ft_putchar_fd('-', fd);
 	if (ZERO_FLAG || (number == 0 && !(1 / number > 0)))
 		ft_ftoa_fd(absfloat(number), preclen, fd);
 	else
@@ -128,9 +132,13 @@ int		float_no_precision(double number, int preclen, int fd, t_flags *flags)
 		if ((PLUS_FLAG) && (ZERO_FLAG) && (1 / number > 0))//number >= 0)
 			ft_putchar_fd('+', fd);
 		//if (number < 0 && (ZERO_FLAG))
-		if (!(1 / number > 0) && (ZERO_FLAG) && number != 0)
+		//if (!(1 / number > 0) && (ZERO_FLAG) && number != 0)
+		//	ft_putchar_fd('-', fd);
+		if (!(1 / number > 0) && number == 0)
 			ft_putchar_fd('-', fd);
 		len += pad_float(number, flags, fd);
+		if (!(1 / number > 0) && number != 0)
+			ft_putchar_fd('-', fd);
 		if ((PLUS_FLAG) && !(ZERO_FLAG) && (1 / number > 0))//number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_ftoa_fd(absfloat(number), preclen, fd);
@@ -141,6 +149,8 @@ int		float_no_precision(double number, int preclen, int fd, t_flags *flags)
 			ft_putchar_fd('+', fd);
 		else if ((SPACE_FLAG) && (1 / number > 0))//number >= 0)
 			ft_putchar_fd(' ', fd);
+		if (!(1 / number > 0) && number == 0)
+			ft_putchar_fd('-', fd);
 		ft_ftoa_fd(number, preclen, fd);
 		len += pad_float(number, flags, fd);
 	}
@@ -214,12 +224,22 @@ int		convert_float(va_list args, int fd, t_flags *flags)
 	{
 		if (is_activated(flags) || (PREC_FLAG))
 			return (special_convert_float(numberldb, fd, flags));
+		if (!(1 / numberldb > 0) && !(ZERO_FLAG) && numberldb == 0)
+		{
+			ft_putchar_fd('-', fd);
+			nblen++;
+		}
 		nblen += ft_ftoa_fd(numberldb, 6, fd);
 	}
 	else
 	{
 		if (is_activated(flags) || (PREC_FLAG))
 			return (special_convert_float(numberdb, fd, flags));
+		if (!(1 / numberdb > 0) && !(ZERO_FLAG) && numberdb == 0)
+		{
+			ft_putchar_fd('-', fd);
+			nblen++;
+		}
 		nblen += ft_ftoa_fd(numberdb, 6, fd);
 	}
 	return (nblen);
