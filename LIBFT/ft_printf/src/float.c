@@ -222,24 +222,25 @@ int		convert_float(va_list args, int fd, t_flags *flags)
 		numberdb = va_arg(args, double);
 	if (BIGL_FLAG)
 	{
-		if (is_activated(flags) || (PREC_FLAG))
+		if (is_activated(flags) || (PREC_FLAG) || (!(1 / numberldb > 0) && numberldb == 0))
 			return (special_convert_float(numberldb, fd, flags));
-		if (!(1 / numberldb > 0) && !(ZERO_FLAG) && numberldb == 0)
+		/*if (!(1 / numberldb > 0) && !(ZERO_FLAG) && numberldb == 0)
 		{
 			ft_putchar_fd('-', fd);
 			nblen++;
-		}
+		}*/
 		nblen += ft_ftoa_fd(numberldb, 6, fd);
 	}
 	else
 	{
-		if (is_activated(flags) || (PREC_FLAG))
+		if (is_activated(flags) || (PREC_FLAG) || (!(1 / numberdb > 0) && numberdb == 0))
 			return (special_convert_float(numberdb, fd, flags));
+		/*
 		if (!(1 / numberdb > 0) && !(ZERO_FLAG) && numberdb == 0)
 		{
 			ft_putchar_fd('-', fd);
 			nblen++;
-		}
+		}*/
 		nblen += ft_ftoa_fd(numberdb, 6, fd);
 	}
 	return (nblen);
