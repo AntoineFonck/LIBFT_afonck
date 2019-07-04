@@ -41,7 +41,7 @@ int	ft_wstrlen(wchar_t *wstr)
 		return (-1);
 	while (*wstr)
 	{
-		full_len += get_wchar_size(nbits(*wstr));
+		full_len += ft_wcharlen(ft_nbits(*wstr));
 		wstr++;
 	}
 	return (full_len);

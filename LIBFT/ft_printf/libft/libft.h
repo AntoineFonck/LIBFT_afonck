@@ -35,6 +35,17 @@ double				ft_pow(double x, int y);
 ** returns x to the power of y
 */
 
+int				ft_nbits(unsigned int nbr);
+/*
+** returns the number of bits in the unsigned int nbr
+*/
+
+int				ft_wcharlen(int nbbits);
+/*
+** returns the length the wchar depending on its nbbits number of bits
+** (use with ft_nbits)
+*/
+
 int					ft_nbrlen(intmax_t n);
 /*
 ** returns the length of the int n
@@ -121,6 +132,10 @@ void				ft_putchar(char c);
 /*
 ** prints the char c with write on the standard input |
 ** doesn't return anything
+*/
+int     ft_putwchar_fd(wchar_t wchar, int fd);
+/*
+** prints the wide char wchar in the file descriptor fd, returns the length of the wchar
 */
 
 void				ft_putstr(char const *s);

@@ -13,72 +13,13 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-//IN OTHER FILE
-
-int	nbits(unsigned int nbr)
-{
-	int i;
-
-	i = 1;
-	while (nbr >>= 1)
-		i++;
-	return (i);
-}
-
-//IN OTHER FILE
-
-int	get_wchar_size(int nbbits)
-{
-	if (nbbits <= 7)
-		return (1);
-	else if (nbbits > 7 && nbbits <= 11)
-		return (2);
-	else if (nbbits > 11 && nbbits <= 16)
-		return (3);
-	else if (nbbits > 16)
-		return (4);
-	else
-		return (-1);
-}
-
-//IN OTHER FILE?
-
-int	ft_putwchar_fd(wchar_t wchar, int fd)
-{
-	unsigned int	ch;
-	int				n;
-
-	ch = (unsigned int)wchar;
-	n = nbits(ch);
-	if (n > 7)
-	{
-		if (n > 11)
-		{
-			if (n > 16)
-			{
-				ft_putchar_fd(((ch >> 18) & 7) | 240, fd);
-				ft_putchar_fd(((ch >> 12) & 63) | 128, fd);
-			}
-			else
-				ft_putchar_fd(((ch >> 12) & 15) | 224, fd);
-			ft_putchar_fd(((ch >> 6) & 63) | 128, fd);
-		}
-		else
-			ft_putchar_fd(((ch >> 6) & 31) | 192, fd);
-		ft_putchar_fd((ch & 63) | 128, fd);
-	}
-	else
-		ft_putchar_fd(ch, fd);
-	return (get_wchar_size(n));
-}
-
 int	special_convert_wchar(wchar_t c, int fd, t_flags *flags)
 {
 	int full_len;
 	int size;
 
 	full_len = 0;
-	size = get_wchar_size(nbits(c));
+	size = ft_wcharlen(ft_nbits(c));
 	if (MIN_FLAG)
 	{
 		full_len += ft_putwchar_fd(c, fd);
