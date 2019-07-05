@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 17:59:17 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 09:22:37 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ double				ft_pow(double x, int y);
 ** returns x to the power of y
 */
 
-int				ft_nbits(unsigned int nbr);
+int					ft_nbits(unsigned int nbr);
 /*
 ** returns the number of bits in the unsigned int nbr
 */
 
-int				ft_wcharlen(int nbbits);
+int					ft_wcharlen(int nbbits);
 /*
 ** returns the length the wchar depending on its nbbits number of bits
 ** (use with ft_nbits)
@@ -133,9 +133,10 @@ void				ft_putchar(char c);
 ** prints the char c with write on the standard input |
 ** doesn't return anything
 */
-int     ft_putwchar_fd(wchar_t wchar, int fd);
+int					ft_putwchar_fd(wchar_t wchar, int fd);
 /*
-** prints the wide char wchar in the file descriptor fd, returns the length of the wchar
+** prints the wide char wchar in the file descriptor fd, returns the length
+** of the wchar
 */
 
 void				ft_putstr(char const *s);
@@ -183,12 +184,14 @@ int					ft_ftoa_fd(double n, int afterpoint, int fd);
 
 int					ft_uitoa_base(uintmax_t value, int base, int fd);
 /*
-** prints the unsigned value in the base base, in small letters from a, on the file descriptor fd
+** prints the unsigned value in the base base, in small letters from a, on
+** the file descriptor fd
 */
 
 int					ft_uitocapa_base(uintmax_t value, int base, int fd);
 /*
-** prints the unsigned value int the base base, in capital letters from A, on the file descriptor fd
+** prints the unsigned value int the base base, in capital letters from A, on
+** the file descriptor fd
 */
 
 int					ft_uintptrtoa_base(uintptr_t value, int base, int fd);
@@ -402,7 +405,7 @@ int					ft_atoi(const char *str);
 ** converted int
 */
 
-long long				ft_atol(const char *str);
+long long			ft_atol(const char *str);
 /*
 ** converts possible portion of the string str to a long long | returns the
 ** converted long long
