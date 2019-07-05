@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:40:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:51:48 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 10:44:02 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,9 @@ int	pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
 	padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
 	write(fd, "0x", 2);
 	pad_zero(nbzero, fd);
-	/*while (nbzero > 0)
-	  {
-	  ft_putchar_fd('0', fd);
-	  nbzero--;
-	  }*/
 	ft_uintptrtoa_base(hex, 16, fd);
 	if (flags->precision < flags->field_width)
-	{
 		pad_space(nbpad, fd);
-		/* while (nbpad)
-		   {
-		   ft_putchar_fd(' ', fd);
-		   nbpad--;
-		   }*/
-	}
 	return (padlen);
 }
 
@@ -60,28 +48,13 @@ int	pad_pointer_prec(int hexlen, t_flags *flags, int fd)
 	if (flags->precision < flags->field_width)
 	{
 		pad_space(nbpad, fd);
-		/* while (nbpad)
-		   {
-		   ft_putchar_fd(' ', fd);
-		   nbpad--;
-		   }*/
 		write(fd, "0x", 2);
 		pad_zero(nbzero, fd);
-		/* while (nbzero > 0)
-		   {
-		   ft_putchar_fd('0', fd);
-		   nbzero--;
-		   }*/
 	}
 	else
 	{
 		write(fd, "0x", 2);
 		pad_zero(nbzero, fd);
-		/* while (nbzero > 0)
-		   {
-		   ft_putchar_fd('0', fd);
-		   nbzero--;
-		   }*/
 	}
 	return (padlen);
 }
@@ -122,8 +95,6 @@ int	special_convert_pointer(uintptr_t hex, int fd, t_flags *flags)
 	hexlen = ft_uintptrtoalen_base(hex, 16);
 	if ((MIN_FLAG))
 	{
-	//if (!flags->precision)
-	//ft_uintptrtoa_base(hex, 16, fd);
 		full_len += pad_pointer_prec_min(hexlen, flags, fd, hex);
 		return (full_len + hexlen);
 	}
