@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/05 10:57:03 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/05 13:35:29 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ void	flags_specfloat(t_flags *flags, int nbpad, int fd, double number)
 	}
 }
 
+void	print_float(double number, int preclen, t_flags *flags, int fd)
+{
+	if (number == 0 && !(1 / number > 0) && !(ZERO_FLAG))
+		ft_putchar_fd('-', fd);
+	if (ZERO_FLAG || (number == 0 && !(1 / number > 0)))
+		ft_ftoa_fd(ft_absfloat(number), preclen, fd);
+	else
+		ft_ftoa_fd(number, preclen, fd);
+}
+
 int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -62,7 +72,7 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 		((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0);
 	nbpad = flags->field_width - (flags->precision >= nbrlen ?
 			flags->precision : nbrlen) - !(1 / number > 0) -
-			((PLUS_FLAG || SPACE_FLAG) && (1 / number > 0));
+		((PLUS_FLAG || SPACE_FLAG) && (1 / number > 0));
 	nbpad = (nbpad < 0 ? 0 : nbpad);
 	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen
 		+ ((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0);
@@ -71,12 +81,7 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 	if (number == 0 && !(1 / number > 0) && (ZERO_FLAG))
 		ft_putchar_fd('-', fd);
 	flags_specfloat(flags, nbpad, fd, number);
-	if (number == 0 && !(1 / number > 0) && !(ZERO_FLAG))
-		ft_putchar_fd('-', fd);
-	if (ZERO_FLAG || (number == 0 && !(1 / number > 0)))
-		ft_ftoa_fd(ft_absfloat(number), preclen, fd);
-	else
-		ft_ftoa_fd(number, preclen, fd);
+	print_float(number, preclen, flags, fd);
 	if ((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0)
 		ft_putchar_fd('.', fd);
 	if ((MIN_FLAG))

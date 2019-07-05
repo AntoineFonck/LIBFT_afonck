@@ -6,18 +6,18 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/05 12:18:37 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 13:54:27 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-//FLAG FUNCTION
-int	is_activated(t_flags *flags)
+int		is_activated(t_flags *flags)
 {
 	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
-			|| (SPACE_FLAG) || (ZERO_FLAG) || flags->field_width || flags->precision)
+			|| (SPACE_FLAG) || (ZERO_FLAG)
+			|| flags->field_width || flags->precision)
 		return (1);
 	return (0);
 }
@@ -52,8 +52,7 @@ int		do_function(char c, int fd, va_list args, t_flags *flags)
 	return (0);
 }
 
-//FLAG FUNCTION
-t_flags *init_flags()
+t_flags	*init_flags(void)
 {
 	t_flags *flags;
 
@@ -65,7 +64,7 @@ t_flags *init_flags()
 	flags->color = 0;
 	return (flags);
 }
-//FLAG FUNCTION
+
 int		is_flag(char c)
 {
 	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
@@ -73,12 +72,9 @@ int		is_flag(char c)
 	else
 		return (0);
 }
-//FLAG FUNCTION
+
 void	activate_flags(t_flags *flags, char c)
 {
-	/* activate them in nearly the equivalent of doing += for each flag (HASHTAG + MINUS for example if both are activated), using | (OR) instead for a very gud reason: if a flag is repeated twice (%##x for instance), the += logic would give this result: flags->state += HASHTAG so flags->state is now equal 1 (0000 0001) BUT if you repeat this operation (second hashtag in format %##d) you get this: flags->state += HASHTAG is equal to 2 which is WRONG (would randomly activate flags MINUS because MINUS = 2 (0000 0010)).
-	   SO the solution is to use OR (|) instead of + because 1 (0000 0001) | 1 (0000 0001) is still equal to 1 (0000 0001) ;D
-	   */
 	if (c == '#')
 		flags->state |= HASHTAG;
 	else if (c == '-')
@@ -90,27 +86,24 @@ void	activate_flags(t_flags *flags, char c)
 	else if (c == '0')
 		flags->state |= ZERO;
 	else
-		return;
+		return ;
 }
-//FLAG FUNCTION
+
 void	check_flags(const char **fmt, t_flags *flags)
 {
 	while (is_flag(**fmt))
 	{
 		activate_flags(flags, **fmt);
-		//printf("[DEBUG] fmt is at %p and is %c\n", (*fmt), (**fmt));
 		(*fmt)++;
 	}
-	//printf("[DEBUG] flag loop activated, flag working? hash= %d\n, minus= %d, plus= %d, space= %d, zero= %d\n\n", flags->hashtag, flags->minus, flags->plus, flags->space, flags->zero);
 }
 
-//FILE FLAGS
 void	activate_biglmod(const char **fmt, t_flags *flags)
 {
 	(*fmt)++;
 	flags->state |= BIGL;
 }
-// FILE FLAGS
+
 void	check_lmod(const char **fmt, t_flags *flags)
 {
 	if (**fmt == 'h')
@@ -139,7 +132,6 @@ void	check_lmod(const char **fmt, t_flags *flags)
 		activate_biglmod(fmt, flags);
 }
 
-//BONUS FILE
 void	check_color(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '{')
@@ -182,7 +174,6 @@ void	check_all(const char **fmt, t_flags *flags)
 	check_color(fmt, flags);
 }
 
-// BONUS FILE
 void	choose_color(int fd, int color)
 {
 	if (color == 1)
@@ -240,37 +231,4 @@ int		ft_printf(const char *fmt, ...)
 	va_end(args);
 	ft_memdel((void **)&flags);
 	return (done);
-}
-
-// CAN GO IN LIBFT AND NEEDS TO REMOVE ONE LINE
-float	ft_atof(const char *s)
-{
-	float	res;
-	float	fact;
-	int		d;
-	int		point_seen;
-
-	res = 0;
-	fact = 1;
-	d = 0;
-	point_seen = 0;
-	if (*s == '-')
-	{
-		s++;
-		fact = -1;
-	}
-	while (*s)
-	{
-		if (*s == '.')
-			point_seen = 1;
-		d = *s - '0';
-		if (d >= 0 && d <= 9)
-		{
-			if (point_seen)
-				fact /= 10.0f;
-			res = res * 10.0f + (float)d;
-		}
-		s++;
-	}
-	return (res * fact);
 }

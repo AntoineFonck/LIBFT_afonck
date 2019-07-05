@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:29:53 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:51:56 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 13:35:46 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	pad_str(int number, t_flags *flags, int fd)
 	return (padlen);
 }
 
-//CAN GO IN LIBFT
 int	ft_wstrlen(wchar_t *wstr)
 {
 	int full_len;
@@ -47,7 +46,6 @@ int	ft_wstrlen(wchar_t *wstr)
 	return (full_len);
 }
 
-//CAN GO IN LIBFT
 int	ft_putwstr_fd(wchar_t *str, int fd)
 {
 	int full_len;

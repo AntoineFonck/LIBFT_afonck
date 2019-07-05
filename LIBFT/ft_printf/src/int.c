@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/05 10:38:30 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/05 12:26:52 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,6 @@ int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 	}
 	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
 	return (padlen);
-}
-
-int	int_precision(intmax_t number, int fd, t_flags *flags)
-{
-	int len;
-
-	len = 0;
-	if (!(MIN_FLAG))
-	{
-		len += pad_int_prec(number, flags, fd);
-	}
-	else
-	{
-		len += pad_int_prec(number, flags, fd);
-	}
-	return (len);
 }
 
 int	int_no_precision(intmax_t number, int fd, t_flags *flags)
@@ -142,18 +126,21 @@ int	special_zero(int fd, t_flags *flags)
 
 int	special_convert_int(intmax_t number, int fd, t_flags *flags)
 {
-	int full_len;
+	int len;
 
-	full_len = 0;
+	len = 0;
 	if (((PREC_FLAG) && flags->precision == 0) && number == 0)
 		return (special_zero(fd, flags));
 	else if (flags->precision || (PREC_FLAG))
-		full_len += int_precision(number, fd, flags);
-	else
 	{
-		full_len += int_no_precision(number, fd, flags);
+		if (!(MIN_FLAG))
+			len += pad_int_prec(number, flags, fd);
+		else
+			len += pad_int_prec(number, flags, fd);
 	}
-	return (full_len + ft_nbrlen(number));
+	else
+		len += int_no_precision(number, fd, flags);
+	return (len + ft_nbrlen(number));
 }
 
 int	convert_int(va_list args, int fd, t_flags *flags)

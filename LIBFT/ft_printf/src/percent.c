@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:17:05 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:51:41 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 13:53:50 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,26 @@
 **}
 */
 
+/*
+**int	convert_percent(va_list args, int fd, t_flags *flags)
+**{
+**	(void)args;
+**	(void)flags;
+**	if (is_activated(flags))
+**	return (special_convert_percent(fd, flags));
+**	ft_putchar_fd('%', fd);
+**	return (1);
+**}
+*/
+
 int	convert_percent(va_list args, int fd, t_flags *flags)
 {
 	(void)args;
 	(void)flags;
-/*
-**	if (is_activated(flags))
-**	return (special_convert_percent(fd, flags));
-*/
 	ft_putchar_fd('%', fd);
 	return (1);
 }
+
 /*
 **int pad_percent(int number, t_flags *flags, int fd)
 **{

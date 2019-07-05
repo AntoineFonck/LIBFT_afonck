@@ -6,17 +6,17 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 09:44:59 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/05 12:21:08 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 12:34:18 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 
-void    store_field_width(const char **fmt, t_flags *flags)
+void	store_field_width(const char **fmt, t_flags *flags)
 {
-	char    field_width[10];
-	int             i;
+	char	field_width[10];
+	int		i;
 
 	i = 0;
 	ft_bzero((void *)field_width, 10);
@@ -32,17 +32,17 @@ void    store_field_width(const char **fmt, t_flags *flags)
 	ft_bzero((void *)field_width, 10);
 }
 
-void    check_field_width(const char **fmt, t_flags *flags)
+void	check_field_width(const char **fmt, t_flags *flags)
 {
 	if (!ft_isdigit(**fmt))
-		return;
+		return ;
 	store_field_width(fmt, flags);
 }
 
-void    store_precision(const char **fmt, t_flags *flags)
+void	store_precision(const char **fmt, t_flags *flags)
 {
-	char    precision[10];
-	int             i;
+	char	precision[10];
+	int		i;
 
 	i = 0;
 	ft_bzero((void *)precision, 10);
@@ -58,7 +58,7 @@ void    store_precision(const char **fmt, t_flags *flags)
 	ft_bzero((void *)precision, 10);
 }
 
-void    check_precision(const char **fmt, t_flags *flags)
+void	check_precision(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '.')
 	{
