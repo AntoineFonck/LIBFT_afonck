@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/05 10:07:41 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/05 12:24:54 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@
 
 int ft_printf(const char *fmt, ...); /*__attribute__((format(printf,1,2)));*/
 /////////////////////////////
-int ft_floatlen(double n, int afterpoint);
 float ft_atof(const char* s);
-int ft_putwchar_fd(wchar_t wchar, int fd);
-int get_wchar_size(int nbbits);
-int nbits(unsigned int nbr);
 /////////////////////////////
 
 void pad_zero(int nbzero, int fd);
@@ -85,10 +81,24 @@ typedef struct s_converter
 **int		pad_percent(int number, t_flags *flags, int fd);
 */
 
+/*
+** FUNCTIONS ////////////////////////////////////////////
+*/
+
+/*
+** check functions -------------------------------------
+*/
+
+void    check_field_width(const char **fmt, t_flags *flags);
+
+void    check_precision(const char **fmt, t_flags *flags);
+
+
 /////////////////
 int pad_float(double number, t_flags *flags, int fd);
 //////////////////
 
+int     is_flag(char c);
 
 int		pad_int(intmax_t number, t_flags *flags, int fd);
 
