@@ -6,14 +6,13 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 13:00:21 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:51:32 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 10:40:36 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-// CAREFUL ABOUT NBPAD STUFF:D
 int	pad_oct_prec_min(int octlen, t_flags *flags, int fd, uintmax_t oct)
 {
 	int nbpad;
@@ -47,8 +46,6 @@ int	pad_oct_prec(int octlen, t_flags *flags, int fd)
 		(flags->precision >= octlen ? flags->precision : octlen) -
 		(flags->precision <= octlen ? (HASH_FLAG) : 0);
 	nbpad = (nbpad < 0 ? 0 : nbpad);
-	//if (nbpad < 0)
-	//	nbpad = 0;
 	nbzero = (flags->precision >= octlen ? flags->precision : octlen) - octlen;
 	padlen = nbpad + nbzero +
 		((HASH_FLAG) && flags->precision <= octlen ? 1 : 0);
@@ -95,24 +92,24 @@ int	pad_oct(int octlen, t_flags *flags, int fd)
 	return (padlen);
 }
 
-int     special_octzero(int fd, t_flags *flags)
+int	special_octzero(int fd, t_flags *flags)
 {
 	int len;
 
-	len = flags->field_width + ((HASH_FLAG) && !flags->field_width? 1 : 0);
+	len = flags->field_width + ((HASH_FLAG) && !flags->field_width ? 1 : 0);
 	if (HASH_FLAG)
 	{
 		if (PREC_FLAG && !(MIN_FLAG))
 			pad_space(len - 1, fd);
 		if (!(PREC_FLAG) && !(MIN_FLAG))
 			pad_zero(len - 1, fd);
-		write (1, "0", 1);
+		write(1, "0", 1);
 		if (MIN_FLAG)
 			pad_space(len - 1, fd);
-		return(len);
+		return (len);
 	}
 	pad_space(len, fd);
-	return(len);
+	return (len);
 }
 
 int	special_convert_oct(uintmax_t oct, int fd, t_flags *flags)
