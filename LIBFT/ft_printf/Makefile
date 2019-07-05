@@ -6,7 +6,7 @@
 #    By: afonck <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/24 12:48:10 by afonck            #+#    #+#              #
-#    Updated: 2019/06/27 18:43:22 by afonck           ###   ########.fr        #
+#    Updated: 2019/07/05 10:06:38 by sluetzen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC_LIST	=	ft_printf.c \
 				bin.c \
 				octal.c \
 				hex.c \
+				hexcap.c \
 				pointer.c \
 				utils.c 
 

@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:19:35 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 10:07:41 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,9 @@ int pad_uint(uintmax_t number, t_flags *flags, int fd);
 
 void	flags_spec(t_flags *flags, int nbpad, int fd, intmax_t number);
 
+int		pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex);
+
+int		special_hexzero(int fd, t_flags *flags);
+
+int special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter);
 #endif
