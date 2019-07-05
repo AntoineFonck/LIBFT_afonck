@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/28 20:47:31 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/05 10:38:30 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 	if (number < 0)
 		ft_putchar_fd('-', fd);
 	pad_zero(nbzero, fd);
-		ft_putnbr_fd(ft_absolute(number), fd);
+	ft_putnbr_fd(ft_absolute(number), fd);
 	if (MIN_FLAG)
 	{
 		pad_space(nbpad, fd);
@@ -57,7 +57,7 @@ int	int_precision(intmax_t number, int fd, t_flags *flags)
 	}
 	return (len);
 }
-//NEW FILE 'NO PRECISION INT'
+
 int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 {
 	int len;
@@ -73,21 +73,19 @@ int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 		if ((PLUS_FLAG) && !(ZERO_FLAG) && number >= 0)
 			ft_putchar_fd('+', fd);
 		ft_putnbr_fd(ft_absolute(number), fd);
+		return (len);
 	}
-	else if ((MIN_FLAG))
-	{
-		if ((PLUS_FLAG) && number >= 0)
-			ft_putchar_fd('+', fd);
-		else if ((SPACE_FLAG) && number >= 0)
-			ft_putchar_fd(' ', fd);
-		else if (number == -9223372036854775807 - 1)
-			ft_putchar_fd('-', fd);
-		ft_putnbr_fd(number, fd);
-		len += pad_int(number, flags, fd);
-	}
+	if ((PLUS_FLAG) && number >= 0)
+		ft_putchar_fd('+', fd);
+	else if ((SPACE_FLAG) && number >= 0)
+		ft_putchar_fd(' ', fd);
+	else if (number == -9223372036854775807 - 1)
+		ft_putchar_fd('-', fd);
+	ft_putnbr_fd(number, fd);
+	len += pad_int(number, flags, fd);
 	return (len);
 }
-//INCLUDE THIS TOO
+
 int	pad_int(intmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -109,7 +107,7 @@ int	pad_int(intmax_t number, t_flags *flags, int fd)
 	if ((SPACE_FLAG) && !(PLUS_FLAG) && !(MIN_FLAG) && number >= 0)
 		ft_putchar_fd(' ', fd);
 	pad_space(nbpad, fd);
-	if (number < 0 && !(MIN_FLAG))// || number == -9223372036854775807 - 1)
+	if (number < 0 && !(MIN_FLAG))
 		ft_putchar_fd('-', fd);
 	return (padlen);
 }
@@ -118,7 +116,7 @@ int	special_zero(int fd, t_flags *flags)
 {
 	int len;
 
-	len = flags->field_width - (PLUS_FLAG || SPACE_FLAG ? 1 : 0);// + 1;
+	len = flags->field_width - (PLUS_FLAG || SPACE_FLAG ? 1 : 0);
 	if (len < 0)
 		len = 0;
 	if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
@@ -139,7 +137,7 @@ int	special_zero(int fd, t_flags *flags)
 	}
 	if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
 		len++;
-	return(len);
+	return (len);
 }
 
 int	special_convert_int(intmax_t number, int fd, t_flags *flags)
