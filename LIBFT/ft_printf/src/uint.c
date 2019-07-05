@@ -6,14 +6,13 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:31:06 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:52:05 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 10:21:56 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-//POSSIBLE TO DO A FILE ONLY FOR PRECISION 
 int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -28,7 +27,7 @@ int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
 		nbpad = 0;
 	nbzero = (flags->precision >= ft_unbrlen(number) ?
 			flags->precision : ft_unbrlen(number)) -
-			ft_unbrlen(number);
+		ft_unbrlen(number);
 	padlen = nbpad + nbzero + ((PLUS_FLAG) || (SPACE_FLAG));
 	if (!(MIN_FLAG))
 		pad_space(nbpad, fd);
@@ -45,17 +44,9 @@ int	uint_precision(uintmax_t number, int fd, t_flags *flags)
 
 	len = 0;
 	if (!(MIN_FLAG))
-	{
 		len += pad_uint_prec(number, flags, fd);
-		//if ((PLUS_FLAG) && flags->field_width > flags->precision && number >= 0)
-		//	ft_putchar_fd('+', fd);
-	}
 	else
-	{
-	//if ((PLUS_FLAG) && number > 0)
-	//ft_putchar_fd('+', fd);
 		len += pad_uint_prec(number, flags, fd);
-	}
 	return (len);
 }
 
@@ -83,9 +74,7 @@ int	pad_uint(uintmax_t number, t_flags *flags, int fd)
 	int padlen;
 
 	nbpad = flags->field_width - ft_unbrlen(number);
-	//printf("nbrlen is %d\n", ft_unbrlen(number));
-	if (nbpad < 0)
-		nbpad = 0;
+	nbpad = (nbpad < 0 ? 0 : nbpad);
 	padlen = nbpad;
 	if ((ZERO_FLAG) && !(MIN_FLAG))
 	{
@@ -99,43 +88,41 @@ int	pad_uint(uintmax_t number, t_flags *flags, int fd)
 			ft_putchar_fd('0', fd);
 			nbpad--;
 		}
-		return (padlen);
 	}
 	while (nbpad > 0)
 	{
 		ft_putchar_fd(' ', fd);
 		nbpad--;
 	}
-	//printf("PADLEN = %d\n", padlen);
 	return (padlen);
 }
 
-int     lol_special_zero(int fd, t_flags *flags)
+int	special_zero_u(int fd, t_flags *flags)
 {
-        int len;
+	int len;
 
-        len = flags->field_width - (PLUS_FLAG || SPACE_FLAG ? 1 : 0);// + 1;
-        if (len < 0)
-                len = 0;
-        if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
-        {
-                if (PLUS_FLAG)
-                        ft_putchar_fd('+', fd);
-                else if (SPACE_FLAG)
-                        ft_putchar_fd(' ', fd);
-        }
-        pad_space(len, fd);
-        if (((PLUS_FLAG) || (SPACE_FLAG)) && !(MIN_FLAG))
-        {
-                if (PLUS_FLAG)
-                        ft_putchar_fd('+', fd);
-                else if (SPACE_FLAG)
-                        ft_putchar_fd(' ', fd);
-                len++;
-        }
-        if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
-                len++;
-        return(len);
+	len = flags->field_width - (PLUS_FLAG || SPACE_FLAG ? 1 : 0);
+	if (len < 0)
+		len = 0;
+	if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
+	{
+		if (PLUS_FLAG)
+			ft_putchar_fd('+', fd);
+		else if (SPACE_FLAG)
+			ft_putchar_fd(' ', fd);
+	}
+	pad_space(len, fd);
+	if (((PLUS_FLAG) || (SPACE_FLAG)) && !(MIN_FLAG))
+	{
+		if (PLUS_FLAG)
+			ft_putchar_fd('+', fd);
+		else if (SPACE_FLAG)
+			ft_putchar_fd(' ', fd);
+		len++;
+	}
+	if (((PLUS_FLAG) || (SPACE_FLAG)) && (MIN_FLAG))
+		len++;
+	return (len);
 }
 
 int	special_convert_uint(uintmax_t number, int fd, t_flags *flags)
@@ -144,9 +131,9 @@ int	special_convert_uint(uintmax_t number, int fd, t_flags *flags)
 
 	full_len = 0;
 	if (((PREC_FLAG) && flags->precision == 0) && number == 0)
-                return (lol_special_zero(fd, flags));
-        else if (flags->precision || (PREC_FLAG))
-                full_len += uint_precision(number, fd, flags);
+		return (special_zero_u(fd, flags));
+	else if (flags->precision || (PREC_FLAG))
+		full_len += uint_precision(number, fd, flags);
 	else
 		full_len += uint_no_precision(number, fd, flags);
 	return (full_len + ft_unbrlen(number));
@@ -169,10 +156,8 @@ int	convert_uint(va_list args, int fd, t_flags *flags)
 	if (is_activated(flags) || PREC_FLAG)
 		return (special_convert_uint(number, fd, flags));
 	else
-        {
-                //if (number == -9223372036854775807 - 1)
-                 //       ft_putchar_fd('-', fd);
+	{
 		ft_uitoa_base(number, 10, fd);
-        }
+	}
 	return (ft_unbrlen(number));
 }
