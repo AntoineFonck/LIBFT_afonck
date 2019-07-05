@@ -6,14 +6,13 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 11:04:22 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:50:54 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 09:47:58 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-//MAKE EITHER NEW FILE FOR CAPITAL X OR MAKE NEW FILE FOR PRECISION ONLY
 int	pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex)
 {
 	int nbpad;
@@ -75,26 +74,11 @@ int	pad_hex_prec(int hexlen, t_flags *flags, int fd, char letter)
 	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
 	padlen = nbpad + nbzero + ((HASH_FLAG) ? 2 : 0)
 		+ (flags->precision < hexlen ? 0 : 0);
-	/*
 	if (flags->precision < flags->field_width)
 		pad_space(nbpad, fd);
-	if (HASH_FLAG)
+	if ((HASH_FLAG))
 		letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
 	pad_zero(nbzero, fd);
-	*/
-	if (flags->precision < flags->field_width)
-	{
-		pad_space(nbpad, fd);
-		if ((HASH_FLAG))
-			letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
-		pad_zero(nbzero, fd);
-	}
-	else
-	{
-		if ((HASH_FLAG))
-			letter == 'x' ? write(fd, "0x", 2) : write(fd, "0X", 2);
-		pad_zero(nbzero, fd);
-	}
 	return (padlen);
 }
 
@@ -127,32 +111,31 @@ int	pad_hex(int hexlen, t_flags *flags, int fd, char letter)
 
 int	special_hexzero(int fd, t_flags *flags)
 {
-        int spacelen;
+	int spacelen;
 	int fullen;
 
-        spacelen = flags->field_width - flags->precision - (PREC_FLAG ? 0 : 1);//- (PLUS_FLAG || SPACE_FLAG ? 1 : 0);// + 1;
-        if (spacelen < 0)
-                spacelen = 0;
-	fullen = (flags->field_width <= flags->precision ? flags->precision : spacelen + flags->precision)
-		+ (PREC_FLAG ? 0 : 1);
+	spacelen = flags->field_width - flags->precision - (PREC_FLAG ? 0 : 1);
+	spacelen = spacelen < 0 ? 0 : spacelen;
+	fullen = (flags->field_width <= flags->precision ? flags->precision
+			: spacelen + flags->precision) + (PREC_FLAG ? 0 : 1);
 	if (MIN_FLAG)
 	{
-		if (HASH_FLAG && !(PREC_FLAG))// && (flags->precision == 0))
+		if (HASH_FLAG && !(PREC_FLAG))
 			ft_putchar_fd('0', fd);
 		pad_zero(flags->precision, fd);
-        	pad_space(spacelen, fd);
+		pad_space(spacelen, fd);
 	}
 	else
 	{
 		if (ZERO_FLAG && !(PREC_FLAG))
 			pad_zero(spacelen, fd);
 		else
-        		pad_space(spacelen, fd);
+			pad_space(spacelen, fd);
 		pad_zero(flags->precision, fd);
-		if (HASH_FLAG && !(PREC_FLAG))// && (flags->precision == 0))
+		if (HASH_FLAG && !(PREC_FLAG))
 			ft_putchar_fd('0', fd);
 	}
-        return(fullen);
+	return (fullen);
 }
 
 int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter)
@@ -162,8 +145,7 @@ int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter)
 
 	full_len = 0;
 	hexlen = ft_uintlen_base(hex, 16);
-	if (((HASH_FLAG) || (PREC_FLAG)) && hex == 0)// && flags->precision == 0)
-	//printf("condition = %d\n", ((HASH_FLAG) || (PREC_FLAG)) && hex == 0 && flags->precision == 0);
+	if (((HASH_FLAG) || (PREC_FLAG)) && hex == 0)
 		return (special_hexzero(fd, flags));
 	if (MIN_FLAG)
 	{
