@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:10:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:50:26 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 09:30:19 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,6 @@ void	flags_specfloat(t_flags *flags, int nbpad, int fd, double number)
 	}
 }
 
-double		absfloat(double number)
-{
-	if (number < 0)// || !(1 / number > 0))
-		return (-number);
-	return (number);
-}
-
 int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 {
 	int nbpad;
@@ -88,7 +81,7 @@ int		pad_float_prec(double number, int preclen, t_flags *flags, int fd)
 	if (number == 0 && !(1 / number > 0) && !(ZERO_FLAG))
 		ft_putchar_fd('-', fd);
 	if (ZERO_FLAG || (number == 0 && !(1 / number > 0)))
-		ft_ftoa_fd(absfloat(number), preclen, fd);
+		ft_ftoa_fd(ft_absfloat(number), preclen, fd);
 	else
 		ft_ftoa_fd(number, preclen, fd);
 	if ((HASH_FLAG) && (PREC_FLAG) && flags->precision == 0)
@@ -141,7 +134,7 @@ int		float_no_precision(double number, int preclen, int fd, t_flags *flags)
 			ft_putchar_fd('-', fd);
 		if ((PLUS_FLAG) && !(ZERO_FLAG) && (1 / number > 0))//number >= 0)
 			ft_putchar_fd('+', fd);
-		ft_ftoa_fd(absfloat(number), preclen, fd);
+		ft_ftoa_fd(ft_absfloat(number), preclen, fd);
 	}
 	else if ((MIN_FLAG))
 	{

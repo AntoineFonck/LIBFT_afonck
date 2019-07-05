@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/05 09:22:37 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/05 09:28:44 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int					get_next_line(const int fd, char **line);
 intmax_t			ft_absolute(intmax_t i);
 /*
 ** converts a negative int into a positive int
+*/
+
+double				ft_absfloat(double number);
+/*
+** converts a negative double number to its positive counterpart
+** (its absolute value --> if number is positive, it stays positive)
 */
 
 double				ft_pow(double x, int y);
