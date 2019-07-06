@@ -6,41 +6,12 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:06:33 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/05 12:26:52 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/06 14:45:55 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
-
-int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
-{
-	int nbpad;
-	int nbzero;
-	int padlen;
-	int nbrlen;
-
-	nbrlen = ft_nbrlen(number) - (number < 0 ? 1 : 0);
-	nbpad = flags->field_width -
-		(flags->precision >= nbrlen ? flags->precision : nbrlen) -
-		(number < 0 ? 1 : 0) -
-		(((PLUS_FLAG) || (SPACE_FLAG)) && number >= 0 ? 1 : 0);
-	if (nbpad < 0)
-		nbpad = 0;
-	nbzero = (flags->precision >= nbrlen ? flags->precision : nbrlen) - nbrlen;
-	padlen = 0;
-	flags_spec(flags, nbpad, fd, number);
-	if (number < 0)
-		ft_putchar_fd('-', fd);
-	pad_zero(nbzero, fd);
-	ft_putnbr_fd(ft_absolute(number), fd);
-	if (MIN_FLAG)
-	{
-		pad_space(nbpad, fd);
-	}
-	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
-	return (padlen);
-}
 
 int	int_no_precision(intmax_t number, int fd, t_flags *flags)
 {

@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:24 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/05 13:54:27 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/06 15:27:50 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,23 @@ void	check_color(const char **fmt, t_flags *flags)
 		else
 			flags->color = 0;
 	}
+	//PUT CHOOSE_COLOR HERE?? and remove in vprintf -> then move to bonus.c
+}
+
+void	choose_color(int fd, int color)
+{
+	if (color == 1)
+		write(fd, RED, COLORLEN);
+	else if (color == 2)
+		write(fd, GREEN, COLORLEN);
+	else if (color == 3)
+		write(fd, YELLOW, COLORLEN);
+	else if (color == 4)
+		write(fd, BLUE, COLORLEN);
+	else if (color == 5)
+		write(fd, MAGENTA, COLORLEN);
+	else if (color == 6)
+		write(fd, CYAN, COLORLEN);
 }
 
 void	flush_flags(t_flags *flags)
@@ -174,22 +191,6 @@ void	check_all(const char **fmt, t_flags *flags)
 	check_color(fmt, flags);
 }
 
-void	choose_color(int fd, int color)
-{
-	if (color == 1)
-		write(fd, RED, COLORLEN);
-	else if (color == 2)
-		write(fd, GREEN, COLORLEN);
-	else if (color == 3)
-		write(fd, YELLOW, COLORLEN);
-	else if (color == 4)
-		write(fd, BLUE, COLORLEN);
-	else if (color == 5)
-		write(fd, MAGENTA, COLORLEN);
-	else if (color == 6)
-		write(fd, CYAN, COLORLEN);
-}
-
 int		ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 {
 	int total_len;
@@ -201,7 +202,7 @@ int		ft_vprintf(int fd, const char *fmt, va_list args, t_flags *flags)
 		{
 			fmt++;
 			check_all(&fmt, flags);
-			choose_color(fd, flags->color);
+			choose_color(fd, flags->color); //put call into check_color?
 			total_len += do_function(*fmt, fd, args, flags);
 			if (flags->color)
 				write(fd, RESET, 4);

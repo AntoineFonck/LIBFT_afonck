@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 13:00:21 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/05 10:40:36 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/06 14:45:37 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,33 +62,6 @@ int	pad_oct_prec(int octlen, t_flags *flags, int fd)
 			write(fd, "0", 1);
 		pad_zero(nbzero, fd);
 	}
-	return (padlen);
-}
-
-int	pad_oct(int octlen, t_flags *flags, int fd)
-{
-	int nbpad;
-	int padlen;
-
-	if (flags->precision)
-		return (pad_oct_prec(octlen, flags, fd));
-	nbpad = flags->field_width - octlen - ((HASH_FLAG) ? 1 : 0);
-	padlen = 0;
-	padlen += (nbpad > 0 ? nbpad : 0) + ((HASH_FLAG) ? 1 : 0);
-	if (nbpad < 0)
-		nbpad = 0;
-	if ((HASH_FLAG) && (ZERO_FLAG) && !(PREC_FLAG))
-		write(fd, "0", 1);
-	while (nbpad > 0)
-	{
-		if ((ZERO_FLAG) && !(PREC_FLAG))
-			ft_putchar_fd('0', fd);
-		else
-			ft_putchar_fd(' ', fd);
-		nbpad--;
-	}
-	if (((HASH_FLAG) && !(ZERO_FLAG)) || (HASH_FLAG && ZERO_FLAG && PREC_FLAG))
-		write(fd, "0", 1);
 	return (padlen);
 }
 

@@ -6,37 +6,12 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:31:06 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/05 12:26:50 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/06 14:46:17 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
-
-int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd)
-{
-	int nbpad;
-	int nbzero;
-	int padlen;
-
-	nbpad = flags->field_width - (flags->precision >= ft_unbrlen(number)
-			? flags->precision : ft_unbrlen(number));
-	if (((PLUS_FLAG) || (SPACE_FLAG)))
-		nbpad--;
-	if (nbpad < 0)
-		nbpad = 0;
-	nbzero = (flags->precision >= ft_unbrlen(number) ?
-			flags->precision : ft_unbrlen(number)) -
-		ft_unbrlen(number);
-	padlen = nbpad + nbzero + ((PLUS_FLAG) || (SPACE_FLAG));
-	if (!(MIN_FLAG))
-		pad_space(nbpad, fd);
-	pad_zero(nbzero, fd);
-	ft_uitoa_base(number, 10, fd);
-	if (MIN_FLAG)
-		pad_space(nbpad, fd);
-	return (padlen);
-}
 
 int	uint_precision(uintmax_t number, int fd, t_flags *flags)
 {
@@ -66,35 +41,6 @@ int	uint_no_precision(uintmax_t number, int fd, t_flags *flags)
 		len += pad_uint(number, flags, fd);
 	}
 	return (len);
-}
-
-int	pad_uint(uintmax_t number, t_flags *flags, int fd)
-{
-	int nbpad;
-	int padlen;
-
-	nbpad = flags->field_width - ft_unbrlen(number);
-	nbpad = (nbpad < 0 ? 0 : nbpad);
-	padlen = nbpad;
-	if ((ZERO_FLAG) && !(MIN_FLAG))
-	{
-		if ((SPACE_FLAG) && !(PLUS_FLAG))
-		{
-			ft_putchar_fd(' ', fd);
-			nbpad--;
-		}
-		while (nbpad > 0)
-		{
-			ft_putchar_fd('0', fd);
-			nbpad--;
-		}
-	}
-	while (nbpad > 0)
-	{
-		ft_putchar_fd(' ', fd);
-		nbpad--;
-	}
-	return (padlen);
 }
 
 int	special_zero_u(int fd, t_flags *flags)

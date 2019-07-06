@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/05 12:24:54 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/06 15:19:44 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,4 +143,26 @@ int		pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex);
 int		special_hexzero(int fd, t_flags *flags);
 
 int special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter);
+
+int		pad_int_prec(intmax_t number, t_flags *flags, int fd);
+
+int pad_uint(uintmax_t number, t_flags *flags, int fd);
+
+int pad_uint_prec(uintmax_t number, t_flags *flags, int fd);
+
+int pad_oct(int octlen, t_flags *flags, int fd);
+
+int pad_oct_prec(int octlen, t_flags *flags, int fd);
+
+int ft_wstrlen(wchar_t *wstr);
+
+int ft_putwstr_fd(wchar_t *str, int fd);
+
+int convert_wstring(va_list args, int fd, t_flags *flags);
+
+int special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags);
+
+int     pad_float_prec(double number, int preclen, t_flags *flags, int fd);
+
+void    check_flags(const char **fmt, t_flags *flags);
 #endif
