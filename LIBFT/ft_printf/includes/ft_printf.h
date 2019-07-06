@@ -6,12 +6,15 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/06 15:19:44 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/06 15:37:26 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF
-# define FT_PRINTF
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+# include <stdarg.h>
+# include <stdint.h>
+# include <wchar.h>
 
 # define HASHTAG  1   /* 0000 0001 */
 # define MINUS  2   /* 0000 0010 */
@@ -48,11 +51,6 @@
 # define RESET "\e[0m"
 
 # define NBFORMATS 14
-
-#include <stdarg.h>
-
-#include <stdint.h>
-#include <wchar.h>
 
 int ft_printf(const char *fmt, ...); /*__attribute__((format(printf,1,2)));*/
 /////////////////////////////
@@ -165,4 +163,5 @@ int special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags);
 int     pad_float_prec(double number, int preclen, t_flags *flags, int fd);
 
 void    check_flags(const char **fmt, t_flags *flags);
+
 #endif
