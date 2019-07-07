@@ -13,15 +13,6 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-int		is_activated(t_flags *flags)
-{
-	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
-			|| (SPACE_FLAG) || (ZERO_FLAG)
-			|| flags->field_width || flags->precision)
-		return (1);
-	return (0);
-}
-
 static const	t_converter g_converters[] =
 {
 	{'%', convert_percent},
@@ -50,52 +41,6 @@ int		do_function(char c, int fd, va_list args, t_flags *flags)
 	if (g_converters[i].format == c)
 		return (g_converters[i].fun_ptr(args, fd, flags));
 	return (0);
-}
-
-t_flags	*init_flags(void)
-{
-	t_flags *flags;
-
-	if ((flags = (t_flags *)malloc(sizeof(t_flags))) == NULL)
-		return (NULL);
-	flags->state = 0;
-	flags->field_width = 0;
-	flags->precision = 0;
-	flags->color = 0;
-	return (flags);
-}
-
-int		is_flag(char c)
-{
-	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
-		return (1);
-	else
-		return (0);
-}
-
-void	activate_flags(t_flags *flags, char c)
-{
-	if (c == '#')
-		flags->state |= HASHTAG;
-	else if (c == '-')
-		flags->state |= MINUS;
-	else if (c == '+')
-		flags->state |= PLUS;
-	else if (c == ' ')
-		flags->state |= SPACE;
-	else if (c == '0')
-		flags->state |= ZERO;
-	else
-		return ;
-}
-
-void	check_flags(const char **fmt, t_flags *flags)
-{
-	while (is_flag(**fmt))
-	{
-		activate_flags(flags, **fmt);
-		(*fmt)++;
-	}
 }
 
 void	activate_biglmod(const char **fmt, t_flags *flags)
@@ -172,14 +117,6 @@ void	choose_color(int fd, int color)
 		write(fd, MAGENTA, COLORLEN);
 	else if (color == 6)
 		write(fd, CYAN, COLORLEN);
-}
-
-void	flush_flags(t_flags *flags)
-{
-	flags->state = 0;
-	flags->field_width = 0;
-	flags->precision = 0;
-	flags->color = 0;
 }
 
 void	check_all(const char **fmt, t_flags *flags)

@@ -35,3 +35,11 @@ void	pad_space(int nbpad, int fd)
 		}
 	}
 }
+
+int	is_flag(char c)
+{
+	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
+		return (1);
+	else
+		return (0);
+}

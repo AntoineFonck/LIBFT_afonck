@@ -92,6 +92,19 @@ void    check_field_width(const char **fmt, t_flags *flags);
 void    check_precision(const char **fmt, t_flags *flags);
 
 
+/*
+** flags functions -------------------------------------
+*/
+
+t_flags	*init_flags(void);
+
+void	check_flags(const char **fmt, t_flags *flags);
+
+void	activate_flags(t_flags *flags, char c);
+
+int	is_activated(t_flags *flags);
+
+void	flush_flags(t_flags *flags);
 /////////////////
 int pad_float(double number, t_flags *flags, int fd);
 //////////////////
@@ -102,7 +115,6 @@ int		pad_int(intmax_t number, t_flags *flags, int fd);
 
 int		pad_str(int number, t_flags *flags, int fd);
 
-int is_activated(t_flags *flags);
 //////////////////////////////
 int convert_float(va_list args, int fd, t_flags *flags);
 //////////////////////////////
@@ -157,7 +169,5 @@ int convert_wstring(va_list args, int fd, t_flags *flags);
 int special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags);
 
 int     pad_float_prec(double number, int preclen, t_flags *flags, int fd);
-
-void    check_flags(const char **fmt, t_flags *flags);
 
 #endif

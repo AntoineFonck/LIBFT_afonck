@@ -39,6 +39,7 @@ SRC_LIST	=	ft_printf.c \
 				hexcap.c \
 				pointer.c \
 				checklen.c \
+				flags.c \
 				pad.c \
 				float_spec.c \
 				utils.c 
