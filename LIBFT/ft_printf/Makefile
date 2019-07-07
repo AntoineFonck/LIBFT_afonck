@@ -40,7 +40,6 @@ SRC_LIST	=	ft_printf.c \
 				pointer.c \
 				checklen.c \
 				pad.c \
-				wstr.c \
 				float_spec.c \
 				utils.c 
 

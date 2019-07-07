@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdint.h>
+# include <wchar.h>
 # define BUFF_SIZE 8
 
 int					get_next_line(const int fd, char **line);
@@ -151,6 +152,12 @@ void				ft_putstr(char const *s);
 ** return anything
 */
 
+int				ft_putwstr_fd(wchar_t *str, int fd);
+/*
+** prints the wide char string str on the file descriptor fd, returns the
+** length of the wide string
+*/
+
 void				ft_putendl(char const *s);
 /*
 ** prints the s string + a newline | doesn't return
@@ -212,6 +219,11 @@ int					ft_uintptrtoa_base(uintptr_t value, int base, int fd);
 size_t				ft_strlen(const char *s);
 /*
 ** counts nb of characters in s string | returns the nb
+*/
+
+int				ft_wstrlen(wchar_t *wstr);
+/*
+** returns the size of the wide string wstr
 */
 
 char				*ft_strdup(const char *s1);

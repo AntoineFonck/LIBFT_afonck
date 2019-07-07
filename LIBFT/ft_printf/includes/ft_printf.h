@@ -152,10 +152,6 @@ int pad_oct(int octlen, t_flags *flags, int fd);
 
 int pad_oct_prec(int octlen, t_flags *flags, int fd);
 
-int ft_wstrlen(wchar_t *wstr);
-
-int ft_putwstr_fd(wchar_t *str, int fd);
-
 int convert_wstring(va_list args, int fd, t_flags *flags);
 
 int special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags);
