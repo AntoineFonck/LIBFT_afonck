@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flags.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/08 15:12:16 by sluetzen          #+#    #+#             */
+/*   Updated: 2019/07/08 15:13:03 by sluetzen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 #include <stdlib.h>
 
-t_flags	*init_flags(void)
+t_flags		*init_flags(void)
 {
 	t_flags *flags;
 
@@ -14,7 +26,7 @@ t_flags	*init_flags(void)
 	return (flags);
 }
 
-void	check_flags(const char **fmt, t_flags *flags)
+void		check_flags(const char **fmt, t_flags *flags)
 {
 	while (is_flag(**fmt))
 	{
@@ -23,7 +35,7 @@ void	check_flags(const char **fmt, t_flags *flags)
 	}
 }
 
-void	activate_flags(t_flags *flags, char c)
+void		activate_flags(t_flags *flags, char c)
 {
 	if (c == '#')
 		flags->state |= HASHTAG;
@@ -39,7 +51,7 @@ void	activate_flags(t_flags *flags, char c)
 		return ;
 }
 
-int	is_activated(t_flags *flags)
+int			is_activated(t_flags *flags)
 {
 	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
 			|| (SPACE_FLAG) || (ZERO_FLAG)
@@ -48,7 +60,7 @@ int	is_activated(t_flags *flags)
 	return (0);
 }
 
-void	flush_flags(t_flags *flags)
+void		flush_flags(t_flags *flags)
 {
 	flags->state = 0;
 	flags->field_width = 0;

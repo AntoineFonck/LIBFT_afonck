@@ -6,7 +6,7 @@
 #    By: afonck <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/24 12:48:10 by afonck            #+#    #+#              #
-#    Updated: 2019/07/06 15:21:51 by sluetzen         ###   ########.fr        #
+#    Updated: 2019/07/08 15:30:05 by sluetzen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,8 @@ SRC_LIST	=	ft_printf.c \
 				flags.c \
 				pad.c \
 				float_spec.c \
+				bonus.c \
+				lmod.c \
 				utils.c 
 
 OBJ_LIST = $(SRC_LIST:.c=.o)

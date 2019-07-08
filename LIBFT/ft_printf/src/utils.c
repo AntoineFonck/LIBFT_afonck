@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:41:48 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/05 13:25:27 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/08 15:13:20 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	pad_space(int nbpad, int fd)
 	}
 }
 
-int	is_flag(char c)
+int		is_flag(char c)
 {
 	if (c == '#' || c == '-' || c == '+' || c == ' ' || c == '0')
 		return (1);
