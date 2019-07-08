@@ -71,7 +71,7 @@ typedef	struct	s_flags
 typedef struct	s_converter
 {
 	char format;
-	int (*fun_ptr)(va_list, int, t_flags*);
+	int (*fun_ptr)(va_list, int, t_flags *);
 }				t_converter;
 
 /*
