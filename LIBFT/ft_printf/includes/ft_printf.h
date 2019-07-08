@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/08 15:30:32 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/08 15:42:55 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@
 
 int		ft_printf(const char *fmt, ...); /*__attribute__((format(printf,1,2)));*/
 /////////////////////////////
-float	ft_atof(const char *s);
+//float	ft_atof(const char *s);
 /////////////////////////////
 
 void	pad_zero(int nbzero, int fd);
@@ -136,8 +136,6 @@ int		convert_int(va_list args, int fd, t_flags *flags);
 
 int		convert_uint(va_list args, int fd, t_flags *flags);
 
-//int convert_float(va_list args, int fd, t_flags *flags);
-
 int		convert_oct(va_list args, int fd, t_flags *flags);
 
 int		convert_bin(va_list args, int fd, t_flags *flags);
@@ -154,17 +152,11 @@ int		special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter);
 
 int		pad_int_prec(intmax_t number, t_flags *flags, int fd);
 
-int		pad_uint(uintmax_t number, t_flags *flags, int fd);
-
 int		pad_uint_prec(uintmax_t number, t_flags *flags, int fd);
 
 int		pad_oct(int octlen, t_flags *flags, int fd);
 
 int		pad_oct_prec(int octlen, t_flags *flags, int fd);
-
-int		convert_wstring(va_list args, int fd, t_flags *flags);
-
-int		special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags);
 
 int		pad_float_prec(double number, int preclen, t_flags *flags, int fd);
 
