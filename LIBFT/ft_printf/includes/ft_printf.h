@@ -52,13 +52,6 @@
 # define NBFORMATS 14
 
 int		ft_printf(const char *fmt, ...); /*__attribute__((format(printf,1,2)));*/
-/////////////////////////////
-//float	ft_atof(const char *s);
-/////////////////////////////
-
-void	pad_zero(int nbzero, int fd);
-
-void	pad_space(int nbpad, int fd);
 
 typedef	struct	s_flags
 {
@@ -86,9 +79,15 @@ typedef struct	s_converter
 ** check functions -------------------------------------
 */
 
+void	check_flags(const char **fmt, t_flags *flags);
+
 void	check_field_width(const char **fmt, t_flags *flags);
 
 void	check_precision(const char **fmt, t_flags *flags);
+
+void	check_lmod(const char **fmt, t_flags *flags);
+
+void	check_color(const char **fmt, t_flags *flags);
 
 /*
 ** flags functions -------------------------------------
@@ -96,73 +95,82 @@ void	check_precision(const char **fmt, t_flags *flags);
 
 t_flags	*init_flags(void);
 
-void	check_flags(const char **fmt, t_flags *flags);
+int	is_flag(char c);
 
 void	activate_flags(t_flags *flags, char c);
 
-int		is_activated(t_flags *flags);
+int	is_activated(t_flags *flags);
 
 void	flush_flags(t_flags *flags);
-/////////////////
-int		pad_float(double number, t_flags *flags, int fd);
-//////////////////
 
-int		is_flag(char c);
+/*
+** convert functions ------------------------------------
+*/
 
-int		pad_int(intmax_t number, t_flags *flags, int fd);
+int	convert_float(va_list args, int fd, t_flags *flags);
 
-int		pad_str(int number, t_flags *flags, int fd);
+int	convert_percent(va_list args, int fd, t_flags *flags);
 
-//////////////////////////////
-int		convert_float(va_list args, int fd, t_flags *flags);
-//////////////////////////////
-int		convert_percent(va_list args, int fd, t_flags *flags);
+int	convert_string(va_list args, int fd, t_flags *flags);
 
-int		convert_string(va_list args, int fd, t_flags *flags);
+int	convert_wstring(va_list args, int fd, t_flags *flags);
 
-int		convert_wstring(va_list args, int fd, t_flags *flags);
+int	convert_char(va_list args, int fd, t_flags *flags);
 
-int		convert_char(va_list args, int fd, t_flags *flags);
+int	convert_wchar(va_list args, int fd, t_flags *flags);
 
-int		convert_wchar(va_list args, int fd, t_flags *flags);
+int	convert_cap_hex(va_list args, int fd, t_flags *flags);
 
-int		convert_cap_hex(va_list args, int fd, t_flags *flags);
+int	convert_hex(va_list args, int fd, t_flags *flags);
 
-int		convert_hex(va_list args, int fd, t_flags *flags);
+int	convert_pointer(va_list args, int fd, t_flags *flags);
 
-int		convert_pointer(va_list args, int fd, t_flags *flags);
+int	convert_int(va_list args, int fd, t_flags *flags);
 
-int		convert_int(va_list args, int fd, t_flags *flags);
+int	convert_uint(va_list args, int fd, t_flags *flags);
 
-int		convert_uint(va_list args, int fd, t_flags *flags);
+int	convert_oct(va_list args, int fd, t_flags *flags);
 
-int		convert_oct(va_list args, int fd, t_flags *flags);
+int	convert_bin(va_list args, int fd, t_flags *flags);
 
-int		convert_bin(va_list args, int fd, t_flags *flags);
+/*
+** pad functions ----------------------------------------
+*/
 
-int		pad_uint(uintmax_t number, t_flags *flags, int fd);
+int	pad_float(double number, t_flags *flags, int fd);
+
+int	pad_int(intmax_t number, t_flags *flags, int fd);
+
+int	pad_str(int number, t_flags *flags, int fd);
+
+int	pad_uint(uintmax_t number, t_flags *flags, int fd);
+
+int	pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex);
+
+int	pad_int_prec(intmax_t number, t_flags *flags, int fd);
+
+int	pad_uint_prec(uintmax_t number, t_flags *flags, int fd);
+
+int	pad_oct(int octlen, t_flags *flags, int fd);
+
+int	pad_oct_prec(int octlen, t_flags *flags, int fd);
+
+int	pad_float_prec(double number, int preclen, t_flags *flags, int fd);
+
+/*
+** utils functions -------------------------------------
+*/
 
 void	flags_spec(t_flags *flags, int nbpad, int fd, intmax_t number);
 
-int		pad_hex_prec_mincap(int hexlen, t_flags *flags, int fd, uintmax_t hex);
+int	special_hexzero(int fd, t_flags *flags);
 
-int		special_hexzero(int fd, t_flags *flags);
-
-int		special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter);
-
-int		pad_int_prec(intmax_t number, t_flags *flags, int fd);
-
-int		pad_uint_prec(uintmax_t number, t_flags *flags, int fd);
-
-int		pad_oct(int octlen, t_flags *flags, int fd);
-
-int		pad_oct_prec(int octlen, t_flags *flags, int fd);
-
-int		pad_float_prec(double number, int preclen, t_flags *flags, int fd);
-
-void	check_color(const char **fmt, t_flags *flags);
+int	special_convert_hex(uintmax_t hex, int fd, t_flags *flags, char letter);
 
 void	choose_color(int fd, int color);
 
-void	check_lmod(const char **fmt, t_flags *flags);
+void	pad_zero(int nbzero, int fd);
+
+void	pad_space(int nbpad, int fd);
+
 #endif
