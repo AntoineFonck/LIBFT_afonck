@@ -6,7 +6,7 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:29:53 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/14 09:52:59 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/14 10:07:49 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,19 @@ int	special_convert_nullstring(int len, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
+	if (flags->precision < len && flags->precision)
+		len = flags->precision;
+	else if (!flags->precision && (PREC_FLAG))
+		len = 0;
 	if (MIN_FLAG)
 	{
-		write(fd, "(null)", 6);
-		full_len += pad_str(len + 6, flags, fd);
-		return (full_len + 6);
+		write(fd, "(null)", len);
+		full_len += pad_str(len, flags, fd);
+		return (full_len + len);
 	}
-	if (PLUS_FLAG)
-	{
-		full_len += pad_str(len + 6, flags, fd);
-		write(fd, "(null)", 6);
-		return (full_len + 6);
-	}
-	full_len += pad_str(len + 6, flags, fd);
-	write(fd, "(null)", 6);
-	return (full_len + 6);
+	full_len += pad_str(len, flags, fd);
+	write(fd, "(null)", len);
+	return (full_len + len);
 }
 
 int	special_convert_string(char *s, int len, int fd, t_flags *flags)
@@ -71,13 +69,6 @@ int	special_convert_string(char *s, int len, int fd, t_flags *flags)
 		if (len > 0)
 			write(fd, s, len);
 		full_len += pad_str(len, flags, fd);
-		return (full_len + len);
-	}
-	if (PLUS_FLAG)
-	{
-		full_len += pad_str(len, flags, fd);
-		if (len > 0)
-			write(fd, s, len);
 		return (full_len + len);
 	}
 	full_len += pad_str(len, flags, fd);
@@ -116,13 +107,13 @@ int	convert_string(va_list args, int fd, t_flags *flags)
 	if (s != NULL)
 		len = ft_strlen(s);
 	else
-		len = 0;
+		len = 6;
 	if (is_activated(flags) || (PREC_FLAG))
 	{
 		if (s != NULL)
 			return (special_convert_string(s, len, fd, flags));
 		else
-			return (special_convert_nullstring(len, fd, flags));
+			return (special_convert_nullstring(6, fd, flags));
 	}
 	if (s != NULL)
 		write(fd, s, len);
