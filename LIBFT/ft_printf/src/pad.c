@@ -6,7 +6,7 @@
 /*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 14:00:08 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/06 14:46:45 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/14 09:38:56 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,23 @@ int	pad_int_prec(intmax_t number, t_flags *flags, int fd)
 		pad_space(nbpad, fd);
 	}
 	padlen = nbpad + nbzero + (number >= 0 ? (PLUS_FLAG) || (SPACE_FLAG) : 0);
+	return (padlen);
+}
+
+int	pad_str(int number, t_flags *flags, int fd)
+{
+	int nbpad;
+	int padlen;
+
+	nbpad = flags->field_width - number;
+	if (nbpad < 0)
+		nbpad = 0;
+	padlen = nbpad;
+	if ((ZERO_FLAG) && !(MIN_FLAG))
+	{
+		pad_zero(nbpad, fd);
+		return (padlen);
+	}
+	pad_space(nbpad, fd);
 	return (padlen);
 }

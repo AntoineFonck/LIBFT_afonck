@@ -6,30 +6,12 @@
 /*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:29:53 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/06 14:48:40 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/07/14 09:52:59 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
-
-int	pad_str(int number, t_flags *flags, int fd)
-{
-	int nbpad;
-	int padlen;
-
-	nbpad = flags->field_width - number;
-	if (nbpad < 0)
-		nbpad = 0;
-	padlen = nbpad;
-	if ((ZERO_FLAG) && !(MIN_FLAG))
-	{
-		pad_zero(nbpad, fd);
-		return (padlen);
-	}
-	pad_space(nbpad, fd);
-	return (padlen);
-}
 
 int	special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags)
 {
@@ -38,15 +20,41 @@ int	special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags)
 	full_len = 0;
 	if (MIN_FLAG)
 	{
-		if (len > 0)
+		if (len > 0 && s != NULL)
 			ft_putwstr_fd(s, fd);
+		else
+			write(fd, "(null)", 6);
 		full_len += pad_str(len, flags, fd);
 		return (full_len + len);
 	}
 	full_len += pad_str(len, flags, fd);
-	if (len > 0)
+	if (len > 0 && s != NULL)
 		ft_putwstr_fd(s, fd);
+	else
+		write(fd, "(null)", 6);
 	return (full_len + len);
+}
+
+int	special_convert_nullstring(int len, int fd, t_flags *flags)
+{
+	int full_len;
+
+	full_len = 0;
+	if (MIN_FLAG)
+	{
+		write(fd, "(null)", 6);
+		full_len += pad_str(len + 6, flags, fd);
+		return (full_len + 6);
+	}
+	if (PLUS_FLAG)
+	{
+		full_len += pad_str(len + 6, flags, fd);
+		write(fd, "(null)", 6);
+		return (full_len + 6);
+	}
+	full_len += pad_str(len + 6, flags, fd);
+	write(fd, "(null)", 6);
+	return (full_len + 6);
 }
 
 int	special_convert_string(char *s, int len, int fd, t_flags *flags)
@@ -84,10 +92,16 @@ int	convert_wstring(va_list args, int fd, t_flags *flags)
 	int		len;
 
 	s = va_arg(args, wchar_t *);
-	len = ft_wstrlen(s);
+	if (s != NULL)
+		len = ft_wstrlen(s);
+	else
+		len = 0;
 	if (is_activated(flags))
 		return (special_convert_wstring(s, len, fd, flags));
-	ft_putwstr_fd(s, fd);
+	if (s != NULL)
+		ft_putwstr_fd(s, fd);
+	else
+		write(fd, "(null)", 6);
 	return (len);
 }
 
@@ -99,9 +113,20 @@ int	convert_string(va_list args, int fd, t_flags *flags)
 	if (L_FLAG)
 		return (convert_wstring(args, fd, flags));
 	s = va_arg(args, char *);
-	len = ft_strlen(s);
+	if (s != NULL)
+		len = ft_strlen(s);
+	else
+		len = 0;
 	if (is_activated(flags) || (PREC_FLAG))
-		return (special_convert_string(s, len, fd, flags));
-	write(fd, s, len);
+	{
+		if (s != NULL)
+			return (special_convert_string(s, len, fd, flags));
+		else
+			return (special_convert_nullstring(len, fd, flags));
+	}
+	if (s != NULL)
+		write(fd, s, len);
+	else
+		write(fd, "(null)", 6);
 	return (len);
 }
