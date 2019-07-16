@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:21:02 by afonck           ###   ########.fr       */
+/*   Updated: 2019/07/08 16:15:21 by sluetzen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdint.h>
+# include <wchar.h>
 # include "ft_printf.h"
 # define BUFF_SIZE 8
 
@@ -35,9 +36,26 @@ intmax_t			ft_absolute(intmax_t i);
 ** converts a negative int into a positive int
 */
 
+double				ft_absfloat(double number);
+/*
+** converts a negative double number to its positive counterpart
+** (its absolute value --> if number is positive, it stays positive)
+*/
+
 double				ft_pow(double x, int y);
 /*
 ** returns x to the power of y
+*/
+
+int					ft_nbits(unsigned int nbr);
+/*
+** returns the number of bits in the unsigned int nbr
+*/
+
+int					ft_wcharlen(int nbbits);
+/*
+** returns the length the wchar depending on its nbbits number of bits
+** (use with ft_nbits)
 */
 
 int					ft_nbrlen(intmax_t n);
@@ -53,6 +71,11 @@ int					ft_unbrlen(uintmax_t n);
 int					ft_uintlen_base(uintmax_t value, int base);
 /*
 ** returns the length of the unsigned value value from the base base
+*/
+
+int					ft_uintptrtoalen_base(uintptr_t value, int base);
+/*
+** returns the length of the pointer sized value from the base base
 */
 
 int					ft_floatlen(double n, int afterpoint);
@@ -122,11 +145,22 @@ void				ft_putchar(char c);
 ** prints the char c with write on the standard input |
 ** doesn't return anything
 */
+int					ft_putwchar_fd(wchar_t wchar, int fd);
+/*
+** prints the wide char wchar in the file descriptor fd, returns the length
+** of the wchar
+*/
 
 void				ft_putstr(char const *s);
 /*
 ** prints the s string on the standard input | doesn't
 ** return anything
+*/
+
+int					ft_putwstr_fd(wchar_t *str, int fd);
+/*
+** prints the wide char string str on the file descriptor fd, returns the
+** length of the wide string
 */
 
 void				ft_putendl(char const *s);
@@ -168,12 +202,19 @@ int					ft_ftoa_fd(double n, int afterpoint, int fd);
 
 int					ft_uitoa_base(uintmax_t value, int base, int fd);
 /*
-** prints the unsigned value in the base base, in small letters from a, on the file descriptor fd
+** prints the unsigned value in the base base, in small letters from a, on
+** the file descriptor fd
 */
 
-int ft_uitocapa_base(uintmax_t value, int base, int fd);
+int					ft_uitocapa_base(uintmax_t value, int base, int fd);
 /*
-** prints the unsigned value int the base base, in capital letters from A, on the file descriptor fd
+** prints the unsigned value int the base base, in capital letters from A, on
+** the file descriptor fd
+*/
+
+int					ft_uintptrtoa_base(uintptr_t value, int base, int fd);
+/*
+** prints the pointer sized value in base base in file descriptor fd
 */
 
 /*
@@ -183,6 +224,11 @@ int ft_uitocapa_base(uintmax_t value, int base, int fd);
 size_t				ft_strlen(const char *s);
 /*
 ** counts nb of characters in s string | returns the nb
+*/
+
+int					ft_wstrlen(wchar_t *wstr);
+/*
+** returns the size of the wide string wstr
 */
 
 char				*ft_strdup(const char *s1);
@@ -382,7 +428,7 @@ int					ft_atoi(const char *str);
 ** converted int
 */
 
-long long				ft_atol(const char *str);
+long long			ft_atol(const char *str);
 /*
 ** converts possible portion of the string str to a long long | returns the
 ** converted long long
