@@ -58,7 +58,7 @@ $(NAME): $(OBJ) $(PRINTF_OBJ_DIR) $(PRINTF_OBJ)
 	@ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ)
 
 $(OBJ): $(FILES) libft.h
-	@gcc $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@gcc $(CFLAGS) $(INCLUDES) -c $(FILES)
 
 $(PRINTF_OBJ_DIR):
 	@mkdir -p $(PRINTF_OBJ_DIR)
