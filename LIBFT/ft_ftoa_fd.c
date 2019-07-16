@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 static void	handle_decimal(double n, double fpart, int afterpoint, int fd)
 {

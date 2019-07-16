@@ -17,7 +17,12 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdint.h>
+# include "ft_printf.h"
 # define BUFF_SIZE 8
+
+int                             ft_printf(const char *fmt, ...);
+
+int                             ft_dprintf(int fd, const char *fmt, ...);
 
 int					get_next_line(const int fd, char **line);
 
