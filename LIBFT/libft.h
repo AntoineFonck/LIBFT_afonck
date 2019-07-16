@@ -18,7 +18,7 @@
 # include <fcntl.h>
 # include <stdint.h>
 # include <wchar.h>
-# include "ft_printf.h"
+# include "ft_printf/includes/ft_printf.h"
 # define BUFF_SIZE 8
 
 int                             ft_printf(const char *fmt, ...);
