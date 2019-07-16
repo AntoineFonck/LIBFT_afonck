@@ -20,10 +20,10 @@ static void	putdis(char c, int fd)
 
 void		ft_putnbr_fd(intmax_t n, int fd)
 {
-	if (n == -2147483648)
+	if (n < -9223372036854775807)
 	{
-		ft_putnbr_fd(-21474, fd);
-		ft_putnbr_fd(83648, fd);
+		ft_putnbr_fd(9223372036, fd);
+		ft_putnbr_fd(854775808, fd);
 	}
 	else
 	{

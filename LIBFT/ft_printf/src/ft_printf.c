@@ -94,3 +94,18 @@ int		ft_printf(const char *fmt, ...)
 	ft_memdel((void **)&flags);
 	return (done);
 }
+
+int		ft_dprintf(int fd, const char *fmt, ...)
+{
+	int		done;
+	va_list	args;
+	t_flags	*flags;
+
+	if ((flags = init_flags()) == NULL)
+		return (-1);
+	va_start(args, fmt);
+	done = ft_vprintf(fd, fmt, args, flags);
+	va_end(args);
+	ft_memdel((void **)&flags);
+	return (done);
+}

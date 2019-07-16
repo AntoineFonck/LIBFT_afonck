@@ -6,7 +6,7 @@
 /*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:46:26 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:32:34 by afonck           ###   ########.fr       */
+/*   Updated: 2019/06/27 18:03:41 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	handle_decimal(double n, double fpart, int afterpoint, int fd)
 		morezero = afterpoint - ft_nbrlen((long)fpart);
 		if (morezero > 0)
 			pad_zero(morezero, fd);
-		ft_uitoaprint_base((unsigned long)fpart, 10, fd);
+		ft_uitoa_base((unsigned long)fpart, 10, fd);
 	}
 }
 
@@ -39,7 +39,7 @@ int			ft_ftoa_fd(double n, int afterpoint, int fd)
 	len = afterpoint + (afterpoint > 0 ? 1 : 0);
 	ipart = (long)n;
 	fpart = n - (double)ipart;
-	if (ipart == 0 && !(1 / n > 0))
+	if (ipart == 0 && !(1 / n > 0) && n != 0)
 	{
 		len++;
 		write(fd, "-", 1);
@@ -47,8 +47,10 @@ int			ft_ftoa_fd(double n, int afterpoint, int fd)
 	len += ft_nbrlen(ipart);
 	if (afterpoint == 0)
 	{
-		if (fpart >= 0.5)
+		if (fpart > 0.5)
 			ipart += 1;
+		else if (fpart < -0.5)
+			ipart -= 1;
 	}
 	ft_putnbr_fd(ipart, fd);
 	handle_decimal(n, fpart, afterpoint, fd);
