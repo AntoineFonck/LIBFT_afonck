@@ -58,6 +58,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(PRINTF_OBJ_DIR) $(PRINTF_OBJ)
 	@ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ)
+	@echo "$(NAME) was built"
 
 $(OBJ): $(FILES) libft.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $(FILES)
@@ -71,8 +72,11 @@ $(PRINTF_OBJ_DIR)%.o: $(PRINTF_SRC_DIR)%.c $(PRINTF_INC_DIR)ft_printf.h
 clean:
 	@rm -f $(OBJ) $(PRINTF_OBJ)
 	@rm -rf $(PRINTF_OBJ_DIR)
+	@echo "DELETING $(OBJ)"
+	@echo "DELETING $(PRINTF_OBJ)"
 
 fclean: clean
 	@rm -f $(NAME)
+	@echo "$(NAME) deleted"
 
 re: fclean all
