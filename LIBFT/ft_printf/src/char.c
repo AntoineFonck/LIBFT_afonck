@@ -69,11 +69,11 @@ int	convert_wchar(va_list args, int fd, t_flags *flags)
 int	convert_char(va_list args, int fd, t_flags *flags)
 {
 	char	c;
-	int		ret;
+	//int		ret;
 
 	if (L_FLAG)
 		return (convert_wchar(args, fd, flags));
-	ret = 0;
+	//ret = 0;
 	c = va_arg(args, int);
 	if (is_activated(flags))
 		return (special_convert_char(c, fd, flags));

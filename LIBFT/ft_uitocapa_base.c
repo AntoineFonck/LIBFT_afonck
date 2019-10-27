@@ -16,12 +16,12 @@ int	ft_uitocapa_base(uintmax_t value, int base, int fd)
 {
 	char	buf[50];
 	char	*ptr;
-	int		num;
+	//int		num;
 	int		ascii_offset;
 
 	ptr = &buf[49];
 	*ptr = '\0';
-	num = value;
+	//num = value;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)

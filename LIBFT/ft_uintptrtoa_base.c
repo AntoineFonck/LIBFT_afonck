@@ -16,12 +16,12 @@ int	ft_uintptrtoa_base(uintptr_t value, int base, int fd)
 {
 	char	buf[(sizeof(uintptr_t) * 2) + 1];
 	char	*ptr;
-	int		num;
+	//int		num;
 	int		ascii_offset;
 
 	ptr = &buf[(sizeof(uintptr_t) * 2)];
 	*ptr = '\0';
-	num = value;
+	//num = value;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)

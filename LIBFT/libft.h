@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 19:03:56 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/08 16:15:21 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/10/18 12:03:30 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 # include "ft_printf/includes/ft_printf.h"
 # define BUFF_SIZE 8
 
-int                             ft_printf(const char *fmt, ...);
+int					ft_printf(const char *fmt, ...);
 
-int                             ft_dprintf(int fd, const char *fmt, ...);
+int					ft_dprintf(int fd, const char *fmt, ...);
 
 int					get_next_line(const int fd, char **line);
 
@@ -432,6 +432,13 @@ long long			ft_atol(const char *str);
 /*
 ** converts possible portion of the string str to a long long | returns the
 ** converted long long
+*/
+
+int					ft_hextodeci(const char *str, int len, int hexflag);
+/*
+** converts the hex string str of length len into an int, the hexflag needs
+** to be precised --> 1 if str starts by "0x", 0 otherwise | returns the
+** converted int
 */
 
 char				*ft_itoa(int n);

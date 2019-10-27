@@ -12,6 +12,8 @@
 
 NAME		= libft.a
 
+CC = gcc
+
 INCLUDES = -I$(PRINTF_INC_DIR) -I./
 
 PRINTF_DIR	= ./ft_printf/
@@ -58,13 +60,13 @@ $(NAME): $(OBJ) $(PRINTF_OBJ_DIR) $(PRINTF_OBJ)
 	@ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ)
 
 $(OBJ): $(FILES) libft.h
-	@gcc $(CFLAGS) $(INCLUDES) -c $(FILES)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $(FILES)
 
 $(PRINTF_OBJ_DIR):
 	@mkdir -p $(PRINTF_OBJ_DIR)
 
 $(PRINTF_OBJ_DIR)%.o: $(PRINTF_SRC_DIR)%.c $(PRINTF_INC_DIR)ft_printf.h
-	@gcc $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(PRINTF_OBJ)
