@@ -16,7 +16,7 @@
 void	activate_biglmod(const char **fmt, t_flags *flags)
 {
 	(*fmt)++;
-	flags->state |= BIGL;
+	flags->on |= BIGL;
 }
 
 void	check_lmod(const char **fmt, t_flags *flags)
@@ -26,22 +26,22 @@ void	check_lmod(const char **fmt, t_flags *flags)
 		(*fmt)++;
 		if (**fmt == 'h')
 		{
-			flags->state |= HH;
+			flags->on |= HH;
 			(*fmt)++;
 		}
 		else
-			flags->state |= H;
+			flags->on |= H;
 	}
 	else if (**fmt == 'l')
 	{
 		(*fmt)++;
 		if (**fmt == 'l')
 		{
-			flags->state |= LL;
+			flags->on |= LL;
 			(*fmt)++;
 		}
 		else
-			flags->state |= L;
+			flags->on |= L;
 	}
 	else if (**fmt == 'L')
 		activate_biglmod(fmt, flags);

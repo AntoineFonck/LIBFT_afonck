@@ -28,7 +28,7 @@ void	store_field_width(const char **fmt, t_flags *flags)
 	}
 	while (ft_isdigit(**fmt))
 		(*fmt)++;
-	flags->field_width = (ft_atoi(field_width) > 0 ? ft_atoi(field_width) : 0);
+	flags->field_w = (ft_atoi(field_width) > 0 ? ft_atoi(field_width) : 0);
 	ft_bzero((void *)field_width, 10);
 }
 
@@ -54,7 +54,7 @@ void	store_precision(const char **fmt, t_flags *flags)
 	}
 	while (ft_isdigit(**fmt))
 		(*fmt)++;
-	flags->precision = (ft_atoi(precision) > 0 ? ft_atoi(precision) : 0);
+	flags->prec = (ft_atoi(precision) > 0 ? ft_atoi(precision) : 0);
 	ft_bzero((void *)precision, 10);
 }
 
@@ -62,7 +62,7 @@ void	check_precision(const char **fmt, t_flags *flags)
 {
 	if (**fmt == '.')
 	{
-		flags->state |= PREC;
+		flags->on |= PREC;
 		(*fmt)++;
 		store_precision(fmt, flags);
 	}

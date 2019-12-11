@@ -19,20 +19,20 @@
 **        int full_len;
 **
 **        full_len = 0;
-**        if (MIN_FLAG)
+**        if (flags->on & MIN)
 **        {
-**                if (PLUS_FLAG)
+**                if (flags->on & PLUS)
 **                        ft_putchar_fd('+', fd);
 **                ft_putchar_fd('%', fd);
 **                full_len += pad_percent(1, flags, fd);
 **                return (full_len + 1);
 **        }
-**        if (PLUS_FLAG)
+**        if (flags->on & PLUS)
 **        {
-**                if (ZERO_FLAG)
+**                if (flags->on & ZERO)
 **                        ft_putchar_fd('+', fd);
 **                full_len += pad_percent(1, flags, fd);
-**                if (!(ZERO_FLAG))
+**                if (!(flags->on & ZERO))
 **                        ft_putchar_fd('+', fd);
 **                ft_putchar_fd('%', fd);
 **                return (full_len + 1);
@@ -69,13 +69,13 @@ int	convert_percent(va_list args, int fd, t_flags *flags)
 **        int nbpad;
 **        int padlen;
 **
-**        nbpad = flags->field_width - ft_nbrlen(number);
-**        if ((PLUS_FLAG) || (SPACE_FLAG))
+**        nbpad = flags->field_w - ft_nbrlen(number);
+**        if ((flags->on & PLUS) || (flags->on & SPACE))
 **                nbpad--;
 **        if (nbpad < 0)
 **                nbpad = 0;
-**        padlen = nbpad + (PLUS_FLAG);
-**        if ((ZERO_FLAG) && !(MIN_FLAG))
+**        padlen = nbpad + (flags->on & PLUS);
+**        if ((flags->on & ZERO) && !(flags->on & MIN))
 **        {
 **                pad_zero(nbpad, fd);
 **                return (padlen);

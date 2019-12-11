@@ -19,16 +19,16 @@ int	pad_pointer_prec_min(int hexlen, t_flags *flags, int fd, uintptr_t hex)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width -
-		(flags->precision >= hexlen ? flags->precision : hexlen) - 2;
+	nbpad = flags->field_w -
+		(flags->prec >= hexlen ? flags->prec : hexlen) - 2;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-	padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
+	nbzero = (flags->prec >= hexlen ? flags->prec : hexlen) - hexlen;
+	padlen = nbpad + nbzero + 2 + (flags->prec < hexlen ? 0 : 0);
 	write(fd, "0x", 2);
 	pad_zero(nbzero, fd);
 	ft_uintptrtoa_base(hex, 16, fd);
-	if (flags->precision < flags->field_width)
+	if (flags->prec < flags->field_w)
 		pad_space(nbpad, fd);
 	return (padlen);
 }
@@ -39,13 +39,13 @@ int	pad_pointer_prec(int hexlen, t_flags *flags, int fd)
 	int nbzero;
 	int padlen;
 
-	nbpad = flags->field_width -
-		(flags->precision >= hexlen ? flags->precision : hexlen) - 2;
+	nbpad = flags->field_w -
+		(flags->prec >= hexlen ? flags->prec : hexlen) - 2;
 	if (nbpad < 0)
 		nbpad = 0;
-	nbzero = (flags->precision >= hexlen ? flags->precision : hexlen) - hexlen;
-	padlen = nbpad + nbzero + 2 + (flags->precision < hexlen ? 0 : 0);
-	if (flags->precision < flags->field_width)
+	nbzero = (flags->prec >= hexlen ? flags->prec : hexlen) - hexlen;
+	padlen = nbpad + nbzero + 2 + (flags->prec < hexlen ? 0 : 0);
+	if (flags->prec < flags->field_w)
 	{
 		pad_space(nbpad, fd);
 		write(fd, "0x", 2);
@@ -64,24 +64,24 @@ int	pad_pointer(int hexlen, t_flags *flags, int fd)
 	int nbpad;
 	int padlen;
 
-	if (flags->precision)
+	if (flags->prec)
 		return (pad_pointer_prec(hexlen, flags, fd));
-	nbpad = flags->field_width - hexlen - 2;
+	nbpad = flags->field_w - hexlen - 2;
 	padlen = 0;
 	padlen += (nbpad > 0 ? nbpad : 0) + 2;
 	if (nbpad < 0)
 		nbpad = 0;
-	if ((ZERO_FLAG))
+	if ((flags->on & ZERO))
 		write(fd, "0x", 2);
 	while (nbpad > 0)
 	{
-		if ((ZERO_FLAG))
+		if ((flags->on & ZERO))
 			ft_putchar_fd('0', fd);
 		else
 			ft_putchar_fd(' ', fd);
 		nbpad--;
 	}
-	if (!(ZERO_FLAG))
+	if (!(flags->on & ZERO))
 		write(fd, "0x", 2);
 	return (padlen);
 }
@@ -93,7 +93,7 @@ int	special_convert_pointer(uintptr_t hex, int fd, t_flags *flags)
 
 	full_len = 0;
 	hexlen = ft_uintptrtoalen_base(hex, 16);
-	if ((MIN_FLAG))
+	if ((flags->on & MIN))
 	{
 		full_len += pad_pointer_prec_min(hexlen, flags, fd, hex);
 		return (full_len + hexlen);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 14:51:35 by afonck            #+#    #+#             */
-/*   Updated: 2019/07/14 09:13:42 by afonck           ###   ########.fr       */
+/*   Updated: 2019/12/11 16:50:25 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <stdint.h>
 # include <wchar.h>
 
-# define HASHTAG  1
-# define MINUS  2
+# define HASH  1
+# define MIN  2
 # define PLUS  4
 # define SPACE  8
 # define ZERO  16
@@ -27,18 +27,6 @@
 # define LL  256
 # define PREC  512
 # define BIGL  1024
-
-# define HASH_FLAG flags->state & HASHTAG
-# define MIN_FLAG flags->state & MINUS
-# define PLUS_FLAG flags->state & PLUS
-# define SPACE_FLAG flags->state & SPACE
-# define ZERO_FLAG flags->state & ZERO
-# define HH_FLAG flags->state & HH
-# define H_FLAG flags->state & H
-# define L_FLAG flags->state & L
-# define LL_FLAG flags->state & LL
-# define PREC_FLAG flags->state & PREC
-# define BIGL_FLAG flags->state & BIGL
 
 # define RED "\e[0;31m"
 # define GREEN "\e[0;32m"
@@ -53,9 +41,9 @@
 
 typedef	struct	s_flags
 {
-	int	state;
-	int	field_width;
-	int	precision;
+	int	on;
+	int	field_w;
+	int	prec;
 	int	color;
 }				t_flags;
 
@@ -137,7 +125,7 @@ int				convert_bin(va_list args, int fd, t_flags *flags);
 
 int				pad_float(double number, t_flags *flags, int fd);
 
-int				pad_int(intmax_t number, t_flags *flags, int fd);
+int				pad_int(intmax_t nb, t_flags *flags, int fd);
 
 int				pad_str(int number, t_flags *flags, int fd);
 

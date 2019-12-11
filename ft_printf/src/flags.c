@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 15:12:16 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/07/08 15:13:03 by sluetzen         ###   ########.fr       */
+/*   Updated: 2019/12/11 16:14:43 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_flags		*init_flags(void)
 
 	if ((flags = (t_flags *)malloc(sizeof(t_flags))) == NULL)
 		return (NULL);
-	flags->state = 0;
-	flags->field_width = 0;
-	flags->precision = 0;
+	flags->on = 0;
+	flags->field_w = 0;
+	flags->prec = 0;
 	flags->color = 0;
 	return (flags);
 }
@@ -38,32 +38,33 @@ void		check_flags(const char **fmt, t_flags *flags)
 void		activate_flags(t_flags *flags, char c)
 {
 	if (c == '#')
-		flags->state |= HASHTAG;
+		flags->on |= HASH;
 	else if (c == '-')
-		flags->state |= MINUS;
+		flags->on |= MIN;
 	else if (c == '+')
-		flags->state |= PLUS;
+		flags->on |= PLUS;
 	else if (c == ' ')
-		flags->state |= SPACE;
+		flags->on |= SPACE;
 	else if (c == '0')
-		flags->state |= ZERO;
+		flags->on |= ZERO;
 	else
 		return ;
 }
 
 int			is_activated(t_flags *flags)
 {
-	if ((HASH_FLAG) || (MIN_FLAG) || (PLUS_FLAG)
-			|| (SPACE_FLAG) || (ZERO_FLAG)
-			|| flags->field_width || flags->precision)
+	if ((flags->on & HASH) || (flags->on & MIN)
+		|| (flags->on & PLUS) || (flags->on & SPACE)
+		|| (flags->on & ZERO) || flags->field_w
+		|| flags->prec)
 		return (1);
 	return (0);
 }
 
 void		flush_flags(t_flags *flags)
 {
-	flags->state = 0;
-	flags->field_width = 0;
-	flags->precision = 0;
+	flags->on = 0;
+	flags->field_w = 0;
+	flags->prec = 0;
 	flags->color = 0;
 }

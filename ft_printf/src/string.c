@@ -18,7 +18,7 @@ int	special_convert_wstring(wchar_t *s, int len, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (MIN_FLAG)
+	if (flags->on & MIN)
 	{
 		if (len > 0 && s != NULL)
 			ft_putwstr_fd(s, fd);
@@ -40,11 +40,11 @@ int	special_convert_nullstring(int len, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->precision < len && flags->precision)
-		len = flags->precision;
-	else if (!flags->precision && (PREC_FLAG))
+	if (flags->prec < len && flags->prec)
+		len = flags->prec;
+	else if (!flags->prec && (flags->on & PREC))
 		len = 0;
-	if (MIN_FLAG)
+	if (flags->on & MIN)
 	{
 		write(fd, "(null)", len);
 		full_len += pad_str(len, flags, fd);
@@ -60,11 +60,11 @@ int	special_convert_string(char *s, int len, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (flags->precision < len && flags->precision)
-		len = flags->precision;
-	else if (!flags->precision && (PREC_FLAG))
+	if (flags->prec < len && flags->prec)
+		len = flags->prec;
+	else if (!flags->prec && (flags->on & PREC))
 		len = 0;
-	if (MIN_FLAG)
+	if (flags->on & MIN)
 	{
 		if (len > 0)
 			write(fd, s, len);
@@ -101,14 +101,14 @@ int	convert_string(va_list args, int fd, t_flags *flags)
 	char	*s;
 	int		len;
 
-	if (L_FLAG)
+	if (flags->on & L)
 		return (convert_wstring(args, fd, flags));
 	s = va_arg(args, char *);
 	if (s != NULL)
 		len = ft_strlen(s);
 	else
 		len = 6;
-	if (is_activated(flags) || (PREC_FLAG))
+	if (is_activated(flags) || (flags->on & PREC))
 	{
 		if (s != NULL)
 			return (special_convert_string(s, len, fd, flags));

@@ -20,7 +20,7 @@ int	special_convert_wchar(wchar_t c, int fd, t_flags *flags)
 
 	full_len = 0;
 	size = ft_wcharlen(ft_nbits(c));
-	if (MIN_FLAG)
+	if (flags->on & MIN)
 	{
 		full_len += ft_putwchar_fd(c, fd);
 		full_len += pad_str(size, flags, fd);
@@ -36,13 +36,13 @@ int	special_convert_char(char c, int fd, t_flags *flags)
 	int full_len;
 
 	full_len = 0;
-	if (MIN_FLAG)
+	if (flags->on & MIN)
 	{
 		ft_putchar_fd(c, fd);
 		full_len += pad_str(1, flags, fd);
 		return (full_len + 1);
 	}
-	if (PLUS_FLAG)
+	if (flags->on & PLUS)
 	{
 		full_len += pad_str(1, flags, fd);
 		ft_putchar_fd(c, fd);
@@ -70,7 +70,7 @@ int	convert_char(va_list args, int fd, t_flags *flags)
 {
 	char	c;
 
-	if (L_FLAG)
+	if (flags->on & L)
 		return (convert_wchar(args, fd, flags));
 	c = va_arg(args, int);
 	if (is_activated(flags))
