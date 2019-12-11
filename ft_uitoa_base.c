@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_uitoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:33:58 by sluetzen          #+#    #+#             */
-/*   Updated: 2019/06/27 18:00:32 by afonck           ###   ########.fr       */
+/*   Updated: 2019/12/11 15:35:10 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int	ft_uitoa_base(uintmax_t value, int base, int fd)
 {
 	char	buf[50];
 	char	*ptr;
-	//int		num;
 	int		ascii_offset;
 
 	ptr = &buf[49];
 	*ptr = '\0';
-	//num = value;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)

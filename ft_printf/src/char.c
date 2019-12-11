@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   char.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sluetzen <sluetzen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 20:53:01 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 18:50:18 by afonck           ###   ########.fr       */
+/*   Updated: 2019/12/11 15:38:39 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,9 @@ int	convert_wchar(va_list args, int fd, t_flags *flags)
 int	convert_char(va_list args, int fd, t_flags *flags)
 {
 	char	c;
-	//int		ret;
 
 	if (L_FLAG)
 		return (convert_wchar(args, fd, flags));
-	//ret = 0;
 	c = va_arg(args, int);
 	if (is_activated(flags))
 		return (special_convert_char(c, fd, flags));

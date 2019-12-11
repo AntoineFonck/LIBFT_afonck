@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_uintlen_base.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 15:08:43 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:11:22 by afonck           ###   ########.fr       */
+/*   Updated: 2019/12/11 15:34:22 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int		ft_uintlen_base(uintmax_t value, int base)
 {
 	char	buf[50];
 	char	*ptr;
-	//int		num;
 	int		ascii_offset;
 
 	ptr = &buf[49];
 	*ptr = '\0';
-	//num = value;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)

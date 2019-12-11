@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_uintptrtoalen_base.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afonck <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: afonck <afonck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:37:01 by afonck            #+#    #+#             */
-/*   Updated: 2019/06/27 15:34:20 by afonck           ###   ########.fr       */
+/*   Updated: 2019/12/11 15:34:42 by afonck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int	ft_uintptrtoalen_base(uintptr_t value, int base)
 {
 	char	buf[(sizeof(uintptr_t) * 2) + 1];
 	char	*ptr;
-	//int		num;
 	int		ascii_offset;
 
 	ptr = &buf[(sizeof(uintptr_t) * 2)];
 	*ptr = '\0';
-	//num = value;
 	if (value == 0)
 		*--ptr = '0' + (value % base);
 	while (value != 0)
